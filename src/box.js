@@ -19,7 +19,6 @@ class Box {
 
     run() {
         this.handleUserInput();
-        this.drawConnections();
         this.drawRect();
         this.drawText();
     }
@@ -39,14 +38,6 @@ class Box {
         if (this.dragging) {
             this.coord.x += this.state.getMouseXDelta();
             this.coord.y += this.state.getMouseYDelta();
-        }
-    }
-
-    drawConnections() {
-        for (const elt of this.out) {
-            const begin = getMidpoint(this.rect);
-            const end = getMidpoint(elt.rect);
-            this.gfx.drawLine(begin, end, -1);
         }
     }
 

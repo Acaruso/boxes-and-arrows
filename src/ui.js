@@ -39,10 +39,7 @@ class Ui {
                 && this.state.isMouseupInside(box.rect)
                 && this.drawingLine
             ) {
-                // todo: prevent duplicate connections
-                if (this.outBox !== box) {
-                    this.outBox.out.push(box);
-                }
+                this.boxes.addConnection(this.outBox, box);
                 this.drawingLine = false;
             }
         });

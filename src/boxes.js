@@ -1,4 +1,5 @@
 import { Box } from "./box";
+import { getMidpoint } from "./util"
 
 class Boxes {
     constructor(gfx, state) {
@@ -21,8 +22,13 @@ class Boxes {
         }
     }
 
-    run() {
-        this.forEach((box) => box.run());
+    getBox(id) {
+        for (let i = 0; i < this.boxes.length; i++) {
+            if (this.boxes[i].id === id) {
+                return this.boxes[i];
+            }
+        }
+        return {};
     }
 
     getConnectionKey(box1, box2) {
@@ -31,9 +37,32 @@ class Boxes {
             : `${box2.id},${box1.id}`;
     }
 
+    getBoxes(key) {
+        const ids = key.split(",");
+
+        const id1 = parseInt(ids[0], 10);
+        const id2 = parseInt(ids[1], 10);
+
+        return [this.getBox(id1), this.getBox(id2)];
+    }
+
     addConnection(box1, box2) {
-        const key = getConnectionKey(box1, box2);
+        const key = this.getConnectionKey(box1, box2);
         this.connections.add(key);
+    }
+
+    drawConnections() {
+        this.connections.forEach((key) => {
+            const [box1, box2] = this.getBoxes(key);
+            const begin = getMidpoint(box1.rect);
+            const end = getMidpoint(box2.rect);
+            this.gfx.drawLine(begin, end, -1);
+        });
+    }
+
+    run() {
+        this.forEach((box) => box.run());
+        this.drawConnections();
     }
 }
 
