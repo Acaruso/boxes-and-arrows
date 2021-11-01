@@ -23,21 +23,15 @@ class Gfx {
     }
 
     strokeRect(rect, z=0) {
-        const command = (ctx) => {
-            const color = rect.color ? rect.color : "#000000";
-            ctx.fillStyle = color;
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.rect(rect.x, rect.y, rect.w, rect.h);
-            ctx.stroke();
-            ctx.closePath();
-        };
+        const upperLeft = { x: rect.x, y: rect.y };
+        const upperRight = { x: rect.x + rect.w, y: rect.y };
+        const lowerRight = { x: rect.x + rect.w, y: rect.y + rect.h };
+        const lowerLeft = { x: rect.x, y: rect.y + rect.h };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.drawLine(upperLeft, upperRight, z);
+        this.drawLine(upperRight, lowerRight, z);
+        this.drawLine(lowerRight, lowerLeft, z);
+        this.drawLine(lowerLeft, upperLeft, z);
     }
 
     // y coord is BOTTOM left side of text
