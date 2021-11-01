@@ -10,6 +10,7 @@ class Ui {
         this.lineBegin = { x: 0, y: 0 };
         this.outBox = {};
         this.drawingLine = false;
+        this.selectedBoxId = -1;
 
         this.boxes.addBox("test1", { x: 4, y: 4 });
         this.boxes.addBox("test2", { x: 90, y: 4 });
@@ -26,6 +27,10 @@ class Ui {
         this.handleCreateConnection();
     }
 
+    handleSelectBox() {
+
+    }
+
     handleCreateBox() {
         if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
             const coord = { ...this.state.cur.mouse.coord };
@@ -38,9 +43,8 @@ class Ui {
 
         this.boxes.forEach((box) => {
             if (
-                this.state.isMousedown()
+                this.state.isMousedownInside(box.rect)
                 && this.state.cur.keyboard.control
-                && this.state.isMousedownInside(box.rect)
             ) {
                 this.lineBegin = getMidpoint(box.rect);
                 this.outBox = box;
@@ -48,8 +52,7 @@ class Ui {
             }
 
             if (
-                this.state.isMouseup()
-                && this.state.isMouseupInside(box.rect)
+                this.state.isMouseupInside(box.rect)
                 && this.drawingLine
             ) {
                 this.boxes.addConnection(this.outBox, box);
@@ -63,10 +66,6 @@ class Ui {
             && this.drawingLine
         ) {
             this.gfx.drawLine(this.lineBegin, { ...curMouse.coord }, -1);
-        }
-
-        if (this.state.cur.keyboard.right) {
-            console.log(this.boxes);
         }
     }
 }
