@@ -1,0 +1,8 @@
+const getMidpoint = (rect) => {
+    return {
+        x: rect.x + (rect.w / 2),
+        y: rect.y + (rect.h / 2)
+    };
+};
+
+export { getMidpoint };
