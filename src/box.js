@@ -1,11 +1,12 @@
 import { getMidpoint } from "./util"
 
 class Box {
-    constructor(gfx, state, text, coord) {
+    constructor(gfx, state, text, coord, id=0) {
         this.gfx = gfx;
         this.state = state;
 
         this.coord = coord;
+        this.id = id;
         this.charHeight = 14;
         this.charWidth = this.charHeight * 0.55;
         this.xPadding = 4;
@@ -36,10 +37,8 @@ class Box {
         }
 
         if (this.dragging) {
-            const cur = this.state.cur.mouse.coord;
-            const prev = this.state.prev.mouse.coord;
-            this.coord.x += cur.x - prev.x;
-            this.coord.y += cur.y - prev.y;
+            this.coord.x += this.state.getMouseXDelta();
+            this.coord.y += this.state.getMouseYDelta();
         }
     }
 
@@ -61,8 +60,8 @@ class Box {
 
         let bgRect = { ...this.rect };
         bgRect.color = "#FFFFFF";
-        this.gfx.drawRect(bgRect);
-        this.gfx.strokeRect(this.rect);
+        this.gfx.drawRect(bgRect, 0);
+        this.gfx.strokeRect(this.rect, 1);
     }
 
     drawText() {
@@ -70,7 +69,7 @@ class Box {
             this.text,
             this.charHeight,
             { x: this.coord.x + this.xPadding, y: this.coord.y + this.charHeight },
-            10
+            2
         );
     }
 }
