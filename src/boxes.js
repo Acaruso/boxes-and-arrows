@@ -17,9 +17,7 @@ class Boxes {
     }
 
     forEach(fn) {
-        for (let i = 0; i < this.boxes.length; i++) {
-            fn(this.boxes[i]);
-        }
+        this.boxes.forEach(fn);
     }
 
     getBox(id) {

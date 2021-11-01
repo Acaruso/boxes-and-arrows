@@ -75,19 +75,11 @@ class State {
     }
 
     isMousedown() {
-        const mouse = this.cur.mouse;
-        const prevMouse = this.prev.mouse;
-        return (
-            mouse.clicked && !prevMouse.clicked
-        );
+        return this.cur.mouse.clicked && !this.prev.mouse.clicked;
     }
 
     isMouseup() {
-        const mouse = this.cur.mouse;
-        const prevMouse = this.prev.mouse;
-        return (
-            !mouse.clicked && prevMouse.clicked
-        );
+        return !this.cur.mouse.clicked && this.prev.mouse.clicked;
     }
 
     isMousedownInside(rect) {

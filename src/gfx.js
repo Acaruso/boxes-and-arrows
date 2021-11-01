@@ -6,7 +6,7 @@ class Gfx {
         this.queue = [];
     }
 
-    drawRect(rect, z = 0) {
+    drawRect(rect, z=0) {
         const command = (ctx) => {
             const color = rect.color ? rect.color : "#000000";
             ctx.fillStyle = color;
@@ -22,7 +22,7 @@ class Gfx {
         });
     }
 
-    strokeRect(rect, z = 0) {
+    strokeRect(rect, z=0) {
         const command = (ctx) => {
             const color = rect.color ? rect.color : "#000000";
             ctx.fillStyle = color;
@@ -41,7 +41,7 @@ class Gfx {
     }
 
     // y coord is BOTTOM left side of text
-    drawText(text, size, coord, z = 0) {
+    drawText(text, size, coord, z=0) {
         const command = (ctx) => {
             ctx.font = `${size}px ${this.textStyle}`;
             ctx.fillStyle = "#000000";
@@ -54,7 +54,7 @@ class Gfx {
         });
     }
 
-    drawLine(beginCoord, endCoord, z = 0) {
+    drawLine(beginCoord, endCoord, z=0) {
         const command = (ctx) => {
             ctx.fillStyle = "#000000";
             ctx.beginPath();
