@@ -10,7 +10,7 @@ class Ui {
         this.lineBegin = { x: 0, y: 0 };
         this.outBox = {};
         this.drawingLine = false;
-        this.selectedBoxId = -1;
+        // this.selectedBoxId = -1;
 
         this.boxes.addBox("test1", { x: 4, y: 4 });
         this.boxes.addBox("test2", { x: 90, y: 4 });
@@ -23,13 +23,32 @@ class Ui {
     }
 
     handleUserInput() {
+        // this.handleSelectBox();
         this.handleCreateBox();
         this.handleCreateConnection();
     }
 
-    handleSelectBox() {
+    // drawSelectedBox() {
+    //     if (this.selectedBoxId !== -1) {
+    //         const selectedBox = this.boxes.getBox(this.selectedBoxId);
 
-    }
+    //     }
+    // }
+
+    // handleSelectBox() {
+    //     let clickedInsideBox = false;
+
+    //     this.boxes.forEach((box) => {
+    //         if (this.state.isMousedownInside(box.rect)) {
+    //             this.selectedBoxId = box.id;
+    //             clickedInsideBox = true;
+    //         }
+    //     });
+
+    //     if (!clickedInsideBox) {
+    //         this.selectedBoxId = -1;
+    //     }
+    // }
 
     handleCreateBox() {
         if (this.state.isMousedown() && this.state.cur.keyboard.shift) {

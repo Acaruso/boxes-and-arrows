@@ -8,6 +8,7 @@ class Boxes {
         this.boxes = [];
         this.nextId = 0;
         this.connections = new Set();
+        this.selectedBoxId = -1;
     }
 
     addBox(text, coord) {
@@ -51,7 +52,31 @@ class Boxes {
         });
     }
 
+    handleSelectBox() {
+        if (this.state.isMousedown()) {
+            this.forEach((box) => {
+                if (this.state.isMousedownInside(box.rect)) {
+                    this.selectedBoxId = box.id;
+                }
+            });
+        }
+    }
+
+    drawSelectedBox() {
+        if (this.selectedBoxId !== -1) {
+            const selectedBox = this.getBox(this.selectedBoxId);
+            const rect = { ...selectedBox.rect };
+            rect.x -= 2;
+            rect.y -= 2;
+            rect.w += 4;
+            rect.h += 4;
+            this.gfx.strokeRect(rect);
+        }
+    }
+
     run() {
+        this.handleSelectBox();
+        this.drawSelectedBox();
         this.forEach((box) => box.run());
         this.drawConnections();
     }
