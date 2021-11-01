@@ -60,11 +60,18 @@ class Boxes {
 
     handleSelectBox() {
         if (this.state.isMousedown()) {
+            let clickedInsideBox = false;
+
             this.forEach((box) => {
                 if (this.state.isMousedownInside(box.rect)) {
                     this.selectedBoxId = box.id;
+                    clickedInsideBox = true;
                 }
             });
+
+            if (!clickedInsideBox) {
+                this.selectedBoxId = -1;
+            }
         }
     }
 
