@@ -28,7 +28,8 @@ class Boxes {
                 return this.boxes[i];
             }
         }
-        return {};
+
+        throw `no box found with id ${id}`;
     }
 
     getConnectionKey(box1, box2) {
