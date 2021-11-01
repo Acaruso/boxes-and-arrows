@@ -31,10 +31,15 @@ class Boxes {
             : `${box2.id},${box1.id}`;
     }
 
-    getBoxes(key) {
+    getIds(key) {
         const ids = key.split(",");
         const id1 = parseInt(ids[0], 10);
         const id2 = parseInt(ids[1], 10);
+        return [id1, id2];
+    }
+
+    getBoxes(key) {
+        const [id1, id2] = this.getIds(key);
         return [this.getBox(id1), this.getBox(id2)];
     }
 
@@ -74,8 +79,34 @@ class Boxes {
         }
     }
 
+    deleteBox(id) {
+        this.boxes = this.boxes.filter((box) => box.id !== id);
+    }
+
+    deleteConnections(id) {
+        let toDelete = [];
+
+        this.connections.forEach((key) => {
+            const [id1, id2] = this.getIds(key);
+            if (id1 === id || id2 === id) {
+                toDelete.push(key);
+            }
+        });
+
+        toDelete.forEach((key) => this.connections.delete(key));
+    }
+
+    handleDeleteBox() {
+        if (this.state.isKeydown("backspace") && this.selectedBoxId !== -1) {
+            this.deleteConnections(this.selectedBoxId);
+            this.deleteBox(this.selectedBoxId);
+            this.selectedBoxId = -1;
+        }
+    }
+
     run() {
         this.handleSelectBox();
+        this.handleDeleteBox();
         this.drawSelectedBox();
         this.forEach((box) => box.run());
         this.drawConnections();

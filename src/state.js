@@ -32,11 +32,17 @@ class State {
             "Shift:keyup": () => {
                 this.cur.keyboard.shift = false;
             },
+            "Backspace:keydown": () => {
+                this.cur.keyboard.backspace = true;
+            },
+            "Backspace:keyup": () => {
+                this.cur.keyboard.backspace = false;
+            },
         };
 
         const eventHandler = (e) => {
             const s = e.key ? `${e.key}:${e.type}` : `${e.type}`;
-            // console.log(s)
+            // console.log(s);
             if (this.messageTable[s]) {
                 this.messageTable[s](e);
             }
@@ -60,8 +66,13 @@ class State {
                 left: false,
                 control: false,
                 shift: false,
+                backspace: false,
             },
         };
+    }
+
+    isKeydown(key) {
+        return this.cur.keyboard[key] && !this.prev.keyboard[key];
     }
 
     isMouseInside(rect) {
