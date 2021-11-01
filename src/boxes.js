@@ -23,13 +23,7 @@ class Boxes {
     }
 
     getBox(id) {
-        for (let i = 0; i < this.boxes.length; i++) {
-            if (this.boxes[i].id === id) {
-                return this.boxes[i];
-            }
-        }
-
-        throw `no box found with id ${id}`;
+        return this.boxes.find((box) => box.id === id);
     }
 
     getConnectionKey(box1, box2) {
@@ -40,10 +34,8 @@ class Boxes {
 
     getBoxes(key) {
         const ids = key.split(",");
-
         const id1 = parseInt(ids[0], 10);
         const id2 = parseInt(ids[1], 10);
-
         return [this.getBox(id1), this.getBox(id2)];
     }
 

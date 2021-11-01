@@ -26,6 +26,12 @@ class State {
             "Control:keyup": () => {
                 this.cur.keyboard.control = false;
             },
+            "Shift:keydown": () => {
+                this.cur.keyboard.shift = true;
+            },
+            "Shift:keyup": () => {
+                this.cur.keyboard.shift = false;
+            },
         };
 
         const eventHandler = (e) => {
@@ -53,6 +59,7 @@ class State {
                 right: false,
                 left: false,
                 control: false,
+                shift: false,
             },
         };
     }

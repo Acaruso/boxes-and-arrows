@@ -17,11 +17,23 @@ class Ui {
     }
 
     run() {
-        this.connect();
+        this.handleUserInput();
         this.boxes.run();
     }
 
-    connect() {
+    handleUserInput() {
+        this.handleCreateBox();
+        this.handleCreateConnection();
+    }
+
+    handleCreateBox() {
+        if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
+            const coord = { ...this.state.cur.mouse.coord };
+            this.boxes.addBox("asdf", coord);
+        }
+    }
+
+    handleCreateConnection() {
         const curMouse = this.state.cur.mouse;
 
         this.boxes.forEach((box) => {
