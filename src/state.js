@@ -1,44 +1,10 @@
+import { makeMessageTable } from "./message_table";
+
 class State {
     constructor() {
         this.cur = this.makeState();
         this.prev = this.makeState();
-
-        this.messageTable = {
-            "mousedown": () => {
-                this.cur.mouse.clicked = true;
-            },
-            "mouseup": () => {
-                this.cur.mouse.clicked = false;
-            },
-            "mousemove": (e) => {
-                this.cur.mouse.coord.x = e.offsetX;
-                this.cur.mouse.coord.y = e.offsetY;
-            },
-            "ArrowRight:keydown": () => {
-                this.cur.keyboard.right = true;
-            },
-            "ArrowRight:keyup": () => {
-                this.cur.keyboard.right = false;
-            },
-            "Control:keydown": () => {
-                this.cur.keyboard.control = true;
-            },
-            "Control:keyup": () => {
-                this.cur.keyboard.control = false;
-            },
-            "Shift:keydown": () => {
-                this.cur.keyboard.shift = true;
-            },
-            "Shift:keyup": () => {
-                this.cur.keyboard.shift = false;
-            },
-            "Backspace:keydown": () => {
-                this.cur.keyboard.backspace = true;
-            },
-            "Backspace:keyup": () => {
-                this.cur.keyboard.backspace = false;
-            },
-        };
+        this.messageTable = makeMessageTable(this.cur);
 
         const eventHandler = (e) => {
             const s = e.key ? `${e.key}:${e.type}` : `${e.type}`;
