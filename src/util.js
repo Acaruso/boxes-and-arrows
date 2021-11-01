@@ -5,4 +5,10 @@ const getMidpoint = (rect) => {
     };
 };
 
-export { getMidpoint };
+const distanceBetweenCoords = (coord1, coord2) => {
+    const a = Math.abs(coord1.x - coord2.x);
+    const b = Math.abs(coord1.y - coord2.y);
+    return Math.sqrt(a*a + b*b);
+}
+
+export { getMidpoint, distanceBetweenCoords };

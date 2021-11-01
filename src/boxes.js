@@ -1,5 +1,5 @@
 import { Box } from "./box";
-import { getMidpoint } from "./util"
+import { getMidpoint, distanceBetweenCoords } from "./util"
 
 class Boxes {
     constructor(gfx, state) {
@@ -9,6 +9,7 @@ class Boxes {
         this.nextId = 0;
         this.connections = new Set();
         this.selectedBoxId = -1;
+        this.selectedConnection = null;
     }
 
     addBox(text, coord) {
