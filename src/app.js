@@ -16,7 +16,7 @@ class App {
 
     loop() {
         this.gfx.clearScreen();
-        this.ui.draw();
+        this.ui.run();
         this.gfx.draw();
         this.state.nextState();
     }

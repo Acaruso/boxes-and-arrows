@@ -16,7 +16,7 @@ class Box {
         this.out = [];
     }
 
-    draw() {
+    run() {
         this.handleUserInput();
         this.drawConnections();
         this.drawRect();
@@ -29,8 +29,8 @@ class Box {
             && !this.state.cur.keyboard.control
         ) {
             this.dragging = true;
-        } 
-        
+        }
+
         if (this.state.isMouseup()) {
             this.dragging = false;
         }
