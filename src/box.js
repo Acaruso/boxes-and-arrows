@@ -1,5 +1,3 @@
-import { getMidpoint } from "./util"
-
 class Box {
     constructor(gfx, state, text, coord, id=0) {
         this.gfx = gfx;
@@ -49,8 +47,11 @@ class Box {
             h: this.charHeight + this.yPadding
         };
 
-        let bgRect = { ...this.rect };
-        bgRect.color = "#FFFFFF";
+        const bgRect = {
+            ...this.rect,
+            color: "#FFFFFF"
+        };
+
         this.gfx.drawRect(bgRect, 0);
         this.gfx.strokeRect(this.rect, 1);
     }

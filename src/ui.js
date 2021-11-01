@@ -13,6 +13,7 @@ class Ui {
 
         this.boxes.addBox("test1", { x: 4, y: 4 });
         this.boxes.addBox("test2", { x: 90, y: 4 });
+        this.boxes.addBox("test3", { x: 90, y: 100 });
     }
 
     run() {
