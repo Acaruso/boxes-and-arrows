@@ -10,6 +10,15 @@ class Boxes {
         this.connections = new Set();
         this.selectedBoxId = -1;
         this.selectedConnection = null;
+
+        const keydownHandler = (e) => {
+            const key = e.key.toLowerCase();
+            if (e.which >= 65 && e.which <= 90) {
+                console.log(key);
+            }
+        };
+
+        document.addEventListener("keydown", keydownHandler, false);
     }
 
     addBox(text, coord) {

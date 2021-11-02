@@ -32,7 +32,6 @@ class State {
         document.addEventListener("mousedown", eventHandler, false);
         document.addEventListener("mouseup", eventHandler, false);
         document.addEventListener("mousemove", eventHandler, false);
-
     }
 
     isKeydown(key) {
