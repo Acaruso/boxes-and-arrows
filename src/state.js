@@ -1,24 +1,44 @@
-import { makeMessageTable, makeState } from "./state_util";
+import { makeState } from "./state_util";
 
 class State {
     constructor() {
         this.cur = makeState();
         this.prev = makeState();
-        this.messageTable = makeMessageTable(this.cur);
 
         const eventHandler = (e) => {
-            const s = e.key ? `${e.key}:${e.type}` : `${e.type}`;
-            // console.log(s);
-            if (this.messageTable[s]) {
-                this.messageTable[s](e);
+            // handle keyboard events
+            if (e.key) {
+                const key = e.key.toLowerCase();
+                if (e.type === "keydown") {
+                    this.cur.keyboard[key] = true;
+                } else if (e.type === "keyup") {
+                    this.cur.keyboard[key] = false;
+                }
+            }
+
+            // handle mouse events
+            else if (e.type === "mousedown") {
+                this.cur.mouse.clicked = true;
+            } else if (e.type === "mouseup") {
+                this.cur.mouse.clicked = false;
+            } else if (e.type === "mousemove") {
+                this.cur.mouse.coord.x = e.offsetX;
+                this.cur.mouse.coord.y = e.offsetY;
             }
         }
 
+        document.addEventListener("keydown", eventHandler, false);
+        document.addEventListener("keyup", eventHandler, false);
         document.addEventListener("mousedown", eventHandler, false);
         document.addEventListener("mouseup", eventHandler, false);
         document.addEventListener("mousemove", eventHandler, false);
-        document.addEventListener("keydown", eventHandler, false);
-        document.addEventListener("keyup", eventHandler, false);
+
+        // prevent spacebar from scrolling
+        window.addEventListener('keydown', (e) => {
+            if (e.keyCode === 32 && e.target === document.body) {
+                e.preventDefault();
+            }
+        });
     }
 
     isKeydown(key) {

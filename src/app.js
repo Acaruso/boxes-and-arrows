@@ -1,6 +1,6 @@
 import { Gfx } from "./gfx"
-import { Ui } from "./ui"
 import { State } from "./state"
+import { Ui } from "./ui"
 
 class App {
     constructor() {
