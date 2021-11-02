@@ -5,7 +5,7 @@ class State {
         this.cur = makeState();
         this.prev = makeState();
 
-        const eventHandler = (e) => {
+        const eventListener = (e) => {
             // handle keyboard events
             if (e.key) {
                 const key = e.key.toLowerCase();
@@ -27,11 +27,11 @@ class State {
             }
         }
 
-        document.addEventListener("keydown", eventHandler, false);
-        document.addEventListener("keyup", eventHandler, false);
-        document.addEventListener("mousedown", eventHandler, false);
-        document.addEventListener("mouseup", eventHandler, false);
-        document.addEventListener("mousemove", eventHandler, false);
+        document.addEventListener("keydown", eventListener, false);
+        document.addEventListener("keyup", eventListener, false);
+        document.addEventListener("mousedown", eventListener, false);
+        document.addEventListener("mouseup", eventListener, false);
+        document.addEventListener("mousemove", eventListener, false);
 
         // prevent spacebar from scrolling
         window.addEventListener('keydown', (e) => {
