@@ -13,26 +13,38 @@ class Box {
         this.rect = {};
         this.dragging = false;
         this.out = [];
+
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const mousedownListener = (e) => {
+            if (
+                this.state.isMousedownInside(this.rect)
+                && !this.state.cur.keyboard.control
+            ) {
+                this.dragging = true;
+            }
+        };
+
+        document.addEventListener("mousedown", mousedownListener, false);
+
+        const mouseupListener = (e) => {
+            if (this.state.isMouseup()) {
+                this.dragging = false;
+            }
+        };
+
+        document.addEventListener("mouseup", mouseupListener, false);
     }
 
     run() {
-        this.handleUserInput();
+        this.handleDragging();
         this.drawRect();
         this.drawText();
     }
 
-    handleUserInput() {
-        if (
-            this.state.isMousedownInside(this.rect)
-            && !this.state.cur.keyboard.control
-        ) {
-            this.dragging = true;
-        }
-
-        if (this.state.isMouseup()) {
-            this.dragging = false;
-        }
-
+    handleDragging() {
         if (this.dragging) {
             this.coord.x += this.state.getMouseXDelta();
             this.coord.y += this.state.getMouseYDelta();
