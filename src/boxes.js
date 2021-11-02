@@ -1,5 +1,5 @@
 import { Box } from "./box";
-import { getMidpoint, distanceBetweenCoords } from "./util"
+import { getMidpoint, isPrintableKeycode } from "./util"
 
 class Boxes {
     constructor(gfx, state) {
@@ -12,9 +12,17 @@ class Boxes {
         this.selectedConnection = null;
 
         const keydownHandler = (e) => {
-            const key = e.key.toLowerCase();
-            if (e.which >= 65 && e.which <= 90) {
-                console.log(key);
+            if (this.selectedBoxId !== -1) {
+                const key = e.key.toLowerCase();
+                if (isPrintableKeycode(e.which)) {
+                    let box = this.getBox(this.selectedBoxId);
+                    box.text += key;
+                } else if (key === "backspace") {
+                    let box = this.getBox(this.selectedBoxId);
+                    if (box.text.length > 0) {
+                        box.text = box.text.slice(0, -1);
+                    }
+                }
             }
         };
 
@@ -114,7 +122,7 @@ class Boxes {
     }
 
     handleDeleteBox() {
-        if (this.state.isKeydown("backspace") && this.selectedBoxId !== -1) {
+        if (this.state.isKeydown("delete") && this.selectedBoxId !== -1) {
             this.deleteConnections(this.selectedBoxId);
             this.deleteBox(this.selectedBoxId);
             this.selectedBoxId = -1;

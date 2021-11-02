@@ -53,7 +53,7 @@ class Ui {
     handleCreateBox() {
         if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
             const coord = { ...this.state.cur.mouse.coord };
-            this.boxes.addBox("asdf", coord);
+            this.boxes.addBox("", coord);
         }
     }
 

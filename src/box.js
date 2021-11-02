@@ -40,10 +40,12 @@ class Box {
     }
 
     drawRect() {
+        const length = this.text.length > 0 ? this.text.length : 1;
+
         this.rect = {
             x: this.coord.x,
             y: this.coord.y,
-            w: Math.floor(this.text.length * this.charWidth) + (this.xPadding * 2),
+            w: Math.floor(length * this.charWidth) + (this.xPadding * 2),
             h: this.charHeight + this.yPadding
         };
 
