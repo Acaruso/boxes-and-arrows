@@ -15,67 +15,61 @@ class Ui {
         this.outBox = {};
         this.drawingLine = false;
 
-        const createBoxHandler = () => {
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const createBoxListener = () => {
             if (this.state.cur.keyboard.shift) {
                 const coord = { ...this.state.cur.mouse.coord };
                 this.boxes.addBox("", coord);
             }
         };
 
-        document.addEventListener("mousedown", this.handleCreateBox, false);
+        document.addEventListener("mousedown", createBoxListener, false);
+
+        const connectionMousedownListener = () => {
+            this.boxes.forEach((box) => {
+                if (
+                    this.state.isMousedownInside(box.rect)
+                    && this.state.cur.keyboard.control
+                ) {
+                    this.lineBegin = getMidpoint(box.rect);
+                    this.outBox = box;
+                    this.drawingLine = true;
+                }
+            });
+        };
+
+        document.addEventListener("mousedown", connectionMousedownListener, false);
+
+        const connectionMouseupListener = () => {
+            this.boxes.forEach((box) => {
+                if (
+                    this.state.isMouseupInside(box.rect)
+                    && this.drawingLine
+                ) {
+                    this.boxes.addConnection(this.outBox, box);
+                    this.drawingLine = false;
+                }
+            });
+        };
+
+        document.addEventListener("mouseup", connectionMouseupListener, false);
     }
 
     run() {
         this.boxes.run();
-        this.handleUserInput();
+        this.handleDrawLine();
     }
 
-    handleUserInput() {
-        // this.handleCreateBox();
-        this.handleCreateConnection();
-    }
-
-    handleCreateBox() {
-        if (this.state.cur.keyboard.shift) {
-            const coord = { ...this.state.cur.mouse.coord };
-            this.boxes.addBox("", coord);
-        }
-    }
-
-    // handleCreateBox() {
-    //     if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
-    //         const coord = { ...this.state.cur.mouse.coord };
-    //         this.boxes.addBox("", coord);
-    //     }
-    // }
-
-    handleCreateConnection() {
-        const curMouse = this.state.cur.mouse;
-
-        this.boxes.forEach((box) => {
-            if (
-                this.state.isMousedownInside(box.rect)
-                && this.state.cur.keyboard.control
-            ) {
-                this.lineBegin = getMidpoint(box.rect);
-                this.outBox = box;
-                this.drawingLine = true;
-            }
-
-            if (
-                this.state.isMouseupInside(box.rect)
-                && this.drawingLine
-            ) {
-                this.boxes.addConnection(this.outBox, box);
-                this.drawingLine = false;
-            }
-        });
-
+    handleDrawLine() {
         if (
             this.state.cur.mouse.clicked
             && this.state.cur.keyboard.control
             && this.drawingLine
         ) {
+            const curMouse = this.state.cur.mouse;
             this.gfx.drawLine(this.lineBegin, { ...curMouse.coord }, -1);
         }
     }
