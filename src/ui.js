@@ -14,6 +14,15 @@ class Ui {
         this.lineBegin = { x: 0, y: 0 };
         this.outBox = {};
         this.drawingLine = false;
+
+        const createBoxHandler = () => {
+            if (this.state.cur.keyboard.shift) {
+                const coord = { ...this.state.cur.mouse.coord };
+                this.boxes.addBox("", coord);
+            }
+        };
+
+        document.addEventListener("mousedown", this.handleCreateBox, false);
     }
 
     run() {
@@ -22,16 +31,23 @@ class Ui {
     }
 
     handleUserInput() {
-        this.handleCreateBox();
+        // this.handleCreateBox();
         this.handleCreateConnection();
     }
 
     handleCreateBox() {
-        if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
+        if (this.state.cur.keyboard.shift) {
             const coord = { ...this.state.cur.mouse.coord };
             this.boxes.addBox("", coord);
         }
     }
+
+    // handleCreateBox() {
+    //     if (this.state.isMousedown() && this.state.cur.keyboard.shift) {
+    //         const coord = { ...this.state.cur.mouse.coord };
+    //         this.boxes.addBox("", coord);
+    //     }
+    // }
 
     handleCreateConnection() {
         const curMouse = this.state.cur.mouse;
