@@ -112,6 +112,11 @@ class Boxes {
         }
     }
 
+    handleTextEdit() {
+        if (this.selectedBoxId !== -1) {
+        }
+    }
+
     run() {
         this.handleSelectBox();
         this.handleDeleteBox();

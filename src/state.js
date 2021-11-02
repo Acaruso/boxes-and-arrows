@@ -1,9 +1,9 @@
-import { makeMessageTable } from "./message_table";
+import { makeMessageTable, makeState } from "./state_util";
 
 class State {
     constructor() {
-        this.cur = this.makeState();
-        this.prev = this.makeState();
+        this.cur = makeState();
+        this.prev = makeState();
         this.messageTable = makeMessageTable(this.cur);
 
         const eventHandler = (e) => {
@@ -19,22 +19,6 @@ class State {
         document.addEventListener("mousemove", eventHandler, false);
         document.addEventListener("keydown", eventHandler, false);
         document.addEventListener("keyup", eventHandler, false);
-    }
-
-    makeState() {
-        return {
-            mouse: {
-                clicked: false,
-                coord: { x: 0, y: 0 },
-            },
-            keyboard: {
-                right: false,
-                left: false,
-                control: false,
-                shift: false,
-                backspace: false,
-            },
-        };
     }
 
     isKeydown(key) {
