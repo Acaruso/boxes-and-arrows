@@ -32,6 +32,13 @@ class State {
         document.addEventListener("mousedown", eventHandler, false);
         document.addEventListener("mouseup", eventHandler, false);
         document.addEventListener("mousemove", eventHandler, false);
+
+        // prevent spacebar from scrolling
+        window.addEventListener('keydown', (e) => {
+            if (e.keyCode === 32 && e.target === document.body) {
+                e.preventDefault();
+            }
+        });
     }
 
     isKeydown(key) {
