@@ -5,14 +5,18 @@ class Boxes {
     constructor(gfx, state) {
         this.gfx = gfx;
         this.state = state;
+
         this.boxes = [];
         this.nextId = 0;
         this.connections = new Set();
         this.selectedBoxId = -1;
         this.selectedConnection = null;
 
-        // edit text for selected box
-        const keydownHandler = (e) => {
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const keydownListener = (e) => {
             if (this.selectedBoxId !== -1) {
                 const key = e.key.toLowerCase();
                 if (isPrintableKeycode(e.which)) {
@@ -27,19 +31,9 @@ class Boxes {
             }
         };
 
-        document.addEventListener("keydown", keydownHandler, false);
-    }
+        document.addEventListener("keydown", keydownListener, false);
 
-    run() {
-        this.handleSelectBox();
-        this.handleDeleteBox();
-        this.drawSelectedBox();
-        this.drawConnections();
-        this.forEach((box) => box.run());
-    }
-
-    handleSelectBox() {
-        if (this.state.isMousedown()) {
+        const selectBoxListener = () => {
             let clickedInsideBox = false;
 
             this.forEach((box) => {
@@ -53,14 +47,26 @@ class Boxes {
                 this.selectedBoxId = -1;
             }
         }
+
+        document.addEventListener("mousedown", selectBoxListener, false);
+
+        const deleteBoxListener = (e) => {
+            const key = e.key ? e.key.toLowerCase() : "";
+
+            if (key === "delete" && this.selectedBoxId !== -1) {
+                this.deleteConnections(this.selectedBoxId);
+                this.deleteBox(this.selectedBoxId);
+                this.selectedBoxId = -1;
+            }
+        };
+
+        document.addEventListener("keydown", deleteBoxListener, false);
     }
 
-    handleDeleteBox() {
-        if (this.state.isKeydown("delete") && this.selectedBoxId !== -1) {
-            this.deleteConnections(this.selectedBoxId);
-            this.deleteBox(this.selectedBoxId);
-            this.selectedBoxId = -1;
-        }
+    run() {
+        this.drawSelectedBox();
+        this.drawConnections();
+        this.forEach((box) => box.run());
     }
 
     drawSelectedBox() {
