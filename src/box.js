@@ -27,14 +27,13 @@ class Box {
             }
         };
 
-        document.addEventListener("mousedown", mousedownListener, false);
-
         const mouseupListener = (e) => {
             if (this.state.isMouseup()) {
                 this.dragging = false;
             }
         };
 
+        document.addEventListener("mousedown", mousedownListener, false);
         document.addEventListener("mouseup", mouseupListener, false);
     }
 

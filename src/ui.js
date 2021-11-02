@@ -26,8 +26,6 @@ class Ui {
             }
         };
 
-        document.addEventListener("mousedown", createBoxListener, false);
-
         const connectionMousedownListener = () => {
             this.boxes.forEach((box) => {
                 if (
@@ -41,8 +39,6 @@ class Ui {
             });
         };
 
-        document.addEventListener("mousedown", connectionMousedownListener, false);
-
         const connectionMouseupListener = () => {
             this.boxes.forEach((box) => {
                 if (
@@ -55,6 +51,8 @@ class Ui {
             });
         };
 
+        document.addEventListener("mousedown", connectionMousedownListener, false);
+        document.addEventListener("mousedown", createBoxListener, false);
         document.addEventListener("mouseup", connectionMouseupListener, false);
     }
 

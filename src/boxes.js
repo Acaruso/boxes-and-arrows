@@ -10,13 +10,12 @@ class Boxes {
         this.nextId = 0;
         this.connections = new Set();
         this.selectedBoxId = -1;
-        this.selectedConnection = null;
 
         this.addEventListeners();
     }
 
     addEventListeners() {
-        const keydownListener = (e) => {
+        const editTextListener = (e) => {
             if (this.selectedBoxId !== -1) {
                 const key = e.key.toLowerCase();
                 if (isPrintableKeycode(e.which)) {
@@ -30,8 +29,6 @@ class Boxes {
                 }
             }
         };
-
-        document.addEventListener("keydown", keydownListener, false);
 
         const selectBoxListener = () => {
             let clickedInsideBox = false;
@@ -48,8 +45,6 @@ class Boxes {
             }
         }
 
-        document.addEventListener("mousedown", selectBoxListener, false);
-
         const deleteBoxListener = (e) => {
             const key = e.key ? e.key.toLowerCase() : "";
 
@@ -60,6 +55,8 @@ class Boxes {
             }
         };
 
+        document.addEventListener("keydown", editTextListener, false);
+        document.addEventListener("mousedown", selectBoxListener, false);
         document.addEventListener("keydown", deleteBoxListener, false);
     }
 
