@@ -31,6 +31,7 @@ class Boxes {
 
     addBox(text, coord) {
         const box = new Box(this.gfx, this.state, text, coord, this.nextId);
+        this.selectedBoxId = box.id;
         this.nextId++;
         this.boxes.push(box);
     }
@@ -126,11 +127,6 @@ class Boxes {
             this.deleteConnections(this.selectedBoxId);
             this.deleteBox(this.selectedBoxId);
             this.selectedBoxId = -1;
-        }
-    }
-
-    handleTextEdit() {
-        if (this.selectedBoxId !== -1) {
         }
     }
 
