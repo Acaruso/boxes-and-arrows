@@ -5,7 +5,6 @@ const makeState = () => {
             coord: { x: 0, y: 0 },
         },
         keyboard: {
-            lastKey: '',
             right: false,
             left: false,
             control: false,
