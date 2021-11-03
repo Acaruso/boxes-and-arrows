@@ -3,9 +3,10 @@ import { getMidpoint, isPrintableKeycode } from "./util"
 
 // controller
 class Ui {
-    constructor(gfx, state) {
+    constructor(gfx, state, renderer) {
         this.gfx = gfx;
         this.state = state;
+        this.renderer = renderer;
 
         this.boxes = new Boxes(gfx, state);
         this.boxes.addBox("test1", { x: 4, y: 4 });
@@ -16,8 +17,8 @@ class Ui {
         this.dragging = false;
 
         this.lineBegin = { x: 0, y: 0 };
-        this.outBox = {};
         this.drawingLine = false;
+        this.outBox = {};
 
         this.addEventListeners();
     }
@@ -121,43 +122,14 @@ class Ui {
     }
 
     run() {
-        this.boxes.run();
-        this.drawLine();
-        this.drawSelectedBox();
-        this.drawConnections();
+        this.renderer.render(
+            this.lineBegin,
+            this.drawingLine,
+            this.boxes,
+            this.selectedBoxId,
+        );
+
         this.handleDragging();
-    }
-
-    drawLine() {
-        if (
-            this.state.cur.mouse.clicked
-            && this.state.cur.keyboard.control
-            && this.drawingLine
-        ) {
-            const curMouse = this.state.cur.mouse;
-            this.gfx.drawLine(this.lineBegin, { ...curMouse.coord }, -1);
-        }
-    }
-
-    drawSelectedBox() {
-        if (this.selectedBoxId !== -1) {
-            const selectedBox = this.boxes.getBox(this.selectedBoxId);
-            const rect = { ...selectedBox.rect };
-            rect.x -= 2;
-            rect.y -= 2;
-            rect.w += 4;
-            rect.h += 4;
-            this.gfx.strokeRect(rect);
-        }
-    }
-
-    drawConnections() {
-        this.boxes.connections.forEach((key) => {
-            const [box1, box2] = this.boxes.getBoxes(key);
-            const begin = getMidpoint(box1.rect);
-            const end = getMidpoint(box2.rect);
-            this.gfx.drawLine(begin, end, -1);
-        });
     }
 
     handleDragging() {

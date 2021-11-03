@@ -10,12 +10,8 @@ class Boxes {
         this.connections = new Set();
     }
 
-    run() {
-        this.forEach((box) => box.run());
-    }
-
     addBox(text, coord) {
-        const box = new Box(this.gfx, this.state, text, coord, this.nextId);
+        const box = new Box(text, coord, this.nextId);
         this.selectedBoxId = box.id;
         this.nextId++;
         this.boxes.push(box);
