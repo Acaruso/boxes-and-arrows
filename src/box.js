@@ -10,6 +10,36 @@ class Box {
         this.rect = {};
         this.dragging = false;
         this.out = [];
+
+        this.updateRect();
+    }
+
+    appendChar(c) {
+        this.text += c;
+        this.updateRect();
+    }
+
+    deleteChar() {
+        if (this.text.length > 0) {
+            this.text = this.text.slice(0, -1);
+        }
+        this.updateRect();
+    }
+
+    setCoord(newCoord) {
+        this.coord = { ...newCoord };
+        this.updateRect();
+    }
+
+    updateRect() {
+        const length = this.text.length > 0 ? this.text.length : 1;
+
+        this.rect = {
+            x: this.coord.x,
+            y: this.coord.y,
+            w: Math.floor(length * this.charWidth) + (this.xPadding * 2),
+            h: this.charHeight + this.yPadding
+        };
     }
 }
 

@@ -28,16 +28,19 @@ class Renderer {
     }
 
     drawBoxRect(box) {
-        const length = box.text.length > 0 ? box.text.length : 1;
-
         // note that we're actually updating box rect here to acct for changed text
         // prob want to move this logic out of renderer
-        box.rect = {
-            x: box.coord.x,
-            y: box.coord.y,
-            w: Math.floor(length * box.charWidth) + (box.xPadding * 2),
-            h: box.charHeight + box.yPadding
-        };
+
+        // const length = box.text.length > 0 ? box.text.length : 1;
+
+        // box.rect = {
+        //     x: box.coord.x,
+        //     y: box.coord.y,
+        //     w: Math.floor(length * box.charWidth) + (box.xPadding * 2),
+        //     h: box.charHeight + box.yPadding
+        // };
+
+        // box.updateRect();
 
         const bgRect = {
             ...box.rect,

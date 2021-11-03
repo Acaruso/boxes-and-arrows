@@ -73,15 +73,13 @@ class Ui {
 
         const editTextListener = (e) => {
             if (this.selectedBoxId !== -1) {
-                const key = e.key.toLowerCase();
+                let box = this.boxes.getBox(this.selectedBoxId);
+                const key = e.key ? e.key.toLowerCase() : "";
+
                 if (isPrintableKeycode(e.which)) {
-                    let box = this.boxes.getBox(this.selectedBoxId);
-                    box.text += key;
+                    box.appendChar(key);
                 } else if (key === "backspace") {
-                    let box = this.boxes.getBox(this.selectedBoxId);
-                    if (box.text.length > 0) {
-                        box.text = box.text.slice(0, -1);
-                    }
+                    box.deleteChar();
                 }
             }
         };
@@ -90,7 +88,6 @@ class Ui {
             const key = e.key ? e.key.toLowerCase() : "";
 
             if (key === "delete" && this.selectedBoxId !== -1) {
-                this.boxes.deleteConnections(this.selectedBoxId);
                 this.boxes.deleteBox(this.selectedBoxId);
                 this.selectedBoxId = -1;
             }
@@ -121,23 +118,28 @@ class Ui {
         addEventListener("mouseup", draggingMouseupListener);
     }
 
+    handleDragging() {
+        if (this.dragging) {
+            const box = this.boxes.getBox(this.selectedBoxId);
+
+            const newCoord = {
+                x: box.coord.x + this.state.getMouseXDelta(),
+                y: box.coord.y + this.state.getMouseYDelta()
+            };
+
+            box.setCoord(newCoord);
+        }
+    }
+
     run() {
+        this.handleDragging();
+
         this.renderer.render(
             this.lineBegin,
             this.drawingLine,
             this.boxes,
             this.selectedBoxId,
         );
-
-        this.handleDragging();
-    }
-
-    handleDragging() {
-        if (this.dragging) {
-            const box = this.boxes.getBox(this.selectedBoxId);
-            box.coord.x += this.state.getMouseXDelta();
-            box.coord.y += this.state.getMouseYDelta();
-        }
     }
 }
 

@@ -21,6 +21,7 @@ class Boxes {
     }
 
     deleteBox(id) {
+        this.deleteConnections(id);
         this.boxes = this.boxes.filter((box) => box.id !== id);
     }
 
@@ -63,6 +64,11 @@ class Boxes {
     }
 
     deleteConnections(id) {
+        // Array.from(this.connections)
+        //     .map(key => [key, this.getIds(key)])
+        //     .filter(([key, ids]) => ids[0] === id || ids[1] === id)
+        //     .forEach(([key, ids]) => this.connections.delete(key));
+
         let toDelete = [];
 
         this.connections.forEach((key) => {
