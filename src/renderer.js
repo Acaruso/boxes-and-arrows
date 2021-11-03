@@ -1,4 +1,4 @@
-import { getMidpoint, isPrintableKeycode } from "./util"
+import { getMidpoint } from "./util"
 
 class Renderer {
     constructor(gfx, state) {
@@ -12,49 +12,19 @@ class Renderer {
         boxes,
         selectedBoxId,
     ) {
-        this.drawLine(lineBegin, drawingLine);
-        this.drawSelectedBox(boxes, selectedBoxId);
-        this.drawConnections(boxes);
         this.drawBoxes(boxes);
-    }
-
-    drawLine(lineBegin, drawingLine) {
-        if (
-            this.state.cur.mouse.clicked
-            && this.state.cur.keyboard.control
-            && drawingLine
-        ) {
-            const curMouse = this.state.cur.mouse;
-            this.gfx.drawLine(lineBegin, { ...curMouse.coord }, -1);
-        }
-    }
-
-    drawSelectedBox(boxes, selectedBoxId) {
-        if (selectedBoxId !== -1) {
-            const selectedBox = boxes.getBox(selectedBoxId);
-            const rect = { ...selectedBox.rect };
-            rect.x -= 2;
-            rect.y -= 2;
-            rect.w += 4;
-            rect.h += 4;
-            this.gfx.strokeRect(rect);
-        }
-    }
-
-    drawConnections(boxes) {
-        boxes.connections.forEach((key) => {
-            const [box1, box2] = boxes.getBoxes(key);
-            const begin = getMidpoint(box1.rect);
-            const end = getMidpoint(box2.rect);
-            this.gfx.drawLine(begin, end, -1);
-        });
+        this.drawSelectedBox(boxes, selectedBoxId);
+        this.drawLine(lineBegin, drawingLine);
+        this.drawConnections(boxes);
     }
 
     drawBoxes(boxes) {
-        boxes.forEach((box) => {
-            this.drawBoxRect(box);
-            this.drawBoxText(box);
-        });
+        boxes.forEach(box => this.drawBox(box));
+    }
+
+    drawBox(box) {
+        this.drawBoxRect(box);
+        this.drawBoxText(box);
     }
 
     drawBoxRect(box) {
@@ -85,6 +55,35 @@ class Renderer {
             { x: box.coord.x + box.xPadding, y: box.coord.y + box.charHeight },
             2
         );
+    }
+
+    drawSelectedBox(boxes, selectedBoxId) {
+        if (selectedBoxId !== -1) {
+            const selectedBox = boxes.getBox(selectedBoxId);
+            const rect = { ...selectedBox.rect };
+            rect.x -= 2;
+            rect.y -= 2;
+            rect.w += 4;
+            rect.h += 4;
+            this.gfx.strokeRect(rect);
+        }
+    }
+
+    drawLine(lineBegin, drawingLine) {
+        if (
+            this.state.cur.mouse.clicked
+            && this.state.cur.keyboard.control
+            && drawingLine
+        ) {
+            const curMouse = this.state.cur.mouse;
+            this.gfx.drawLine(lineBegin, { ...curMouse.coord }, -1);
+        }
+    }
+
+    drawConnections(boxes) {
+        boxes.getConnections()
+            .map(([box1, box2]) => [getMidpoint(box1.rect), getMidpoint(box2.rect)])
+            .forEach(([begin, end]) => this.gfx.drawLine(begin, end, -1));
     }
 }
 
