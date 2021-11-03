@@ -13,6 +13,7 @@ class Ui {
         this.boxes.addBox("test3", { x: 90, y: 100 });
 
         this.selectedBoxId = -1;
+        this.dragging = false;
 
         this.lineBegin = { x: 0, y: 0 };
         this.outBox = {};
@@ -67,7 +68,7 @@ class Ui {
             if (!clickedInsideBox) {
                 this.selectedBoxId = -1;
             }
-        }
+        };
 
         const editTextListener = (e) => {
             if (this.selectedBoxId !== -1) {
@@ -94,18 +95,37 @@ class Ui {
             }
         };
 
+        const draggingMousedownListener = () => {
+            this.boxes.forEach((box) => {
+                if (
+                    this.state.isMousedownInside(box.rect)
+                    && !this.state.cur.keyboard.control
+                ) {
+                    this.dragging = true;
+                }
+            });
+        };
+
+        const draggingMouseupListener = () => {
+            this.dragging = false;
+        };
+
         document.addEventListener("mousedown", connectionMousedownListener, false);
         document.addEventListener("mousedown", createBoxListener, false);
         document.addEventListener("mouseup", connectionMouseupListener, false);
         document.addEventListener("mousedown", selectBoxListener, false);
         document.addEventListener("keydown", editTextListener, false);
         document.addEventListener("keydown", deleteBoxListener, false);
+        document.addEventListener("mousedown", draggingMousedownListener, false);
+        document.addEventListener("mouseup", draggingMouseupListener, false);
     }
 
     run() {
         this.boxes.run();
         this.drawLine();
         this.drawSelectedBox();
+        this.drawConnections();
+        this.handleDragging();
     }
 
     drawLine() {
@@ -128,6 +148,23 @@ class Ui {
             rect.w += 4;
             rect.h += 4;
             this.gfx.strokeRect(rect);
+        }
+    }
+
+    drawConnections() {
+        this.boxes.connections.forEach((key) => {
+            const [box1, box2] = this.boxes.getBoxes(key);
+            const begin = getMidpoint(box1.rect);
+            const end = getMidpoint(box2.rect);
+            this.gfx.drawLine(begin, end, -1);
+        });
+    }
+
+    handleDragging() {
+        if (this.dragging) {
+            const box = this.boxes.getBox(this.selectedBoxId);
+            box.coord.x += this.state.getMouseXDelta();
+            box.coord.y += this.state.getMouseYDelta();
         }
     }
 }

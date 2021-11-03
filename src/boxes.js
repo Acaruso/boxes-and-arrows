@@ -1,5 +1,4 @@
 import { Box } from "./box";
-import { getMidpoint, isPrintableKeycode } from "./util"
 
 class Boxes {
     constructor(gfx, state) {
@@ -12,17 +11,7 @@ class Boxes {
     }
 
     run() {
-        this.drawConnections();
         this.forEach((box) => box.run());
-    }
-
-    drawConnections() {
-        this.connections.forEach((key) => {
-            const [box1, box2] = this.getBoxes(key);
-            const begin = getMidpoint(box1.rect);
-            const end = getMidpoint(box2.rect);
-            this.gfx.drawLine(begin, end, -1);
-        });
     }
 
     addBox(text, coord) {
