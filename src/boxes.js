@@ -1,10 +1,7 @@
 import { Box } from "./box";
 
 class Boxes {
-    constructor(gfx, state) {
-        this.gfx = gfx;
-        this.state = state;
-
+    constructor() {
         this.boxes = [];
         this.nextId = 0;
         this.connections = new Set();

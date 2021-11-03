@@ -8,7 +8,7 @@ class Ui {
         this.state = state;
         this.renderer = renderer;
 
-        this.boxes = new Boxes(gfx, state);
+        this.boxes = new Boxes();
         this.boxes.addBox("test1", { x: 4, y: 4 });
         this.boxes.addBox("test2", { x: 90, y: 4 });
         this.boxes.addBox("test3", { x: 90, y: 100 });
@@ -90,8 +90,8 @@ class Ui {
             const key = e.key ? e.key.toLowerCase() : "";
 
             if (key === "delete" && this.selectedBoxId !== -1) {
-                this.deleteConnections(this.selectedBoxId);
-                this.deleteBox(this.selectedBoxId);
+                this.boxes.deleteConnections(this.selectedBoxId);
+                this.boxes.deleteBox(this.selectedBoxId);
                 this.selectedBoxId = -1;
             }
         };
@@ -111,14 +111,14 @@ class Ui {
             this.dragging = false;
         };
 
-        document.addEventListener("mousedown", connectionMousedownListener, false);
-        document.addEventListener("mousedown", createBoxListener, false);
-        document.addEventListener("mouseup", connectionMouseupListener, false);
-        document.addEventListener("mousedown", selectBoxListener, false);
-        document.addEventListener("keydown", editTextListener, false);
-        document.addEventListener("keydown", deleteBoxListener, false);
-        document.addEventListener("mousedown", draggingMousedownListener, false);
-        document.addEventListener("mouseup", draggingMouseupListener, false);
+        addEventListener("mousedown", connectionMousedownListener);
+        addEventListener("mousedown", createBoxListener);
+        addEventListener("mouseup", connectionMouseupListener);
+        addEventListener("mousedown", selectBoxListener);
+        addEventListener("keydown", editTextListener);
+        addEventListener("keydown", deleteBoxListener);
+        addEventListener("mousedown", draggingMousedownListener);
+        addEventListener("mouseup", draggingMouseupListener);
     }
 
     run() {
@@ -139,6 +139,10 @@ class Ui {
             box.coord.y += this.state.getMouseYDelta();
         }
     }
+}
+
+const addEventListener = (type, callback) => {
+    document.addEventListener(type, callback, false);
 }
 
 export { Ui };
