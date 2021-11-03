@@ -1,24 +1,25 @@
-import { Boxes } from "./boxes";
 import { getMidpoint, isPrintableKeycode } from "./util"
 
 // controller
 class Ui {
-    constructor(gfx, state, renderer) {
+    constructor(gfx, state, renderer, model) {
         this.gfx = gfx;
         this.state = state;
         this.renderer = renderer;
+        this.model = model;
 
-        this.boxes = new Boxes();
-        this.boxes.addBox("test1", { x: 4, y: 4 });
-        this.boxes.addBox("test2", { x: 90, y: 4 });
-        this.boxes.addBox("test3", { x: 90, y: 100 });
+        // this.boxes = new Boxes();
 
-        this.selectedBoxId = -1;
-        this.dragging = false;
+        // this.boxes.addBox("test1", { x: 4, y: 4 });
+        // this.boxes.addBox("test2", { x: 90, y: 4 });
+        // this.boxes.addBox("test3", { x: 90, y: 100 });
 
-        this.lineBegin = { x: 0, y: 0 };
-        this.drawingLine = false;
-        this.outBox = {};
+        // this.selectedBoxId = -1;
+        // this.dragging = false;
+
+        // this.lineBegin = { x: 0, y: 0 };
+        // this.drawingLine = false;
+        // this.outBox = {};
 
         this.addEventListeners();
     }
@@ -27,31 +28,31 @@ class Ui {
         const createBoxListener = () => {
             if (this.state.cur.keyboard.shift) {
                 const coord = { ...this.state.cur.mouse.coord };
-                this.boxes.addBox("", coord);
+                this.model.boxes.addBox("", coord);
             }
         };
 
         const connectionMousedownListener = () => {
-            this.boxes.forEach((box) => {
+            this.model.boxes.forEach((box) => {
                 if (
                     this.state.isMousedownInside(box.rect)
                     && this.state.cur.keyboard.control
                 ) {
-                    this.lineBegin = getMidpoint(box.rect);
-                    this.outBox = box;
-                    this.drawingLine = true;
+                    this.model.lineBegin = getMidpoint(box.rect);
+                    this.model.outBox = box;
+                    this.model.drawingLine = true;
                 }
             });
         };
 
         const connectionMouseupListener = () => {
-            this.boxes.forEach((box) => {
+            this.model.boxes.forEach((box) => {
                 if (
                     this.state.isMouseupInside(box.rect)
-                    && this.drawingLine
+                    && this.model.drawingLine
                 ) {
-                    this.boxes.addConnection(this.outBox, box);
-                    this.drawingLine = false;
+                    this.model.boxes.addConnection(this.model.outBox, box);
+                    this.model.drawingLine = false;
                 }
             });
         };
@@ -59,21 +60,21 @@ class Ui {
         const selectBoxListener = () => {
             let clickedInsideBox = false;
 
-            this.boxes.forEach((box) => {
+            this.model.boxes.forEach((box) => {
                 if (this.state.isMousedownInside(box.rect)) {
-                    this.selectedBoxId = box.id;
+                    this.model.selectedBoxId = box.id;
                     clickedInsideBox = true;
                 }
             });
 
             if (!clickedInsideBox) {
-                this.selectedBoxId = -1;
+                this.model.selectedBoxId = -1;
             }
         };
 
         const editTextListener = (e) => {
-            if (this.selectedBoxId !== -1) {
-                let box = this.boxes.getBox(this.selectedBoxId);
+            if (this.model.selectedBoxId !== -1) {
+                let box = this.model.boxes.getBox(this.model.selectedBoxId);
                 const key = e.key ? e.key.toLowerCase() : "";
 
                 if (isPrintableKeycode(e.which)) {
@@ -87,25 +88,25 @@ class Ui {
         const deleteBoxListener = (e) => {
             const key = e.key ? e.key.toLowerCase() : "";
 
-            if (key === "delete" && this.selectedBoxId !== -1) {
-                this.boxes.deleteBox(this.selectedBoxId);
-                this.selectedBoxId = -1;
+            if (key === "delete" && this.model.selectedBoxId !== -1) {
+                this.model.boxes.deleteBox(this.model.selectedBoxId);
+                this.model.selectedBoxId = -1;
             }
         };
 
         const draggingMousedownListener = () => {
-            this.boxes.forEach((box) => {
+            this.model.boxes.forEach((box) => {
                 if (
                     this.state.isMousedownInside(box.rect)
                     && !this.state.cur.keyboard.control
                 ) {
-                    this.dragging = true;
+                    this.model.dragging = true;
                 }
             });
         };
 
         const draggingMouseupListener = () => {
-            this.dragging = false;
+            this.model.dragging = false;
         };
 
         addEventListener("mousedown", connectionMousedownListener);
@@ -119,8 +120,8 @@ class Ui {
     }
 
     handleDragging() {
-        if (this.dragging) {
-            const box = this.boxes.getBox(this.selectedBoxId);
+        if (this.model.dragging) {
+            const box = this.model.boxes.getBox(this.model.selectedBoxId);
 
             const newCoord = {
                 x: box.coord.x + this.state.getMouseXDelta(),
@@ -135,10 +136,10 @@ class Ui {
         this.handleDragging();
 
         this.renderer.render(
-            this.lineBegin,
-            this.drawingLine,
-            this.boxes,
-            this.selectedBoxId,
+            this.model.lineBegin,
+            this.model.drawingLine,
+            this.model.boxes,
+            this.model.selectedBoxId,
         );
     }
 }
