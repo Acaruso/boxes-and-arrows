@@ -1,9 +1,5 @@
 import { getMidpoint, isPrintableKeycode } from "./util"
 
-// InputHandler
-// handles input from keyboard and mouse
-// uses inputs to update data in model
-
 class Ui {
     constructor(gfx, state, model) {
         this.gfx = gfx;
@@ -40,7 +36,7 @@ class Ui {
                     this.state.isMouseupInside(box.rect)
                     && this.model.drawingLine
                 ) {
-                    this.model.boxes.addConnection(this.model.outBox, box);
+                    this.model.boxes.addConnection(this.model.outBox.id, box.id);
                     this.model.drawingLine = false;
                 }
             });

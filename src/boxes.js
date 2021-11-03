@@ -27,8 +27,8 @@ class Boxes {
 
     // connection /////////////////////////////////////////
 
-    addConnection(box1, box2) {
-        const key = this.getConnectionKey(box1, box2);
+    addConnection(id1, id2) {
+        const key = this.getConnectionKey(id1, id2);
         this.connections.add(key);
     }
 
@@ -45,10 +45,10 @@ class Boxes {
 
     // private ////////////////////////////////////////////
 
-    getConnectionKey(box1, box2) {
-        return box1.id > box2.id
-            ? `${box1.id},${box2.id}`
-            : `${box2.id},${box1.id}`;
+    getConnectionKey(id1, id2) {
+        return id1 > id2
+            ? `${id1},${id2}`
+            : `${id2},${id1}`;
     }
 
     getBoxes(key) {
