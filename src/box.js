@@ -8,8 +8,6 @@ class Box {
         this.yPadding = 6;
         this.text = text;
         this.rect = {};
-        this.dragging = false;
-        this.out = [];
 
         this.updateRect();
     }

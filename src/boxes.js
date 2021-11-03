@@ -11,9 +11,9 @@ class Boxes {
 
     addBox(text, coord) {
         const box = new Box(text, coord, this.nextId);
-        this.selectedBoxId = box.id;
         this.nextId++;
         this.boxes.push(box);
+        return box.id;
     }
 
     getBox(id) {
