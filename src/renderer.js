@@ -1,21 +1,17 @@
 import { getMidpoint } from "./util"
 
 class Renderer {
-    constructor(gfx, state) {
+    constructor(gfx, state, model) {
         this.gfx = gfx;
         this.state = state;
+        this.model = model;
     }
 
-    render(
-        lineBegin,
-        drawingLine,
-        boxes,
-        selectedBoxId,
-    ) {
-        this.drawBoxes(boxes);
-        this.drawSelectedBox(boxes, selectedBoxId);
-        this.drawLine(lineBegin, drawingLine);
-        this.drawConnections(boxes);
+    render() {
+        this.drawBoxes(this.model.boxes);
+        this.drawSelectedBox(this.model.boxes, this.model.selectedBoxId);
+        this.drawLine(this.model.lineBegin, this.model.drawingLine);
+        this.drawConnections(this.model.boxes);
     }
 
     drawBoxes(boxes) {
@@ -28,20 +24,6 @@ class Renderer {
     }
 
     drawBoxRect(box) {
-        // note that we're actually updating box rect here to acct for changed text
-        // prob want to move this logic out of renderer
-
-        // const length = box.text.length > 0 ? box.text.length : 1;
-
-        // box.rect = {
-        //     x: box.coord.x,
-        //     y: box.coord.y,
-        //     w: Math.floor(length * box.charWidth) + (box.xPadding * 2),
-        //     h: box.charHeight + box.yPadding
-        // };
-
-        // box.updateRect();
-
         const bgRect = {
             ...box.rect,
             color: "#FFFFFF"

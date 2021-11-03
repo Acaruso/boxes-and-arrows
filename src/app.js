@@ -9,8 +9,9 @@ class App {
         this.gfx = new Gfx();
         this.state = new State();
         this.model = new Model();
-        this.renderer = new Renderer(this.gfx, this.state);
-        this.ui = new Ui(this.gfx, this.state, this.renderer, this.model);
+        this.ui = new Ui(this.gfx, this.state, this.model);
+        this.renderer = new Renderer(this.gfx, this.state, this.model);
+
         this.interval = {};
     }
 
@@ -21,6 +22,7 @@ class App {
     loop() {
         this.gfx.clearScreen();
         this.ui.run();
+        this.renderer.render();
         this.gfx.draw();
         this.state.nextState();
     }
