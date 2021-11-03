@@ -9,73 +9,11 @@ class Boxes {
         this.boxes = [];
         this.nextId = 0;
         this.connections = new Set();
-        this.selectedBoxId = -1;
-
-        this.addEventListeners();
-    }
-
-    addEventListeners() {
-        const editTextListener = (e) => {
-            if (this.selectedBoxId !== -1) {
-                const key = e.key.toLowerCase();
-                if (isPrintableKeycode(e.which)) {
-                    let box = this.getBox(this.selectedBoxId);
-                    box.text += key;
-                } else if (key === "backspace") {
-                    let box = this.getBox(this.selectedBoxId);
-                    if (box.text.length > 0) {
-                        box.text = box.text.slice(0, -1);
-                    }
-                }
-            }
-        };
-
-        const selectBoxListener = () => {
-            let clickedInsideBox = false;
-
-            this.forEach((box) => {
-                if (this.state.isMousedownInside(box.rect)) {
-                    this.selectedBoxId = box.id;
-                    clickedInsideBox = true;
-                }
-            });
-
-            if (!clickedInsideBox) {
-                this.selectedBoxId = -1;
-            }
-        }
-
-        const deleteBoxListener = (e) => {
-            const key = e.key ? e.key.toLowerCase() : "";
-
-            if (key === "delete" && this.selectedBoxId !== -1) {
-                this.deleteConnections(this.selectedBoxId);
-                this.deleteBox(this.selectedBoxId);
-                this.selectedBoxId = -1;
-            }
-        };
-
-        document.addEventListener("keydown", editTextListener, false);
-        document.addEventListener("mousedown", selectBoxListener, false);
-        document.addEventListener("keydown", deleteBoxListener, false);
     }
 
     run() {
-        this.drawSelectedBox();
         this.drawConnections();
         this.forEach((box) => box.run());
-    }
-
-    drawSelectedBox() {
-        if (this.selectedBoxId !== -1) {
-            const selectedBox = this.getBox(this.selectedBoxId);
-            const rect = { ...selectedBox.rect };
-            rect.x -= 2;
-            rect.y -= 2;
-            rect.w += 4;
-            rect.h += 4;
-            this.gfx.strokeRect(rect);
-        }
     }
 
     drawConnections() {
