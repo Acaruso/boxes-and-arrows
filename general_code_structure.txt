@@ -1,0 +1,29 @@
+- App is "object composition root"
+    - all other objects are instantiated inside App
+    - then some of them are injected into each other
+
+- State object stores current state of input devices (keyboard and mouse)
+    - should probably rename this to InputState or InputDeviceState
+    - also stores previous state
+        - previous state == state from one frame in the past
+        - this can be useful for computing mouse movement deltas, or other things (maybe?)
+
+- Ui object handles input from keyboard and mouse
+    - should probably rename this to Controller or InputHandler
+    - creates event listeners
+    - when user does stuff with keyboard or mouse, event listeners are triggered
+        - event listeners update data in Model
+
+- Model stores application data
+    - contains other objects like Boxes for ex
+    - a decent amount of logic is contained here
+    - try to put logic here to seperate it from messy input handling code and rendering code
+
+- Renderer is a set of "stateless" functions to draw stuff to the screen
+    - takes data from model as input
+    - produces draw commands as output
+    - draw commands are appended to a queue inside Gfx object
+
+- Gfx is graphics system, handles actual drawing
+    - makes calls to HTML canvas to draw stuff
+    - manages z-axis by sorting draw commands by z-axis and then drawing them in order

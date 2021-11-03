@@ -1,111 +1,59 @@
 import { Box } from "./box";
-import { getMidpoint, isPrintableKeycode } from "./util"
 
 class Boxes {
-    constructor(gfx, state) {
-        this.gfx = gfx;
-        this.state = state;
-
+    constructor() {
         this.boxes = [];
         this.nextId = 0;
         this.connections = new Set();
-        this.selectedBoxId = -1;
-
-        this.addEventListeners();
     }
 
-    addEventListeners() {
-        const editTextListener = (e) => {
-            if (this.selectedBoxId !== -1) {
-                const key = e.key.toLowerCase();
-                if (isPrintableKeycode(e.which)) {
-                    let box = this.getBox(this.selectedBoxId);
-                    box.text += key;
-                } else if (key === "backspace") {
-                    let box = this.getBox(this.selectedBoxId);
-                    if (box.text.length > 0) {
-                        box.text = box.text.slice(0, -1);
-                    }
-                }
-            }
-        };
-
-        const selectBoxListener = () => {
-            let clickedInsideBox = false;
-
-            this.forEach((box) => {
-                if (this.state.isMousedownInside(box.rect)) {
-                    this.selectedBoxId = box.id;
-                    clickedInsideBox = true;
-                }
-            });
-
-            if (!clickedInsideBox) {
-                this.selectedBoxId = -1;
-            }
-        }
-
-        const deleteBoxListener = (e) => {
-            const key = e.key ? e.key.toLowerCase() : "";
-
-            if (key === "delete" && this.selectedBoxId !== -1) {
-                this.deleteConnections(this.selectedBoxId);
-                this.deleteBox(this.selectedBoxId);
-                this.selectedBoxId = -1;
-            }
-        };
-
-        document.addEventListener("keydown", editTextListener, false);
-        document.addEventListener("mousedown", selectBoxListener, false);
-        document.addEventListener("keydown", deleteBoxListener, false);
-    }
-
-    run() {
-        this.drawSelectedBox();
-        this.drawConnections();
-        this.forEach((box) => box.run());
-    }
-
-    drawSelectedBox() {
-        if (this.selectedBoxId !== -1) {
-            const selectedBox = this.getBox(this.selectedBoxId);
-            const rect = { ...selectedBox.rect };
-            rect.x -= 2;
-            rect.y -= 2;
-            rect.w += 4;
-            rect.h += 4;
-            this.gfx.strokeRect(rect);
-        }
-    }
-
-    drawConnections() {
-        this.connections.forEach((key) => {
-            const [box1, box2] = this.getBoxes(key);
-            const begin = getMidpoint(box1.rect);
-            const end = getMidpoint(box2.rect);
-            this.gfx.drawLine(begin, end, -1);
-        });
-    }
+    // box ////////////////////////////////////////////////
 
     addBox(text, coord) {
-        const box = new Box(this.gfx, this.state, text, coord, this.nextId);
+        const box = new Box(text, coord, this.nextId);
         this.selectedBoxId = box.id;
         this.nextId++;
         this.boxes.push(box);
-    }
-
-    forEach(fn) {
-        this.boxes.forEach(fn);
     }
 
     getBox(id) {
         return this.boxes.find((box) => box.id === id);
     }
 
+    deleteBox(id) {
+        this.deleteConnections(id);
+        this.boxes = this.boxes.filter((box) => box.id !== id);
+    }
+
+    // connection /////////////////////////////////////////
+
+    addConnection(box1, box2) {
+        const key = this.getConnectionKey(box1, box2);
+        this.connections.add(key);
+    }
+
+    getConnections() {
+        return Array.from(this.connections)
+            .map(key => this.getBoxes(key));
+    }
+
+    // util ///////////////////////////////////////////////
+
+    forEach(fn) {
+        this.boxes.forEach(fn);
+    }
+
+    // private ////////////////////////////////////////////
+
     getConnectionKey(box1, box2) {
         return box1.id > box2.id
             ? `${box1.id},${box2.id}`
             : `${box2.id},${box1.id}`;
+    }
+
+    getBoxes(key) {
+        const [id1, id2] = this.getIds(key);
+        return [this.getBox(id1), this.getBox(id2)];
     }
 
     getIds(key) {
@@ -115,21 +63,12 @@ class Boxes {
         return [id1, id2];
     }
 
-    getBoxes(key) {
-        const [id1, id2] = this.getIds(key);
-        return [this.getBox(id1), this.getBox(id2)];
-    }
-
-    addConnection(box1, box2) {
-        const key = this.getConnectionKey(box1, box2);
-        this.connections.add(key);
-    }
-
-    deleteBox(id) {
-        this.boxes = this.boxes.filter((box) => box.id !== id);
-    }
-
     deleteConnections(id) {
+        // Array.from(this.connections)
+        //     .map(key => [key, this.getIds(key)])
+        //     .filter(([key, ids]) => ids[0] === id || ids[1] === id)
+        //     .forEach(([key, ids]) => this.connections.delete(key));
+
         let toDelete = [];
 
         this.connections.forEach((key) => {

@@ -34,7 +34,7 @@ class Gfx {
         this.drawLine(lowerLeft, upperLeft, z);
     }
 
-    // y coord is BOTTOM left side of text
+    // note that y-coord is *bottom* left side of text
     drawText(text, size, coord, z=0) {
         const command = (ctx) => {
             ctx.font = `${size}px ${this.textStyle}`;
