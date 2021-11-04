@@ -14,7 +14,7 @@ class App {
         this.ui = new Ui(this.gfx, this.state, this.model, this.scripter);
         this.renderer = new Renderer(this.gfx, this.state, this.model);
 
-        this.scripter.makeTree(4);
+        this.scripter.makeTree(5);
 
         this.interval = {};
     }

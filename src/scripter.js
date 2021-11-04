@@ -8,8 +8,22 @@ class Scripter {
         return this.model.boxes.getBox(id);
     }
 
+    add(text, x, y) {
+        const id = this.model.boxes.addBox(text, { x, y });
+        return this.model.boxes.getBox(id);
+    }
+
     connect(a, b) {
         this.model.boxes.addConnection(a, b);
+    }
+
+    getStr(x) {
+        // return x.toString();
+        let s = x.toString(2);
+        while (s.length < 5) {
+            s = "0" + s;
+        }
+        return s;
     }
 
     makeTree(numLevels) {
@@ -18,11 +32,13 @@ class Scripter {
         let xPadding = 500;
         let yPadding = 100;
 
+        let count = 0;
         let arr = [];
 
         arr.push(
-            this.add(x, y)
+            this.add(this.getStr(count), x, y)
         );
+        count++;
 
         for (let level = 0; level < numLevels - 1; level++) {
             y += yPadding;
@@ -32,10 +48,12 @@ class Scripter {
                 // use array like queue
                 // pop from front, push to back
                 let cur = arr.shift();
-                let left = this.add(cur.rect.x - xPadding, y);
-                let right = this.add(cur.rect.x + xPadding, y);
-                // this.connect(cur.id, left.id);
-                // this.connect(cur.id, right.id);
+                let left = this.add(this.getStr(count), cur.rect.x - xPadding, y);
+                count++;
+                let right = this.add(this.getStr(count), cur.rect.x + xPadding, y);
+                count++;
+                this.connect(cur.id, left.id);
+                this.connect(cur.id, right.id);
                 arr.push(left);
                 arr.push(right);
             }
