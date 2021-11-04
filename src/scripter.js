@@ -34,8 +34,8 @@ class Scripter {
                 let cur = arr.shift();
                 let left = this.add(cur.rect.x - xPadding, y);
                 let right = this.add(cur.rect.x + xPadding, y);
-                this.connect(cur.id, left.id);
-                this.connect(cur.id, right.id);
+                // this.connect(cur.id, left.id);
+                // this.connect(cur.id, right.id);
                 arr.push(left);
                 arr.push(right);
             }
