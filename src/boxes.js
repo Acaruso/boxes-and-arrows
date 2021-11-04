@@ -25,6 +25,10 @@ class Boxes {
         this.boxes = this.boxes.filter((box) => box.id !== id);
     }
 
+    deleteAll() {
+        this.boxes.forEach(box => this.deleteBox(box.id));
+    }
+
     // connection /////////////////////////////////////////
 
     addConnection(id1, id2) {

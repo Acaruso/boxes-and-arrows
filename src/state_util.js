@@ -5,8 +5,10 @@ const makeState = () => {
             coord: { x: 0, y: 0 },
         },
         keyboard: {
-            right: false,
-            left: false,
+            arrowup: false,
+            arrowdown: false,
+            arrowright: false,
+            arrowleft: false,
             control: false,
             shift: false,
             backspace: false,

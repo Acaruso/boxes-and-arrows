@@ -1,10 +1,11 @@
 import { getMidpoint, isPrintableKeycode } from "./util"
 
 class Ui {
-    constructor(gfx, state, model) {
+    constructor(gfx, state, model, scripter) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
+        this.scripter = scripter;
 
         this.addEventListeners();
     }
@@ -94,6 +95,19 @@ class Ui {
             this.model.dragging = false;
         };
 
+        const levelsListener = (e) => {
+            const key = e.key ? e.key.toLowerCase() : "";
+            if (key === "arrowdown") {
+                this.model.boxes.deleteAll();
+                this.model.numLevels++;
+                this.scripter.makeTree(this.model.numLevels);
+            } else if (key === "arrowup") {
+                this.model.boxes.deleteAll();
+                this.model.numLevels--;
+                this.scripter.makeTree(this.model.numLevels);
+            }
+        }
+
         addEventListener("mousedown", connectionMousedownListener);
         addEventListener("mousedown", createBoxListener);
         addEventListener("mouseup", connectionMouseupListener);
@@ -102,6 +116,7 @@ class Ui {
         addEventListener("keydown", deleteBoxListener);
         addEventListener("mousedown", draggingMousedownListener);
         addEventListener("mouseup", draggingMouseupListener);
+        addEventListener("keydown", levelsListener);
     }
 
     handleDragging() {

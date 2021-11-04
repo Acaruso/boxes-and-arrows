@@ -10,11 +10,11 @@ class App {
         this.gfx = new Gfx();
         this.state = new State();
         this.model = new Model();
-        this.ui = new Ui(this.gfx, this.state, this.model);
-        this.renderer = new Renderer(this.gfx, this.state, this.model);
         this.scripter = new Scripter(this.model);
+        this.ui = new Ui(this.gfx, this.state, this.model, this.scripter);
+        this.renderer = new Renderer(this.gfx, this.state, this.model);
 
-        this.scripter.test();
+        this.scripter.makeTree(4);
 
         this.interval = {};
     }
@@ -25,6 +25,7 @@ class App {
 
     loop() {
         this.gfx.clearScreen();
+        // this.scripter.wobble();
         this.ui.run();
         this.renderer.render();
         this.gfx.draw();

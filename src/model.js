@@ -10,6 +10,8 @@ class Model {
         this.lineBegin = { x: 0, y: 0 };
         this.drawingLine = false;
         this.outBox = {};
+
+        this.numLevels = 1;
     }
 }
 
