@@ -11,38 +11,6 @@ class Ui {
     }
 
     addEventListeners() {
-        const connectionMousedownListener = () => {
-            this.model.boxes.forEach((box) => {
-                if (
-                    this.state.isMousedownInside(box.rect)
-                    && this.state.cur.keyboard.control
-                ) {
-                    this.model.lineBegin = getMidpoint(box.rect);
-                    this.model.outBox = box;
-                    this.model.drawingLine = true;
-                }
-            });
-        };
-
-        const createBoxListener = () => {
-            if (this.state.cur.keyboard.shift) {
-                const coord = { ...this.state.cur.mouse.coord };
-                this.model.boxes.addBox("", coord);
-            }
-        };
-
-        const connectionMouseupListener = () => {
-            this.model.boxes.forEach((box) => {
-                if (
-                    this.state.isMouseupInside(box.rect)
-                    && this.model.drawingLine
-                ) {
-                    this.model.boxes.addConnection(this.model.outBox.id, box.id);
-                    this.model.drawingLine = false;
-                }
-            });
-        };
-
         const editTextListener = (e) => {
             if (this.model.selectedBoxId !== -1) {
                 let box = this.model.boxes.getBox(this.model.selectedBoxId);
@@ -66,6 +34,25 @@ class Ui {
         };
 
         const mousedownListener = () => {
+            // connections //////////////////////////////////////////
+            this.model.boxes.forEach((box) => {
+                if (
+                    this.state.isMousedownInside(box.rect)
+                    && this.state.cur.keyboard.control
+                ) {
+                    this.model.lineBegin = getMidpoint(box.rect);
+                    this.model.outBox = box;
+                    this.model.drawingLine = true;
+                }
+            });
+
+            // create box ///////////////////////////////////////////
+            if (this.state.cur.keyboard.shift) {
+                const coord = { ...this.state.cur.mouse.coord };
+                this.model.boxes.addBox("", coord);
+            }
+
+            // select box ///////////////////////////////////////////
             let clickedInsideBox = false;
 
             this.model.boxes.forEach((box) => {
@@ -79,6 +66,7 @@ class Ui {
                 this.model.selectedBoxId = -1;
             }
 
+            // dragging and selectedRegion //////////////////////////
             if (!this.state.cur.keyboard.control) {
                 this.model.dragging = true;
 
@@ -94,20 +82,28 @@ class Ui {
             }
         }
 
-        const draggingMouseupListener = () => {
+        const mouseupListener = () => {
+            // connection ///////////////////////////////////////////
+            this.model.boxes.forEach((box) => {
+                if (
+                    this.state.isMouseupInside(box.rect)
+                    && this.model.drawingLine
+                ) {
+                    this.model.boxes.addConnection(this.model.outBox.id, box.id);
+                    this.model.drawingLine = false;
+                }
+            });
+
+            // dragging /////////////////////////////////////////////
             this.model.dragging = false;
         };
 
         addEventListener("mousedown", (e) => {
-            connectionMousedownListener();
-            createBoxListener();
-
             mousedownListener();
         });
 
         addEventListener("mouseup", (e) => {
-            connectionMouseupListener();
-            draggingMouseupListener();
+            mouseupListener();
         });
 
         addEventListener("keydown", (e) => {
