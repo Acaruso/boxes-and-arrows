@@ -108,6 +108,10 @@ class Ui {
             }
         }
 
+        // todo: consolidate these
+        // basically want to have just one mousedown listener, one keydown listener, etc
+        // inside each one, have various if statements, etc, to handle various cases
+
         addEventListener("mousedown", connectionMousedownListener);
         addEventListener("mousedown", createBoxListener);
         addEventListener("mouseup", connectionMouseupListener);

@@ -1,5 +1,5 @@
 - App is "object composition root"
-    - all other objects are instantiated inside App
+    - other objects are instantiated inside App
     - then some of them are injected into each other
 
 - State object stores current state of input devices (keyboard and mouse)
