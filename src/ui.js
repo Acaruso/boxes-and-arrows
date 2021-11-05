@@ -104,6 +104,7 @@ class Ui {
 
     handleDragging() {
         if (this.model.dragging && this.model.selectedBoxId !== -1) {
+            // drag box
             const box = this.model.boxes.getBox(this.model.selectedBoxId);
 
             const newCoord = {
@@ -114,6 +115,7 @@ class Ui {
             box.setCoord(newCoord);
 
         } else if (this.model.dragging && this.model.selectedBoxId === -1) {
+            // drag selected region
             this.model.selectedRegion.w += this.state.getMouseXDelta();
             this.model.selectedRegion.h += this.state.getMouseYDelta();
         }
