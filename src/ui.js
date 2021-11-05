@@ -12,7 +12,7 @@ class Ui {
 
     addEventListeners() {
         const mousedownListener = (e) => {
-            // connections //////////////////////////////////////////
+            // begin connection /////////////////////////////////////
             this.model.boxes.forEach((box) => {
                 if (
                     this.state.isMousedownInside(box.rect)

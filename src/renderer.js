@@ -43,6 +43,7 @@ class Renderer {
         );
     }
 
+    // old
     drawSelectedBox(boxes, selectedBoxId) {
         if (selectedBoxId !== -1) {
             const selectedBox = boxes.getBox(selectedBoxId);
@@ -54,6 +55,21 @@ class Renderer {
             this.gfx.strokeRect(rect);
         }
     }
+
+    // new
+    // drawSelectedBox() {
+    //     const boxes = this.model.boxes;
+
+    //     for (const selectedBoxId of this.model.selectedBoxIds) {
+    //         const selectedBox = boxes.getBox(selectedBoxId);
+    //         const rect = { ...selectedBox.rect };
+    //         rect.x -= 2;
+    //         rect.y -= 2;
+    //         rect.w += 4;
+    //         rect.h += 4;
+    //         this.gfx.strokeRect(rect);
+    //     }
+    // }
 
     drawLine(lineBegin, drawingLine) {
         if (
