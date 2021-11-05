@@ -23,6 +23,9 @@
     - takes data from model as input
     - produces draw commands as output
     - draw commands are appended to a queue inside Gfx object
+    - also note that Renderer contains some logic -> it decides what to draw or not draw
+      based on the data in Model and State
+        - see drawLine function
 
 - Gfx is graphics system, handles actual drawing
     - makes calls to HTML canvas to draw stuff

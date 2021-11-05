@@ -12,6 +12,7 @@ class Renderer {
         this.drawSelectedBox(this.model.boxes, this.model.selectedBoxId);
         this.drawLine(this.model.lineBegin, this.model.drawingLine);
         this.drawConnections(this.model.boxes);
+        this.drawSelectedRegion();
     }
 
     drawBoxes(boxes) {
@@ -69,6 +70,12 @@ class Renderer {
         boxes.getConnections()
             .map(([box1, box2]) => [getMidpoint(box1.rect), getMidpoint(box2.rect)])
             .forEach(([begin, end]) => this.gfx.drawLine(begin, end, -1));
+    }
+
+    drawSelectedRegion() {
+        if (this.model.dragging && this.model.selectedBoxId === -1) {
+            this.gfx.drawRect(this.model.selectedRegion, 10);
+        }
     }
 }
 

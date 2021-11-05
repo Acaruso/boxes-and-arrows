@@ -71,6 +71,10 @@ class State {
         return this.isMouseup() && this.isMouseInside(rect);
     }
 
+    getMouseCoord() {
+        return this.cur.mouse.coord;
+    }
+
     getMouseXDelta() {
         return this.cur.mouse.coord.x - this.prev.mouse.coord.x;
     }

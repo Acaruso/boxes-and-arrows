@@ -9,11 +9,17 @@ class Gfx {
     drawRect(rect, z=0) {
         const command = (ctx) => {
             const color = rect.color ? rect.color : "#000000";
+
+            // 0.0 == transparent, 1.0 == solid
+            const alpha = rect.alpha ? rect.alpha : 1.0;
+
+            this.ctx.globalAlpha = alpha;
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.rect(rect.x, rect.y, rect.w, rect.h);
             ctx.fill();
             ctx.closePath();
+            this.ctx.globalAlpha = 1.0;
         };
 
         this.queue.push({

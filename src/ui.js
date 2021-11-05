@@ -43,21 +43,6 @@ class Ui {
             });
         };
 
-        const selectBoxListener = () => {
-            let clickedInsideBox = false;
-
-            this.model.boxes.forEach((box) => {
-                if (this.state.isMousedownInside(box.rect)) {
-                    this.model.selectedBoxId = box.id;
-                    clickedInsideBox = true;
-                }
-            });
-
-            if (!clickedInsideBox) {
-                this.model.selectedBoxId = -1;
-            }
-        };
-
         const editTextListener = (e) => {
             if (this.model.selectedBoxId !== -1) {
                 let box = this.model.boxes.getBox(this.model.selectedBoxId);
@@ -80,16 +65,34 @@ class Ui {
             }
         };
 
-        const draggingMousedownListener = () => {
+        const mousedownListener = () => {
+            let clickedInsideBox = false;
+
             this.model.boxes.forEach((box) => {
-                if (
-                    this.state.isMousedownInside(box.rect)
-                    && !this.state.cur.keyboard.control
-                ) {
-                    this.model.dragging = true;
+                if (this.state.isMousedownInside(box.rect)) {
+                    this.model.selectedBoxId = box.id;
+                    clickedInsideBox = true;
                 }
             });
-        };
+
+            if (!clickedInsideBox) {
+                this.model.selectedBoxId = -1;
+            }
+
+            if (!this.state.cur.keyboard.control) {
+                this.model.dragging = true;
+
+                const coord = this.state.getMouseCoord();
+
+                this.model.selectedRegion = {
+                    x: coord.x,
+                    y: coord.y,
+                    w: 0,
+                    h: 0,
+                    alpha: 0.5,
+                };
+            }
+        }
 
         const draggingMouseupListener = () => {
             this.model.dragging = false;
@@ -98,11 +101,11 @@ class Ui {
         addEventListener("mousedown", (e) => {
             connectionMousedownListener();
             createBoxListener();
-            selectBoxListener();
-            draggingMousedownListener();
+
+            mousedownListener();
         });
 
-        addEventListener("mouseup", (e) =>{
+        addEventListener("mouseup", (e) => {
             connectionMouseupListener();
             draggingMouseupListener();
         });
@@ -114,7 +117,7 @@ class Ui {
     }
 
     handleDragging() {
-        if (this.model.dragging) {
+        if (this.model.dragging && this.model.selectedBoxId !== -1) {
             const box = this.model.boxes.getBox(this.model.selectedBoxId);
 
             const newCoord = {
@@ -123,6 +126,10 @@ class Ui {
             };
 
             box.setCoord(newCoord);
+
+        } else if (this.model.dragging && this.model.selectedBoxId === -1) {
+            this.model.selectedRegion.w += this.state.getMouseXDelta();
+            this.model.selectedRegion.h += this.state.getMouseYDelta();
         }
     }
 
