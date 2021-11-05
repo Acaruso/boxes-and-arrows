@@ -11,29 +11,7 @@ class Ui {
     }
 
     addEventListeners() {
-        const editTextListener = (e) => {
-            if (this.model.selectedBoxId !== -1) {
-                let box = this.model.boxes.getBox(this.model.selectedBoxId);
-                const key = e.key ? e.key.toLowerCase() : "";
-
-                if (isPrintableKeycode(e.which)) {
-                    box.appendChar(key);
-                } else if (key === "backspace") {
-                    box.deleteChar();
-                }
-            }
-        };
-
-        const deleteBoxListener = (e) => {
-            const key = e.key ? e.key.toLowerCase() : "";
-
-            if (key === "delete" && this.model.selectedBoxId !== -1) {
-                this.model.boxes.deleteBox(this.model.selectedBoxId);
-                this.model.selectedBoxId = -1;
-            }
-        };
-
-        const mousedownListener = () => {
+        const mousedownListener = (e) => {
             // connections //////////////////////////////////////////
             this.model.boxes.forEach((box) => {
                 if (
@@ -82,7 +60,7 @@ class Ui {
             }
         }
 
-        const mouseupListener = () => {
+        const mouseupListener = (e) => {
             // connection ///////////////////////////////////////////
             this.model.boxes.forEach((box) => {
                 if (
@@ -98,18 +76,30 @@ class Ui {
             this.model.dragging = false;
         };
 
-        addEventListener("mousedown", (e) => {
-            mousedownListener();
-        });
+        const keydownListener = (e) => {
+            const key = e.key ? e.key.toLowerCase() : "";
 
-        addEventListener("mouseup", (e) => {
-            mouseupListener();
-        });
+            // edit text ////////////////////////////////////////////
+            if (this.model.selectedBoxId !== -1) {
+                let box = this.model.boxes.getBox(this.model.selectedBoxId);
 
-        addEventListener("keydown", (e) => {
-            editTextListener(e);
-            deleteBoxListener(e);
-        });
+                if (isPrintableKeycode(e.which)) {
+                    box.appendChar(key);
+                } else if (key === "backspace") {
+                    box.deleteChar();
+                }
+            }
+
+            // delete box ///////////////////////////////////////////
+            if (key === "delete" && this.model.selectedBoxId !== -1) {
+                this.model.boxes.deleteBox(this.model.selectedBoxId);
+                this.model.selectedBoxId = -1;
+            }
+        }
+
+        addEventListener("mousedown", e => mousedownListener(e));
+        addEventListener("mouseup", e => mouseupListener(e));
+        addEventListener("keydown", e => keydownListener(e));
     }
 
     handleDragging() {
