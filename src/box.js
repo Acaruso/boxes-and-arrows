@@ -32,9 +32,6 @@ class Box {
     updateRect() {
         const length = this.text.length > 0 ? this.text.length : 1;
 
-        console.log(this.text);
-        console.log(this.text.length);
-
         this.rect = {
             x: this.coord.x,
             y: this.coord.y,

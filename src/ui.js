@@ -11,13 +11,6 @@ class Ui {
     }
 
     addEventListeners() {
-        const createBoxListener = () => {
-            if (this.state.cur.keyboard.shift) {
-                const coord = { ...this.state.cur.mouse.coord };
-                this.model.boxes.addBox("", coord);
-            }
-        };
-
         const connectionMousedownListener = () => {
             this.model.boxes.forEach((box) => {
                 if (
@@ -29,6 +22,13 @@ class Ui {
                     this.model.drawingLine = true;
                 }
             });
+        };
+
+        const createBoxListener = () => {
+            if (this.state.cur.keyboard.shift) {
+                const coord = { ...this.state.cur.mouse.coord };
+                this.model.boxes.addBox("", coord);
+            }
         };
 
         const connectionMouseupListener = () => {
@@ -95,32 +95,22 @@ class Ui {
             this.model.dragging = false;
         };
 
-        const levelsListener = (e) => {
-            const key = e.key ? e.key.toLowerCase() : "";
-            if (key === "arrowdown") {
-                this.model.boxes.deleteAll();
-                this.model.numLevels++;
-                this.scripter.makeTree(this.model.numLevels);
-            } else if (key === "arrowup") {
-                this.model.boxes.deleteAll();
-                this.model.numLevels--;
-                this.scripter.makeTree(this.model.numLevels);
-            }
-        }
+        addEventListener("mousedown", (e) => {
+            connectionMousedownListener();
+            createBoxListener();
+            selectBoxListener();
+            draggingMousedownListener();
+        });
 
-        // todo: consolidate these
-        // basically want to have just one mousedown listener, one keydown listener, etc
-        // inside each one, have various if statements, etc, to handle various cases
+        addEventListener("mouseup", (e) =>{
+            connectionMouseupListener();
+            draggingMouseupListener();
+        });
 
-        addEventListener("mousedown", connectionMousedownListener);
-        addEventListener("mousedown", createBoxListener);
-        addEventListener("mouseup", connectionMouseupListener);
-        addEventListener("mousedown", selectBoxListener);
-        addEventListener("keydown", editTextListener);
-        addEventListener("keydown", deleteBoxListener);
-        addEventListener("mousedown", draggingMousedownListener);
-        addEventListener("mouseup", draggingMouseupListener);
-        addEventListener("keydown", levelsListener);
+        addEventListener("keydown", (e) => {
+            editTextListener(e);
+            deleteBoxListener(e);
+        });
     }
 
     handleDragging() {
