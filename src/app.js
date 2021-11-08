@@ -22,7 +22,7 @@ class App {
         );
         this.renderer = new Renderer(this.gfx, this.state, this.model);
 
-        this.scripter.makeBinaryTree(4);
+        // this.scripter.makeBinaryTree(4);
 
         this.interval = {};
     }

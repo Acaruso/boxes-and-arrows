@@ -16,6 +16,22 @@ class Boxes {
         return box.id;
     }
 
+    loadBoxes(boxData) {
+        let maxId = -1;
+        for (const x of boxData) {
+            const box = new Box(x.text, x.coord, x.id);
+            this.boxes.push(box);
+            maxId = Math.max(maxId, x.id);
+        }
+        this.nextId = maxId + 1;
+    }
+
+    loadConnections(connData) {
+        for (const x of connData) {
+            this.addConnectionByKey(x);
+        }
+    }
+
     getBox(id) {
         return this.boxes.find((box) => box.id === id);
     }
@@ -33,6 +49,10 @@ class Boxes {
 
     addConnection(id1, id2) {
         const key = this.getConnectionKey(id1, id2);
+        this.connections.add(key);
+    }
+
+    addConnectionByKey(key) {
         this.connections.add(key);
     }
 

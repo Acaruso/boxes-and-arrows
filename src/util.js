@@ -65,11 +65,12 @@ const saveFile = async (content) => {
     await writable.close();
 };
 
-const loadFile = async () => {
+const loadFile = async (cb) => {
     const [fileHandle] = await window.showOpenFilePicker();
     const file = await fileHandle.getFile();
-    const contents = await file.text();
-    console.log(contents);
+    const content = await file.text();
+    cb(content);
+    // return content;
 };
 
 export {

@@ -165,14 +165,11 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.s,
             e => {
                 e.preventDefault();
-                console.log(this.model.boxes.boxes);
-                // console.log(
-                //     JSON.stringify(this.model.boxes.boxes)
-                // );
-                // console.log(
-                //     JSON.stringify(this.model.boxes.connections)
-                // );
-                // saveFile("test");
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.s = false;
+                const boxesStr = JSON.stringify(this.model.boxes.boxes);
+                const connStr = JSON.stringify([...this.model.boxes.connections]);
+                saveFile(boxesStr + "\n" + connStr);
             }
         );
 
@@ -181,7 +178,16 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.l,
             e => {
                 e.preventDefault();
-                loadFile();
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.l = false;
+                loadFile((content) => {
+                    this.model.boxes.deleteAll();
+                    const [boxesStr, connStr] = content.split(/\n/);
+                    const boxData = JSON.parse(boxesStr);
+                    const connData = JSON.parse(connStr);
+                    this.model.boxes.loadBoxes(boxData);
+                    this.model.boxes.loadConnections(connData);
+                });
             }
         );
     }
