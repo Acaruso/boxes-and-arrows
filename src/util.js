@@ -50,6 +50,7 @@ const isPrintableKeycode = (kc) => {
     );
 };
 
+// see: https://web.dev/file-system-access/
 const saveFile = async (content) => {
     const options = {
         types: [{
@@ -65,7 +66,10 @@ const saveFile = async (content) => {
 };
 
 const loadFile = async () => {
-
+    const [fileHandle] = await window.showOpenFilePicker();
+    const file = await fileHandle.getFile();
+    const contents = await file.text();
+    console.log(contents);
 };
 
 export {

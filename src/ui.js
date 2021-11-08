@@ -1,4 +1,4 @@
-import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile } from "./util"
+import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
     constructor(gfx, state, model, scripter, eventTable) {
@@ -166,6 +166,15 @@ class Ui {
             e => {
                 e.preventDefault();
                 saveFile("test");
+            }
+        );
+
+        this.eventTable.addEvent(
+            "loadFile",
+            e => e.keydown && e.keyboard.control && e.keyboard.l,
+            e => {
+                // e.preventDefault();
+                loadFile();
             }
         );
     }
