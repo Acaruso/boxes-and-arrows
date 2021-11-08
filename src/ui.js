@@ -16,6 +16,10 @@ class Ui {
     }
 
     addEventListeners() {
+        const c_horizontalAlign = e => {
+            return e.keydown && e.keyboard.control && e.keyboard.h;
+        };
+
         this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
@@ -135,7 +139,8 @@ class Ui {
             e => {
                 return e.keydown
                     && this.model.anyBoxesSelected()
-                    && isPrintableKeycode(e.which);
+                    && isPrintableKeycode(e.which)
+                    && !c_horizontalAlign(e);
             },
             e => {
                 for (const id of this.model.selectedBoxIds) {
@@ -156,6 +161,28 @@ class Ui {
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     box.deleteChar();
+                }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "horizontalAlign",
+            c_horizontalAlign,
+            // e => e.keydown && e.keyboard.control && e.keyboard.h,
+            e => {
+                e.preventDefault();
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.h = false;
+
+                let minY = 1000000000;
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    minY = Math.min(minY, box.coord.y);
+                }
+
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.setCoord({ x: box.coord.x, y: minY });
                 }
             }
         );
