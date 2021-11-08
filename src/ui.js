@@ -165,7 +165,14 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.s,
             e => {
                 e.preventDefault();
-                saveFile("test");
+                console.log(this.model.boxes.boxes);
+                // console.log(
+                //     JSON.stringify(this.model.boxes.boxes)
+                // );
+                // console.log(
+                //     JSON.stringify(this.model.boxes.connections)
+                // );
+                // saveFile("test");
             }
         );
 
@@ -173,7 +180,7 @@ class Ui {
             "loadFile",
             e => e.keydown && e.keyboard.control && e.keyboard.l,
             e => {
-                // e.preventDefault();
+                e.preventDefault();
                 loadFile();
             }
         );

@@ -37,7 +37,7 @@ class Scripter {
         for (let level = 0; level < numLevels - 1; level++) {
             count = 0;
             y += yPadding;
-            xPadding = xPadding / 2;
+            xPadding = Math.floor(xPadding / 2);
             let n = arr.length;
             for (let k = 0; k < n; k++) {
                 let cur = arr.shift();
