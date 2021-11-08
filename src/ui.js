@@ -1,123 +1,189 @@
-import { getMidpoint, isPrintableKeycode } from "./util"
+import { getMidpoint, rectsOverlap, isPrintableKeycode } from "./util"
 
 class Ui {
-    constructor(gfx, state, model, scripter) {
+    constructor(gfx, state, model, scripter, eventTable) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
         this.scripter = scripter;
+        this.eventTable = eventTable;
+
+        addEventListener("mousedown", e => this.eventTable.onEvent(e));
+        addEventListener("mouseup", e => this.eventTable.onEvent(e));
+        addEventListener("keydown", e => this.eventTable.onEvent(e));
 
         this.addEventListeners();
     }
 
     addEventListeners() {
-        const mousedownListener = (e) => {
-            // begin connection /////////////////////////////////////
-            this.model.boxes.forEach((box) => {
-                if (
-                    this.state.isMousedownInside(box.rect)
-                    && this.state.cur.keyboard.control
-                ) {
-                    this.model.lineBegin = getMidpoint(box.rect);
-                    this.model.outBox = box;
-                    this.model.drawingLine = true;
-                }
-            });
-
-            // create box ///////////////////////////////////////////
-            if (this.state.cur.keyboard.shift) {
-                const coord = { ...this.state.cur.mouse.coord };
-                this.model.boxes.addBox("", coord);
+        this.eventTable.addEvent(
+            "beginConnection",
+            e => e.mousedown && e.insideBox && e.keyboard.control,
+            e => {
+                this.model.lineBegin = getMidpoint(e.mouseupdownBox.rect);
+                this.model.outBox = e.mouseupdownBox;
+                this.model.drawingLine = true;
             }
+        );
 
-            // select box ///////////////////////////////////////////
-            let clickedInsideBox = false;
-
-            this.model.boxes.forEach((box) => {
-                if (this.state.isMousedownInside(box.rect)) {
-                    this.model.selectedBoxId = box.id;
-                    clickedInsideBox = true;
-                }
-            });
-
-            if (!clickedInsideBox) {
-                this.model.selectedBoxId = -1;
+        this.eventTable.addEvent(
+            "addBox",
+            e => e.mousedown && e.keyboard.alt,
+            e => {
+                const newBoxId = this.model.boxes.addBox("", e.mouse.coord);
+                this.model.clearSelectedBoxIds();
+                this.model.addSelectedBoxId(newBoxId);
             }
+        );
 
-            // dragging and selectedRegion //////////////////////////
-            if (!this.state.cur.keyboard.control) {
-                this.model.dragging = true;
+        this.eventTable.addEvent(
+            "deleteBox",
+            e => e.keydown && e.key_ === "delete" && this.model.anyBoxesSelected(),
+            e => {
+                for (const id of this.model.selectedBoxIds) {
+                    this.model.boxes.deleteBox(id);
+                }
+                this.model.clearSelectedBoxIds();
+            }
+        );
 
-                const coord = this.state.getMouseCoord();
+        this.eventTable.addEvent(
+            "clickAndSelectBox",
+            e => {
+                return e.mousedown 
+                    && e.insideBox 
+                    && !e.keyboard.control 
+                    && !e.keyboard.shift 
+                    && !this.model.isBoxSelected(e.mouseupdownBox.id);
+            },
+            e => {
+                this.model.clearSelectedBoxIds();
+                this.model.addSelectedBoxId(e.mouseupdownBox.id);
+            }
+        );
 
+        this.eventTable.addEvent(
+            "shiftClickAndAddSelectBox",
+            e => e.mousedown && e.insideBox && !e.keyboard.control && e.keyboard.shift,
+            e => this.model.addSelectedBoxId(e.mouseupdownBox.id)
+        );
+
+        this.eventTable.addEvent(
+            "clickAndUnselectBox",
+            e => e.mousedown && !e.insideBox && !e.keyboard.control && !e.keyboard.alt,
+            e => this.model.clearSelectedBoxIds()
+        );
+
+        this.eventTable.addEvent(
+            "beginDraggingBoxes",
+            e => e.mousedown && !e.keyboard.control && e.insideBox,
+            e => this.model.draggingBoxes = true
+        );
+
+        this.eventTable.addEvent(
+            "beginDraggingSelectedRegion",
+            e => e.mousedown && !e.keyboard.control && !e.insideBox,
+            e => this.model.draggingSelectedRegion = true
+        );
+
+        this.eventTable.addEvent(
+            "setSelectedRegionCoords",
+            e => e.mousedown && !e.keyboard.control,
+            e => {
                 this.model.selectedRegion = {
-                    x: coord.x,
-                    y: coord.y,
+                    x: e.mouse.coord.x,
+                    y: e.mouse.coord.y,
                     w: 0,
                     h: 0,
-                    alpha: 0.5,
+                    alpha: 0.3,
                 };
             }
-        }
+        );
 
-        const mouseupListener = (e) => {
-            // connection ///////////////////////////////////////////
-            this.model.boxes.forEach((box) => {
-                if (
-                    this.state.isMouseupInside(box.rect)
-                    && this.model.drawingLine
-                ) {
-                    this.model.boxes.addConnection(this.model.outBox.id, box.id);
-                    this.model.drawingLine = false;
+        this.eventTable.addEvent(
+            "addConnection",
+            e => e.mouseup && e.insideBox && this.model.drawingLine,
+            e => {
+                this.model.boxes.addConnection(
+                    this.model.outBox.id,
+                    e.mouseupdownBox.id
+                );
+                this.model.drawingLine = false;
+            }
+        );
+
+        this.eventTable.addEvent(
+            "endDraggingBoxes",
+            e => e.mouseup,
+            e => this.model.draggingBoxes = false
+        );
+
+        this.eventTable.addEvent(
+            "endDrawingLine",
+            e => e.mouseup,
+            e => this.model.drawingLine = false
+        );
+
+        this.eventTable.addEvent(
+            "endDraggingSelectedRegion",
+            e => e.mouseup,
+            e => this.model.draggingSelectedRegion = false
+        );
+
+        this.eventTable.addEvent(
+            "appendChar",
+            e => {
+                return e.keydown
+                    && this.model.anyBoxesSelected()
+                    && isPrintableKeycode(e.which);
+            },
+            e => {
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.appendChar(e.key_);
                 }
-            });
+            }
+        );
 
-            // dragging /////////////////////////////////////////////
-            this.model.dragging = false;
-        };
-
-        const keydownListener = (e) => {
-            const key = e.key ? e.key.toLowerCase() : "";
-
-            // edit text ////////////////////////////////////////////
-            if (this.model.selectedBoxId !== -1) {
-                let box = this.model.boxes.getBox(this.model.selectedBoxId);
-
-                if (isPrintableKeycode(e.which)) {
-                    box.appendChar(key);
-                } else if (key === "backspace") {
+        this.eventTable.addEvent(
+            "deleteChar",
+            e => {
+                return e.keydown
+                    && this.model.anyBoxesSelected()
+                    && e.key_ === "backspace";
+            },
+            e => {
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
                     box.deleteChar();
                 }
             }
-
-            // delete box ///////////////////////////////////////////
-            if (key === "delete" && this.model.selectedBoxId !== -1) {
-                this.model.boxes.deleteBox(this.model.selectedBoxId);
-                this.model.selectedBoxId = -1;
-            }
-        }
-
-        addEventListener("mousedown", e => mousedownListener(e));
-        addEventListener("mouseup", e => mouseupListener(e));
-        addEventListener("keydown", e => keydownListener(e));
+        );
     }
 
     handleDragging() {
-        if (this.model.dragging && this.model.selectedBoxId !== -1) {
-            // drag box
-            const box = this.model.boxes.getBox(this.model.selectedBoxId);
+        if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
+            // drag boxes
+            for (const id of this.model.selectedBoxIds) {
+                const box = this.model.boxes.getBox(id);
 
-            const newCoord = {
-                x: box.coord.x + this.state.getMouseXDelta(),
-                y: box.coord.y + this.state.getMouseYDelta()
-            };
-
-            box.setCoord(newCoord);
-
-        } else if (this.model.dragging && this.model.selectedBoxId === -1) {
+                const newCoord = {
+                    x: box.coord.x + this.state.getMouseXDelta(),
+                    y: box.coord.y + this.state.getMouseYDelta()
+                };
+    
+                box.setCoord(newCoord);
+            }
+        } else if (this.model.draggingSelectedRegion) {
             // drag selected region
             this.model.selectedRegion.w += this.state.getMouseXDelta();
             this.model.selectedRegion.h += this.state.getMouseYDelta();
+            
+            this.model.boxes.forEach(box => {
+                if (rectsOverlap(box.rect, this.model.selectedRegion)) {
+                    this.model.addSelectedBoxId(box.id);
+                }
+            });
         }
     }
 

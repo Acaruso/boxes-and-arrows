@@ -11,6 +11,7 @@ const makeState = () => {
             arrowleft: false,
             control: false,
             shift: false,
+            alt: false,
             backspace: false,
             a: false,
             b: false,

@@ -8,15 +8,15 @@ class Renderer {
     }
 
     render() {
-        this.drawBoxes(this.model.boxes);
-        this.drawSelectedBox(this.model.boxes, this.model.selectedBoxId);
-        this.drawLine(this.model.lineBegin, this.model.drawingLine);
-        this.drawConnections(this.model.boxes);
+        this.drawBoxes();
+        this.drawSelectedBoxes();
+        this.drawLine();
+        this.drawConnections();
         this.drawSelectedRegion();
     }
 
-    drawBoxes(boxes) {
-        boxes.forEach(box => this.drawBox(box));
+    drawBoxes() {
+        this.model.boxes.forEach(box => this.drawBox(box));
     }
 
     drawBox(box) {
@@ -43,9 +43,10 @@ class Renderer {
         );
     }
 
-    // old
-    drawSelectedBox(boxes, selectedBoxId) {
-        if (selectedBoxId !== -1) {
+    drawSelectedBoxes() {
+        const boxes = this.model.boxes;
+
+        for (const selectedBoxId of this.model.selectedBoxIds) {
             const selectedBox = boxes.getBox(selectedBoxId);
             const rect = { ...selectedBox.rect };
             rect.x -= 2;
@@ -56,40 +57,25 @@ class Renderer {
         }
     }
 
-    // new
-    // drawSelectedBox() {
-    //     const boxes = this.model.boxes;
-
-    //     for (const selectedBoxId of this.model.selectedBoxIds) {
-    //         const selectedBox = boxes.getBox(selectedBoxId);
-    //         const rect = { ...selectedBox.rect };
-    //         rect.x -= 2;
-    //         rect.y -= 2;
-    //         rect.w += 4;
-    //         rect.h += 4;
-    //         this.gfx.strokeRect(rect);
-    //     }
-    // }
-
-    drawLine(lineBegin, drawingLine) {
+    drawLine() {
         if (
             this.state.cur.mouse.clicked
             && this.state.cur.keyboard.control
-            && drawingLine
+            && this.model.drawingLine
         ) {
             const curMouse = this.state.cur.mouse;
-            this.gfx.drawLine(lineBegin, { ...curMouse.coord }, -1);
+            this.gfx.drawLine(this.model.lineBegin, { ...curMouse.coord }, -1);
         }
     }
 
-    drawConnections(boxes) {
-        boxes.getConnections()
+    drawConnections() {
+        this.model.boxes.getConnections()
             .map(([box1, box2]) => [getMidpoint(box1.rect), getMidpoint(box2.rect)])
             .forEach(([begin, end]) => this.gfx.drawLine(begin, end, -1));
     }
 
     drawSelectedRegion() {
-        if (this.model.dragging && this.model.selectedBoxId === -1) {
+        if (this.model.draggingSelectedRegion) {
             this.gfx.drawRect(this.model.selectedRegion, 10);
         }
     }

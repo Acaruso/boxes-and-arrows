@@ -4,6 +4,7 @@ import { State } from "./state"
 import { Model } from "./model"
 import { Ui } from "./ui"
 import { Scripter } from "./scripter"
+import { EventTable } from "./event_table"
 
 class App {
     constructor() {
@@ -11,10 +12,17 @@ class App {
         this.state = new State();
         this.model = new Model();
         this.scripter = new Scripter(this.model);
-        this.ui = new Ui(this.gfx, this.state, this.model, this.scripter);
+        this.eventTable = new EventTable(this.state, this.model);
+        this.ui = new Ui(
+            this.gfx,
+            this.state,
+            this.model,
+            this.scripter,
+            this.eventTable
+        );
         this.renderer = new Renderer(this.gfx, this.state, this.model);
 
-        this.scripter.makeTree(5);
+        this.scripter.makeBinaryTree(4);
 
         this.interval = {};
     }
@@ -25,7 +33,6 @@ class App {
 
     loop() {
         this.gfx.clearScreen();
-        // this.scripter.wobble();
         this.ui.run();
         this.renderer.render();
         this.gfx.draw();

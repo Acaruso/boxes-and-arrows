@@ -1,6 +1,6 @@
 class Box {
     constructor(text, coord, id=0) {
-        this.coord = coord;
+        this.coord = { ...coord };
         this.id = id;
         this.charHeight = 14;
         this.charWidth = this.charHeight * 0.55;
