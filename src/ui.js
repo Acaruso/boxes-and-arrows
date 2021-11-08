@@ -1,4 +1,4 @@
-import { getMidpoint, rectsOverlap, isPrintableKeycode } from "./util"
+import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile } from "./util"
 
 class Ui {
     constructor(gfx, state, model, scripter, eventTable) {
@@ -50,10 +50,10 @@ class Ui {
         this.eventTable.addEvent(
             "clickAndSelectBox",
             e => {
-                return e.mousedown 
-                    && e.insideBox 
-                    && !e.keyboard.control 
-                    && !e.keyboard.shift 
+                return e.mousedown
+                    && e.insideBox
+                    && !e.keyboard.control
+                    && !e.keyboard.shift
                     && !this.model.isBoxSelected(e.mouseupdownBox.id);
             },
             e => {
@@ -159,6 +159,15 @@ class Ui {
                 }
             }
         );
+
+        this.eventTable.addEvent(
+            "saveFile",
+            e => e.keydown && e.keyboard.control && e.keyboard.s,
+            e => {
+                e.preventDefault();
+                saveFile("test");
+            }
+        );
     }
 
     handleDragging() {
@@ -171,14 +180,14 @@ class Ui {
                     x: box.coord.x + this.state.getMouseXDelta(),
                     y: box.coord.y + this.state.getMouseYDelta()
                 };
-    
+
                 box.setCoord(newCoord);
             }
         } else if (this.model.draggingSelectedRegion) {
             // drag selected region
             this.model.selectedRegion.w += this.state.getMouseXDelta();
             this.model.selectedRegion.h += this.state.getMouseYDelta();
-            
+
             this.model.boxes.forEach(box => {
                 if (rectsOverlap(box.rect, this.model.selectedRegion)) {
                     this.model.addSelectedBoxId(box.id);

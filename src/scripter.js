@@ -3,12 +3,7 @@ class Scripter {
         this.model = model;
     }
 
-    add(x, y) {
-        const id = this.model.boxes.addBox("test", { x, y });
-        return this.model.boxes.getBox(id);
-    }
-
-    add(text, x, y) {
+    addBox(text, x, y) {
         const id = this.model.boxes.addBox(text, { x, y });
         return this.model.boxes.getBox(id);
     }
@@ -35,7 +30,7 @@ class Scripter {
         let arr = [];
 
         arr.push(
-            this.add(this.getStr(count, 1), x, y)
+            this.addBox(this.getStr(count, 1), x, y)
         );
         count++;
 
@@ -46,15 +41,15 @@ class Scripter {
             let n = arr.length;
             for (let k = 0; k < n; k++) {
                 let cur = arr.shift();
-                let left = this.add(
-                    this.getStr(count, level + 1), 
-                    cur.rect.x - xPadding, 
+                let left = this.addBox(
+                    this.getStr(count, level + 1),
+                    cur.rect.x - xPadding,
                     y
                 );
                 count++;
-                let right = this.add(
-                    this.getStr(count, level + 1), 
-                    cur.rect.x + xPadding, 
+                let right = this.addBox(
+                    this.getStr(count, level + 1),
+                    cur.rect.x + xPadding,
                     y
                 );
                 count++;
@@ -66,11 +61,51 @@ class Scripter {
         }
     }
 
+    // makePerm(input) {
+    //     let x = 500;
+    //     let y = 20;
+    //     let xPadding = 500;
+    //     let yPadding = 100;
+    //     const numLevels = input.length;
+    //     let n = input.length;
+
+    //     let queue = [];
+
+    //     queue.push(
+    //         this.addBox("", x, y)
+    //     );
+
+    //     for (let level = 0; level < numLevels - 1; level++) {
+    //         y += yPadding;
+    //         xPadding = xPadding / 2;
+
+    //         for (let k = 0; k < n; k++) {
+    //             let cur = queue.shift();
+    //             let left = this.addBox(
+    //                 this.getStr(count, level + 1),
+    //                 cur.rect.x - xPadding,
+    //                 y
+    //             );
+    //             count++;
+    //             let right = this.addBox(
+    //                 this.getStr(count, level + 1),
+    //                 cur.rect.x + xPadding,
+    //                 y
+    //             );
+    //             count++;
+    //             this.connect(cur.id, left.id);
+    //             this.connect(cur.id, right.id);
+    //             queue.push(left);
+    //             queue.push(right);
+    //         }
+    //     }
+    // }
+
     genRandom() {
         const numElts = 15;
 
         for (let i = 0; i < numElts; i++) {
-            this.add(rand(1000), rand(1000));
+            this.addBox(" ", rand(1000), rand(1000));
         }
 
         for (let i = 0; i < numElts * 3; i++) {

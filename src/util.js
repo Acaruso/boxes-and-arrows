@@ -50,4 +50,29 @@ const isPrintableKeycode = (kc) => {
     );
 };
 
-export { getMidpoint, distanceBetweenCoords, rectsOverlap, isPrintableKeycode };
+const saveFile = async (content) => {
+    const options = {
+        types: [{
+            description: 'Text Files',
+            accept: { 'text/plain': ['.txt'] }
+        }]
+    };
+
+    const fileHandle = await window.showSaveFilePicker(options);
+    const writable = await fileHandle.createWritable();
+    await writable.write(content);
+    await writable.close();
+};
+
+const loadFile = async () => {
+
+};
+
+export {
+    getMidpoint,
+    distanceBetweenCoords,
+    rectsOverlap,
+    isPrintableKeycode,
+    saveFile,
+    loadFile
+};
