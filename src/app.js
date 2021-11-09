@@ -22,7 +22,8 @@ class App {
         );
         this.renderer = new Renderer(this.gfx, this.state, this.model);
 
-        this.scripter.makeBinaryTree2(4);
+        // this.scripter.makeBinaryTree2(4);
+        this.scripter.makePerm(["0", "1", "2"]);
 
         this.interval = {};
     }

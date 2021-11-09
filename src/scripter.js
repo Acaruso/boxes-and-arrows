@@ -73,19 +73,19 @@ class Scripter {
             this.addBox("", x, y)
         );
 
-        for (let level = 0; level < numLevels - 1; level++) {
+        for (let level = 1; level < numLevels; level++) {
             y += yPadding;
             xPadding = Math.floor(xPadding / 2);
             let n = arr.length;
             for (let k = 0; k < n; k++) {
                 let cur = arr.shift();
                 let left = this.addBox(
-                    this.getStr(cur.text + "0", level + 1),
+                    this.getStr(cur.text + "0", level),
                     cur.rect.x - xPadding,
                     y
                 );
                 let right = this.addBox(
-                    this.getStr(cur.text + "1", level + 1),
+                    this.getStr(cur.text + "1", level),
                     cur.rect.x + xPadding,
                     y
                 );
@@ -98,48 +98,72 @@ class Scripter {
     }
 
     makePerm(input) {
-        let x = 500;
-        let y = 20;
-        let xPadding = 500;
-        let yPadding = 100;
-        const numLevels = input.length;
-
+        const numLevels = input.length + 1;
         let queue = [];
 
-        queue.push(
-            this.addBox("", x, y)
-        );
+        queue.push("");
 
-        for (let level = 0; level < numLevels - 1; level++) {
-            y += yPadding;
-            xPadding = xPadding / 2;
+        for (let level = 1; level < numLevels; level++) {
+            console.log(`level: ${level}`);
             let n = queue.length;
 
+            let levelArr = [];
             for (let k = 0; k < n; k++) {
                 let cur = queue.shift();
-                let newArr = [...input];
-                for (const elt of newArr) {
-
+                let curArr = cur.split(",");
+                for (const elt of input) {
+                    if (!curArr.includes(elt)) {
+                        let newText = cur === "" ? elt : cur + "," + elt;
+                        levelArr.push(newText);
+                        queue.push(newText);
+                    }
                 }
-                let left = this.addBox(
-                    this.getStr(count, level + 1),
-                    cur.rect.x - xPadding,
-                    y
-                );
-                count++;
-                let right = this.addBox(
-                    this.getStr(count, level + 1),
-                    cur.rect.x + xPadding,
-                    y
-                );
-                count++;
-                this.connect(cur.id, left.id);
-                this.connect(cur.id, right.id);
-                queue.push(left);
-                queue.push(right);
+            }
+
+            for (const elt of levelArr) {
+                console.log(elt);
             }
         }
     }
+
+    // makePerm(input) {
+    //     let x = 500;
+    //     let y = 20;
+    //     let xPadding = 500;
+    //     let yPadding = 100;
+    //     const numLevels = input.length;
+
+    //     let queue = [];
+
+    //     queue.push(
+    //         this.addBox("", x, y)
+    //     );
+
+    //     for (let level = 0; level < numLevels - 1; level++) {
+    //         y += yPadding;
+    //         xPadding = xPadding / 2;
+    //         let n = queue.length;
+
+    //         for (let k = 0; k < n; k++) {
+    //             let levelArr = [];
+    //             let cur = queue.shift();
+    //             let curArr = cur.text.split(",");
+    //             for (const elt of input) {
+    //                 if (!curArr.includes(elt)) {
+    //                     let newText = cur.text + "," + elt;
+    //                     levelArr.push(newText);
+    //                 }
+    //             }
+    //         }
+
+    //         let xStart = x - ((xPadding * levelArr.length) / 2);
+    //         for (let k = 0; k < levelArr.length; k++) {
+    //             let elt = levelArr[k];
+    //             this.addBox(elt, xStart, y);
+    //             xStart += xPadding;
+    //         }
+    //     }
+    // }
 
     genRandom() {
         const numElts = 15;
