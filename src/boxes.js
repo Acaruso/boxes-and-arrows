@@ -4,7 +4,12 @@ class Boxes {
     constructor() {
         this.boxes = [];
         this.nextId = 0;
-        this.connections = new Set();
+
+        // key: id of source
+        // value: array of ids of destinations
+        this.connections = new Map();
+
+        // this.connections = new Set();
     }
 
     // box ////////////////////////////////////////////////
@@ -13,6 +18,8 @@ class Boxes {
         const box = new Box(text, coord, this.nextId);
         this.nextId++;
         this.boxes.push(box);
+        this.connections.set(box.id, []);
+        // this.connections[box.id] = [];
         return box.id;
     }
 
@@ -47,9 +54,13 @@ class Boxes {
 
     // connection /////////////////////////////////////////
 
-    addConnection(id1, id2) {
-        const key = this.getConnectionKey(id1, id2);
-        this.connections.add(key);
+    addConnection(source, dest) {
+        // let destArr = this.connections[source];
+        let destArr = this.connections.get(source);
+
+        if (!destArr.includes(dest)) {
+            destArr.push(dest);
+        }
     }
 
     addConnectionByKey(key) {
@@ -57,9 +68,24 @@ class Boxes {
     }
 
     getConnections() {
-        return Array.from(this.connections)
-            .map(key => this.getBoxes(key));
+        let out = [];
+
+        for (const [source, destArr] of this.connections) {
+            for (const dest of destArr) {
+                out.push([
+                    this.getBox(source),
+                    this.getBox(dest)
+                ]);
+            }
+        }
+
+        return out;
     }
+
+    // getConnections() {
+    //     return Array.from(this.connections)
+    //         .map(key => this.getBoxes(key));
+    // }
 
     // util ///////////////////////////////////////////////
 
@@ -88,11 +114,6 @@ class Boxes {
     }
 
     deleteConnections(id) {
-        // Array.from(this.connections)
-        //     .map(key => [key, this.getIds(key)])
-        //     .filter(([key, ids]) => ids[0] === id || ids[1] === id)
-        //     .forEach(([key, ids]) => this.connections.delete(key));
-
         let toDelete = [];
 
         this.connections.forEach((key) => {
