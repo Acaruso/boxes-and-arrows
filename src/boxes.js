@@ -16,6 +16,22 @@ class Boxes {
         return box.id;
     }
 
+    loadBoxes(boxData) {
+        let maxId = -1;
+        for (const x of boxData) {
+            const box = new Box(x.text, x.coord, x.id);
+            this.boxes.push(box);
+            maxId = Math.max(maxId, x.id);
+        }
+        this.nextId = maxId + 1;
+    }
+
+    loadConnections(connData) {
+        for (const x of connData) {
+            this.addConnectionByKey(x);
+        }
+    }
+
     getBox(id) {
         return this.boxes.find((box) => box.id === id);
     }
@@ -25,10 +41,18 @@ class Boxes {
         this.boxes = this.boxes.filter((box) => box.id !== id);
     }
 
+    deleteAll() {
+        this.boxes.forEach(box => this.deleteBox(box.id));
+    }
+
     // connection /////////////////////////////////////////
 
-    addConnection(box1, box2) {
-        const key = this.getConnectionKey(box1, box2);
+    addConnection(id1, id2) {
+        const key = this.getConnectionKey(id1, id2);
+        this.connections.add(key);
+    }
+
+    addConnectionByKey(key) {
         this.connections.add(key);
     }
 
@@ -45,10 +69,10 @@ class Boxes {
 
     // private ////////////////////////////////////////////
 
-    getConnectionKey(box1, box2) {
-        return box1.id > box2.id
-            ? `${box1.id},${box2.id}`
-            : `${box2.id},${box1.id}`;
+    getConnectionKey(id1, id2) {
+        return id1 > id2
+            ? `${id1},${id2}`
+            : `${id2},${id1}`;
     }
 
     getBoxes(key) {
