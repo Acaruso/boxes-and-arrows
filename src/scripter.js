@@ -61,45 +61,85 @@ class Scripter {
         }
     }
 
-    // makePerm(input) {
-    //     let x = 500;
-    //     let y = 20;
-    //     let xPadding = 500;
-    //     let yPadding = 100;
-    //     const numLevels = input.length;
-    //     let n = input.length;
+    makeBinaryTree2(numLevels) {
+        let x = 500;
+        let y = 20;
+        let xPadding = 500;
+        let yPadding = 100;
 
-    //     let queue = [];
+        let arr = [];
 
-    //     queue.push(
-    //         this.addBox("", x, y)
-    //     );
+        arr.push(
+            this.addBox("", x, y)
+        );
 
-    //     for (let level = 0; level < numLevels - 1; level++) {
-    //         y += yPadding;
-    //         xPadding = xPadding / 2;
+        for (let level = 0; level < numLevels - 1; level++) {
+            y += yPadding;
+            xPadding = Math.floor(xPadding / 2);
+            let n = arr.length;
+            for (let k = 0; k < n; k++) {
+                let cur = arr.shift();
+                let left = this.addBox(
+                    this.getStr(cur.text + "0", level + 1),
+                    cur.rect.x - xPadding,
+                    y
+                );
+                let right = this.addBox(
+                    this.getStr(cur.text + "1", level + 1),
+                    cur.rect.x + xPadding,
+                    y
+                );
+                this.connect(cur.id, left.id);
+                this.connect(cur.id, right.id);
+                arr.push(left);
+                arr.push(right);
+            }
+        }
+    }
 
-    //         for (let k = 0; k < n; k++) {
-    //             let cur = queue.shift();
-    //             let left = this.addBox(
-    //                 this.getStr(count, level + 1),
-    //                 cur.rect.x - xPadding,
-    //                 y
-    //             );
-    //             count++;
-    //             let right = this.addBox(
-    //                 this.getStr(count, level + 1),
-    //                 cur.rect.x + xPadding,
-    //                 y
-    //             );
-    //             count++;
-    //             this.connect(cur.id, left.id);
-    //             this.connect(cur.id, right.id);
-    //             queue.push(left);
-    //             queue.push(right);
-    //         }
-    //     }
-    // }
+    makePerm(input) {
+        let x = 500;
+        let y = 20;
+        let xPadding = 500;
+        let yPadding = 100;
+        const numLevels = input.length;
+
+        let queue = [];
+
+        queue.push(
+            this.addBox("", x, y)
+        );
+
+        for (let level = 0; level < numLevels - 1; level++) {
+            y += yPadding;
+            xPadding = xPadding / 2;
+            let n = queue.length;
+
+            for (let k = 0; k < n; k++) {
+                let cur = queue.shift();
+                let newArr = [...input];
+                for (const elt of newArr) {
+
+                }
+                let left = this.addBox(
+                    this.getStr(count, level + 1),
+                    cur.rect.x - xPadding,
+                    y
+                );
+                count++;
+                let right = this.addBox(
+                    this.getStr(count, level + 1),
+                    cur.rect.x + xPadding,
+                    y
+                );
+                count++;
+                this.connect(cur.id, left.id);
+                this.connect(cur.id, right.id);
+                queue.push(left);
+                queue.push(right);
+            }
+        }
+    }
 
     genRandom() {
         const numElts = 15;
