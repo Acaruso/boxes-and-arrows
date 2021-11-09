@@ -98,16 +98,41 @@ class Scripter {
     }
 
     makePerm(input) {
+        const levels = this.getPermLevels(input);
+        console.log(levels);
+
+        // const xPadding = 40;
+        // const numEltsInBase = levels[levels.length - 1].length;
+        // const baseWidth = xPadding * numEltsInBase;
+
+        // let x = 500;
+        // let y = 20;
+        // let xPadding = 500;
+        // let yPadding = 100;
+
+        // for (let i = 1; i < levels.length; i++) {
+
+        // }
+
+        // for (const level of levels) {
+        //     for (const elt of level) {
+
+        //     }
+        //     let id = this.addBox("", 0, 0);
+        // }
+    }
+
+    getPermLevels(input) {
         const numLevels = input.length + 1;
         let queue = [];
+        let levelsArr = [];
 
         queue.push("");
 
         for (let level = 1; level < numLevels; level++) {
-            console.log(`level: ${level}`);
+            let levelArr = [];
             let n = queue.length;
 
-            let levelArr = [];
             for (let k = 0; k < n; k++) {
                 let cur = queue.shift();
                 let curArr = cur.split(",");
@@ -119,11 +144,10 @@ class Scripter {
                     }
                 }
             }
-
-            for (const elt of levelArr) {
-                console.log(elt);
-            }
+            levelsArr.push(levelArr);
         }
+
+        return levelsArr;
     }
 
     // makePerm(input) {
