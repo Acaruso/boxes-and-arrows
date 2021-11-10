@@ -28,17 +28,27 @@ class Ui {
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
             e => {
-                this.model.lineBegin = getMidpoint(e.mouseupdownBox.rect);
-                this.model.outBox = e.mouseupdownBox;
+                this.model.lineBegin = getMidpoint(e.mouseBox.rect);
+                this.model.outBox = e.mouseBox;
                 this.model.drawingLine = true;
             }
         );
 
         this.eventTable.addEvent(
             "addBox",
-            e => e.mousedown && e.keyboard.alt,
+            e => e.mousedown && e.keyboard.alt && !e.insideBox,
             e => {
                 const newBoxId = this.model.boxes.addBox("", e.mouse.coord);
+                this.model.clearSelectedBoxIds();
+                this.model.addSelectedBoxId(newBoxId);
+            }
+        );
+
+        this.eventTable.addEvent(
+            "duplicateBox",
+            e => e.mousedown && e.keyboard.alt && e.insideBox,
+            e => {
+                const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }
@@ -62,18 +72,19 @@ class Ui {
                     && e.insideBox
                     && !e.keyboard.control
                     && !e.keyboard.shift
-                    && !this.model.isBoxSelected(e.mouseupdownBox.id);
+                    && !e.keyboard.alt
+                    && !this.model.isBoxSelected(e.mouseBox.id);
             },
             e => {
                 this.model.clearSelectedBoxIds();
-                this.model.addSelectedBoxId(e.mouseupdownBox.id);
+                this.model.addSelectedBoxId(e.mouseBox.id);
             }
         );
 
         this.eventTable.addEvent(
             "shiftClickAndAddSelectBox",
             e => e.mousedown && e.insideBox && !e.keyboard.control && e.keyboard.shift,
-            e => this.model.addSelectedBoxId(e.mouseupdownBox.id)
+            e => this.model.addSelectedBoxId(e.mouseBox.id)
         );
 
         this.eventTable.addEvent(
@@ -114,7 +125,7 @@ class Ui {
             e => {
                 this.model.boxes.addConnection(
                     this.model.outBox.id,
-                    e.mouseupdownBox.id
+                    e.mouseBox.id
                 );
                 this.model.drawingLine = false;
             }
