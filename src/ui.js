@@ -20,6 +20,10 @@ class Ui {
             return e.keydown && e.keyboard.control && e.keyboard.h;
         };
 
+        const c_verticalAlign = e => {
+            return e.keydown && e.keyboard.control && e.keyboard.v;
+        };
+
         this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
@@ -182,6 +186,27 @@ class Ui {
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     box.setCoord({ x: box.coord.x, y: minY });
+                }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "verticalAlign",
+            c_verticalAlign,
+            e => {
+                e.preventDefault();
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.v = false;
+
+                let minX = 10000000;
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    minX = Math.min(minX, box.coord.x);
+                }
+
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.setCoord({ x: minX, y: box.coord.y });
                 }
             }
         );
