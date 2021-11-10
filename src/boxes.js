@@ -18,21 +18,21 @@ class Boxes {
         return box.id;
     }
 
-    loadBoxes(boxData) {
+    loadBoxes(boxesStr) {
+        const boxData = JSON.parse(boxesStr);
         let maxId = -1;
+
         for (const x of boxData) {
             const box = new Box(x.text, x.coord, x.id);
             this.boxes.push(box);
             maxId = Math.max(maxId, x.id);
         }
+
         this.nextId = maxId + 1;
     }
 
-    // update this
-    loadConnections(connData) {
-        for (const x of connData) {
-            this.addConnectionByKey(x);
-        }
+    loadConnections(connStr) {
+        this.connections = new Map(JSON.parse(connStr));
     }
 
     getBox(id) {
@@ -67,7 +67,7 @@ class Boxes {
                 ]);
             }
         }
-        // console.log(out)
+
         return out;
     }
 
@@ -75,7 +75,6 @@ class Boxes {
         this.connections.delete(id);
         for (let [source, destArr] of this.connections) {
             this.connections.set(source, destArr.filter(x => x !== id));
-            // destArr = destArr.filter(x => x.id !== id);
         }
     }
 

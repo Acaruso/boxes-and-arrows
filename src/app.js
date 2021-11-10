@@ -25,13 +25,6 @@ class App {
         // this.scripter.makeBinaryTree2(4);
         // this.scripter.makePerm(["0", "1", "2"]);
 
-        const id1 = this.model.boxes.addBox("", {x: 0, y: 0});
-        const id2 = this.model.boxes.addBox("", {x: 100, y: 0});
-        this.model.boxes.addConnection(id1, id2);
-        this.model.boxes.deleteBox(id2);
-
-        console.log(this.model.boxes.connections);
-
         this.interval = {};
     }
 

@@ -168,13 +168,12 @@ class Ui {
         this.eventTable.addEvent(
             "horizontalAlign",
             c_horizontalAlign,
-            // e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
                 e.preventDefault();
                 this.state.cur.keyboard.control = false;
                 this.state.cur.keyboard.h = false;
 
-                let minY = 1000000000;
+                let minY = 10000000;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minY = Math.min(minY, box.coord.y);
@@ -210,10 +209,8 @@ class Ui {
                 loadFile((content) => {
                     this.model.boxes.deleteAll();
                     const [boxesStr, connStr] = content.split(/\n/);
-                    const boxData = JSON.parse(boxesStr);
-                    const connData = JSON.parse(connStr);
-                    this.model.boxes.loadBoxes(boxData);
-                    this.model.boxes.loadConnections(connData);
+                    this.model.boxes.loadBoxes(boxesStr);
+                    this.model.boxes.loadConnections(connStr);
                 });
             }
         );
