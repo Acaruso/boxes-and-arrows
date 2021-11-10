@@ -97,29 +97,55 @@ class Scripter {
         }
     }
 
+    // makePerm(input) {
+    //     const levels = this.getPermLevels(input);
+    //     console.log(levels);
+
+    //     const xPadding = 40;
+    //     const numEltsInBase = levels[levels.length - 1].length;
+    //     const baseWidth = xPadding * numEltsInBase;
+
+    //     // let x = 500;
+    //     // let y = 20;
+    //     // let xPadding = 500;
+    //     // let yPadding = 100;
+
+    //     // for (let i = 1; i < levels.length; i++) {
+
+    //     // }
+
+    //     for (const level of levels) {
+    //         for (const elt of level) {
+    //             let id = this.addBox("", 0, 0);
+    //         }
+    //         // let id = this.addBox("", 0, 0);
+    //     }
+    // }
+
     makePerm(input) {
-        const levels = this.getPermLevels(input);
-        console.log(levels);
+        const numLevels = input.length + 1;
+        let queue = [];
 
-        // const xPadding = 40;
-        // const numEltsInBase = levels[levels.length - 1].length;
-        // const baseWidth = xPadding * numEltsInBase;
+        let rootId = this.addBox("", 0, 0);
+        let rootBox = this.model.boxes.getBox(rootId);
+        queue.push(rootBox);
 
-        // let x = 500;
-        // let y = 20;
-        // let xPadding = 500;
-        // let yPadding = 100;
+        for (let level = 1; level < numLevels; level++) {
+            let n = queue.length;
 
-        // for (let i = 1; i < levels.length; i++) {
-
-        // }
-
-        // for (const level of levels) {
-        //     for (const elt of level) {
-
-        //     }
-        //     let id = this.addBox("", 0, 0);
-        // }
+            for (let k = 0; k < n; k++) {
+                let cur = queue.shift();
+                let curArr = cur.text.split(",");
+                for (const elt of input) {
+                    if (!curArr.includes(elt)) {
+                        let newText = cur === "" ? elt : cur + "," + elt;
+                        let newId = this.addBox(newText, 0, 0);
+                        let newBox = this.model.boxes.getBox(newId);
+                        queue.push(newBox);
+                    }
+                }
+            }
+        }
     }
 
     getPermLevels(input) {
@@ -127,6 +153,7 @@ class Scripter {
         let queue = [];
         let levelsArr = [];
 
+        levelsArr.push([""]);
         queue.push("");
 
         for (let level = 1; level < numLevels; level++) {

@@ -144,7 +144,8 @@ class Ui {
                 return e.keydown
                     && this.model.anyBoxesSelected()
                     && isPrintableKeycode(e.which)
-                    && !c_horizontalAlign(e);
+                    && !c_horizontalAlign(e)
+                    && !c_verticalAlign(e)
             },
             e => {
                 for (const id of this.model.selectedBoxIds) {
@@ -198,15 +199,21 @@ class Ui {
                 this.state.cur.keyboard.control = false;
                 this.state.cur.keyboard.v = false;
 
-                let minX = 10000000;
+                let minXMid = 10000000;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
-                    minX = Math.min(minX, box.coord.x);
+                    minXMid = Math.min(
+                        minXMid,
+                        Math.floor(box.rect.x + (box.rect.w / 2))
+                    );
                 }
 
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
-                    box.setCoord({ x: minX, y: box.coord.y });
+                    box.setCoord({
+                        x: minXMid - Math.floor(box.rect.w / 2),
+                        y: box.coord.y
+                    });
                 }
             }
         );
