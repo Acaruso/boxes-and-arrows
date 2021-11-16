@@ -237,9 +237,9 @@ class Ui {
                     await saveFile(boxesStr + "\n" + connStr);
                 } catch (e) {
                     console.log(e);
-                    this.state.cur.keyboard.control = false;
-                    this.state.cur.keyboard.s = false;
                 }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.s = false;
             }
         );
 
@@ -257,9 +257,9 @@ class Ui {
                     this.model.boxes.loadConnections(connStr);
                 } catch (e) {
                     console.log(e);
-                    this.state.cur.keyboard.control = false;
-                    this.state.cur.keyboard.l = false;
                 }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.l = false;
             }
         );
     }
