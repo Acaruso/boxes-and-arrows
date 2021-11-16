@@ -65,13 +65,20 @@ const saveFile = async (content) => {
     await writable.close();
 };
 
-const loadFile = async (cb) => {
+const loadFile = async () => {
     const [fileHandle] = await window.showOpenFilePicker();
     const file = await fileHandle.getFile();
     const content = await file.text();
-    cb(content);
-    // return content;
+    return content;
 };
+
+// const loadFile = async (cb) => {
+//     const [fileHandle] = await window.showOpenFilePicker();
+//     const file = await fileHandle.getFile();
+//     const content = await file.text();
+//     cb(content);
+//     // return content;
+// };
 
 export {
     getMidpoint,

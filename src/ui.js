@@ -16,14 +16,6 @@ class Ui {
     }
 
     addEventListeners() {
-        const c_horizontalAlign = e => {
-            return e.keydown && e.keyboard.control && e.keyboard.h;
-        };
-
-        const c_verticalAlign = e => {
-            return e.keydown && e.keyboard.control && e.keyboard.v;
-        };
-
         this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
@@ -156,8 +148,7 @@ class Ui {
                 return e.keydown
                     && this.model.anyBoxesSelected()
                     && isPrintableKeycode(e.which)
-                    && !c_horizontalAlign(e)
-                    && !c_verticalAlign(e)
+                    && !e.keyboard.control
             },
             e => {
                 for (const id of this.model.selectedBoxIds) {
@@ -184,12 +175,9 @@ class Ui {
 
         this.eventTable.addEvent(
             "horizontalAlign",
-            c_horizontalAlign,
+            e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.h = false;
-
                 let minY = 10000000;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
@@ -205,12 +193,9 @@ class Ui {
 
         this.eventTable.addEvent(
             "verticalAlign",
-            c_verticalAlign,
+            e => e.keydown && e.keyboard.control && e.keyboard.v,
             e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.v = false;
-
                 let minXMid = 10000000;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
@@ -231,31 +216,50 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "selectAll",
+            e => e.keydown && e.keyboard.control && e.keyboard.a,
+            e => {
+                this.model.clearSelectedBoxIds();
+                this.model.boxes.forEach(elt => {
+                    this.model.addSelectedBoxId(elt.id);
+                });
+            }
+        );
+
+        this.eventTable.addEvent(
             "saveFile",
             e => e.keydown && e.keyboard.control && e.keyboard.s,
-            e => {
+            async e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.s = false;
-                const boxesStr = JSON.stringify(this.model.boxes.boxes);
-                const connStr = JSON.stringify([...this.model.boxes.connections]);
-                saveFile(boxesStr + "\n" + connStr);
+                try {
+                    const boxesStr = JSON.stringify(this.model.boxes.boxes);
+                    const connStr = JSON.stringify([...this.model.boxes.connections]);
+                    await saveFile(boxesStr + "\n" + connStr);
+                } catch (e) {
+                    console.log(e);
+                    this.state.cur.keyboard.control = false;
+                    this.state.cur.keyboard.s = false;
+                }
             }
         );
 
         this.eventTable.addEvent(
             "loadFile",
             e => e.keydown && e.keyboard.control && e.keyboard.l,
-            e => {
+            async e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.l = false;
-                loadFile((content) => {
+                try {
+                    const content = await loadFile();
+
                     this.model.boxes.deleteAll();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
                     this.model.boxes.loadConnections(connStr);
-                });
+                } catch (e) {
+                    console.log(e);
+                    this.state.cur.keyboard.control = false;
+                    this.state.cur.keyboard.l = false;
+                }
             }
         );
     }
