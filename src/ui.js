@@ -38,7 +38,8 @@ class Ui {
             "addBox",
             e => e.mousedown && e.keyboard.alt && !e.insideBox,
             e => {
-                const newBoxId = this.model.boxes.addBox("", e.mouse.coord);
+                const text = this.scripter.getNext();
+                const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }
