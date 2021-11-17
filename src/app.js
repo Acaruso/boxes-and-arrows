@@ -14,7 +14,6 @@ class App {
         this.scripter = new Scripter();
         this.eventTable = new EventTable(this.state, this.model);
         this.ui = new Ui(
-            this.gfx,
             this.state,
             this.model,
             this.scripter,

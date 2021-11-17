@@ -41,10 +41,8 @@ class Scripter {
             }
             levelsArr.push(levelArr);
         }
-        console.log(levelsArr)
 
         const flatArr = levelsArr.flat(2);
-        console.log(flatArr)
         return flatArr;
     }
 }

@@ -1,8 +1,7 @@
 import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
-    constructor(gfx, state, model, scripter, eventTable) {
-        this.gfx = gfx;
+    constructor(state, model, scripter, eventTable) {
         this.state = state;
         this.model = model;
         this.scripter = scripter;
