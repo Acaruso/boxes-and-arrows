@@ -15,23 +15,30 @@ class EventTable {
         e.mouseup = e.type === "mouseup";
         e.keydown = e.type === "keydown";
         e.insideBox = false;
-        e.mouseupdownBox = null;
+        e.mouseBox = null;
         e.keyboard = this.state.cur.keyboard;
         e.mouse = this.state.cur.mouse;
     }
-    
+
     enrichEvent(e) {
         this.formatEvent(e);
         const boxes = this.model.boxes;
-        
-        if (e.mousedown || e.mouseup) {
-            boxes.forEach((box) => {
-                if (this.state.isMouseInside(box.rect)) {
-                    e.insideBox = true;
-                    e.mouseupdownBox = box;
-                }
-            });
-        }
+
+        boxes.forEach((box) => {
+            if (this.state.isMouseInside(box.rect)) {
+                e.insideBox = true;
+                e.mouseBox = box;
+            }
+        });
+
+        // if (e.mousedown || e.mouseup) {
+        //     boxes.forEach((box) => {
+        //         if (this.state.isMouseInside(box.rect)) {
+        //             e.insideBox = true;
+        //             e.mouseBox = box;
+        //         }
+        //     });
+        // }
 
         return e;
     }

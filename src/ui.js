@@ -1,8 +1,7 @@
 import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
-    constructor(gfx, state, model, scripter, eventTable) {
-        this.gfx = gfx;
+    constructor(state, model, scripter, eventTable) {
         this.state = state;
         this.model = model;
         this.scripter = scripter;
@@ -16,25 +15,32 @@ class Ui {
     }
 
     addEventListeners() {
-        const c_horizontalAlign = e => {
-            return e.keydown && e.keyboard.control && e.keyboard.h;
-        };
-
         this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
             e => {
-                this.model.lineBegin = getMidpoint(e.mouseupdownBox.rect);
-                this.model.outBox = e.mouseupdownBox;
+                this.model.lineBegin = getMidpoint(e.mouseBox.rect);
+                this.model.outBox = e.mouseBox;
                 this.model.drawingLine = true;
             }
         );
 
         this.eventTable.addEvent(
             "addBox",
-            e => e.mousedown && e.keyboard.alt,
+            e => e.mousedown && e.keyboard.alt && !e.insideBox,
             e => {
-                const newBoxId = this.model.boxes.addBox("", e.mouse.coord);
+                const text = this.scripter.getNext();
+                const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
+                this.model.clearSelectedBoxIds();
+                this.model.addSelectedBoxId(newBoxId);
+            }
+        );
+
+        this.eventTable.addEvent(
+            "duplicateBox",
+            e => e.mousedown && e.keyboard.alt && e.insideBox,
+            e => {
+                const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }
@@ -58,18 +64,19 @@ class Ui {
                     && e.insideBox
                     && !e.keyboard.control
                     && !e.keyboard.shift
-                    && !this.model.isBoxSelected(e.mouseupdownBox.id);
+                    && !e.keyboard.alt
+                    && !this.model.isBoxSelected(e.mouseBox.id);
             },
             e => {
                 this.model.clearSelectedBoxIds();
-                this.model.addSelectedBoxId(e.mouseupdownBox.id);
+                this.model.addSelectedBoxId(e.mouseBox.id);
             }
         );
 
         this.eventTable.addEvent(
             "shiftClickAndAddSelectBox",
             e => e.mousedown && e.insideBox && !e.keyboard.control && e.keyboard.shift,
-            e => this.model.addSelectedBoxId(e.mouseupdownBox.id)
+            e => this.model.addSelectedBoxId(e.mouseBox.id)
         );
 
         this.eventTable.addEvent(
@@ -110,7 +117,7 @@ class Ui {
             e => {
                 this.model.boxes.addConnection(
                     this.model.outBox.id,
-                    e.mouseupdownBox.id
+                    e.mouseBox.id
                 );
                 this.model.drawingLine = false;
             }
@@ -140,7 +147,7 @@ class Ui {
                 return e.keydown
                     && this.model.anyBoxesSelected()
                     && isPrintableKeycode(e.which)
-                    && !c_horizontalAlign(e);
+                    && !e.keyboard.control
             },
             e => {
                 for (const id of this.model.selectedBoxIds) {
@@ -167,14 +174,10 @@ class Ui {
 
         this.eventTable.addEvent(
             "horizontalAlign",
-            c_horizontalAlign,
-            // e => e.keydown && e.keyboard.control && e.keyboard.h,
+            e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.h = false;
-
-                let minY = 1000000000;
+                let minY = 10000000;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minY = Math.min(minY, box.coord.y);
@@ -188,33 +191,74 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "saveFile",
-            e => e.keydown && e.keyboard.control && e.keyboard.s,
+            "verticalAlign",
+            e => e.keydown && e.keyboard.control && e.keyboard.v,
             e => {
                 e.preventDefault();
+                let minXMid = 10000000;
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    minXMid = Math.min(
+                        minXMid,
+                        Math.floor(box.rect.x + (box.rect.w / 2))
+                    );
+                }
+
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.setCoord({
+                        x: minXMid - Math.floor(box.rect.w / 2),
+                        y: box.coord.y
+                    });
+                }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "selectAll",
+            e => e.keydown && e.keyboard.control && e.keyboard.a,
+            e => {
+                this.model.clearSelectedBoxIds();
+                this.model.boxes.forEach(elt => {
+                    this.model.addSelectedBoxId(elt.id);
+                });
+            }
+        );
+
+        this.eventTable.addEvent(
+            "saveFile",
+            e => e.keydown && e.keyboard.control && e.keyboard.s,
+            async e => {
+                e.preventDefault();
+                try {
+                    const boxesStr = JSON.stringify(this.model.boxes.boxes);
+                    const connStr = JSON.stringify([...this.model.boxes.connections]);
+                    await saveFile(boxesStr + "\n" + connStr);
+                } catch (e) {
+                    console.log(e);
+                }
                 this.state.cur.keyboard.control = false;
                 this.state.cur.keyboard.s = false;
-                const boxesStr = JSON.stringify(this.model.boxes.boxes);
-                const connStr = JSON.stringify([...this.model.boxes.connections]);
-                saveFile(boxesStr + "\n" + connStr);
             }
         );
 
         this.eventTable.addEvent(
             "loadFile",
             e => e.keydown && e.keyboard.control && e.keyboard.l,
-            e => {
+            async e => {
                 e.preventDefault();
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.l = false;
-                loadFile((content) => {
+                try {
+                    const content = await loadFile();
+
                     this.model.boxes.deleteAll();
                     const [boxesStr, connStr] = content.split(/\n/);
-                    const boxData = JSON.parse(boxesStr);
-                    const connData = JSON.parse(connStr);
-                    this.model.boxes.loadBoxes(boxData);
-                    this.model.boxes.loadConnections(connData);
-                });
+                    this.model.boxes.loadBoxes(boxesStr);
+                    this.model.boxes.loadConnections(connStr);
+                } catch (e) {
+                    console.log(e);
+                }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.l = false;
             }
         );
     }
