@@ -19,12 +19,25 @@ class Renderer {
     drawHelpDialog() {
         const helpDialog = this.model.helpDialog;
         this.gfx.drawRect(helpDialog.rect, 11);
-        this.gfx.drawText(
-            helpDialog.text,
-            helpDialog.charHeight,
-            { x: helpDialog.rect.x + helpDialog.xPadding, y: helpDialog.rect.y + helpDialog.charHeight },
-            12
-        );
+
+        // this.gfx.drawText(
+        //     helpDialog.text,
+        //     helpDialog.charHeight,
+        //     { x: helpDialog.rect.x + helpDialog.xPadding, y: helpDialog.rect.y + helpDialog.charHeight },
+        //     12
+        // );
+
+        for (let i = 0; i < helpDialog.text.length; i++) {
+            this.gfx.drawText(
+                helpDialog.text[i],
+                helpDialog.charHeight,
+                {
+                    x: helpDialog.rect.x + helpDialog.xPadding,
+                    y: helpDialog.rect.y + (helpDialog.charHeight * (i + 1))
+                },
+                12
+            );
+        }
     }
 
     drawBoxes() {
