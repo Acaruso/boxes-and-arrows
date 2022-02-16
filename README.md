@@ -1,8 +1,9 @@
 # boxes-and-arrows
 
-### Building and running application
+### Building and running application:
 
-- Prerequisites: have npm and node installed locally
+- Prerequisites:
+    - have npm and node installed locally
 
 - To install npm packages:
     - `npm install`
