@@ -1,14 +1,14 @@
 # boxes-and-arrows
 
-### building and running application
+### Building and running application
 
-prerequisites: have npm and node installed locally
+- Prerequisites: have npm and node installed locally
 
-to install npm packages:
-`npm install`
+- To install npm packages:
+    - `npm install`
 
-to build:
-`npm build`
+- To build:
+    - `npm build`
 
-to run application:
-open `dist/index.html` in a web browser
+- To run application:
+    - open `dist/index.html` in a web browser
