@@ -9,7 +9,7 @@ https://acaruso.github.io/boxes-and-arrows.html
 ### Building and running locally:
 
 - Prerequisites:
-    - have npm and node installed locally
+    - have Node.js and npm installed locally
 
 - To install npm packages:
     - `npm install`
