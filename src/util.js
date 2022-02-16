@@ -80,11 +80,16 @@ const loadFile = async () => {
 //     // return content;
 // };
 
+const getWidthOfText = (text, charWidth, xPadding) => {
+    return Math.floor(text.length * charWidth) + (xPadding * 2);
+};
+
 export {
     getMidpoint,
     distanceBetweenCoords,
     rectsOverlap,
     isPrintableKeycode,
     saveFile,
-    loadFile
+    loadFile,
+    getWidthOfText
 };
