@@ -1,5 +1,5 @@
 import { textConstants } from "./text_constants";
-import { getMidpoint, getWidthOfText } from "./util"
+import { getMidpoint } from "./util"
 
 class Renderer {
     constructor(gfx, state, model) {
@@ -20,7 +20,7 @@ class Renderer {
     drawHelpDialog() {
         const helpDialog = this.model.helpDialog;
 
-        let maxWidth = -1;
+        this.gfx.drawRect(helpDialog.rect, 11);
 
         for (let i = 0; i < helpDialog.text.length; i++) {
             this.gfx.drawText(
@@ -32,20 +32,7 @@ class Renderer {
                 },
                 12
             );
-
-            const curWidth = getWidthOfText(
-                helpDialog.text[i],
-                textConstants.charWidth,
-                textConstants.xPadding
-            );
-
-            maxWidth = Math.max(maxWidth, curWidth);
         }
-
-        helpDialog.rect.w = maxWidth;
-        helpDialog.rect.h = helpDialog.rect.y + (textConstants.charHeight * helpDialog.text.length);
-
-        this.gfx.drawRect(helpDialog.rect, 11);
     }
 
     drawBoxes() {
@@ -71,7 +58,7 @@ class Renderer {
         this.gfx.drawText(
             box.text,
             box.charHeight,
-            { x: box.coord.x + box.xPadding, y: box.coord.y + box.charHeight },
+            { x: box.coord.x + textConstants.xPadding, y: box.coord.y + textConstants.charHeight },
             2
         );
     }

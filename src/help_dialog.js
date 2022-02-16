@@ -1,13 +1,8 @@
+import { textConstants } from "./text_constants";
+import { getWidthOfText } from "./util"
+
 class HelpDialog {
     constructor() {
-        this.rect = {
-            x: 5,
-            y: 5,
-            w: 100,
-            h: 100,
-            color: "#A3BFFF",
-        };
-
         this.text = [
             "Welcome to Boxes and Arrows",
             "",
@@ -20,6 +15,27 @@ class HelpDialog {
             "Horizontally align selected boxes: Ctrl-H",
             "Vertically align selected boxes: Ctrl-V",
         ];
+
+        let maxWidth = -1;
+
+        for (const s of this.text) {
+            const curWidth = getWidthOfText(
+                s,
+                textConstants.charWidth,
+                textConstants.xPadding
+            );
+
+            maxWidth = Math.max(maxWidth, curWidth);
+        }
+
+        this.rect = {
+            x: 5,
+            y: 5,
+            w: maxWidth,
+            color: "#A3BFFF",
+        };
+
+        this.rect.h = this.rect.y + (textConstants.charHeight * this.text.length);
     }
 }
 
