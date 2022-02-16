@@ -8,11 +8,6 @@ class HelpDialog {
             color: "#A3BFFF",
         };
 
-        this.charHeight = 14;
-        this.charWidth = this.charHeight * 0.55;
-        this.xPadding = 4;
-        this.yPadding = 6;
-
         this.text = [
             "Welcome to Boxes and Arrows",
             "",
