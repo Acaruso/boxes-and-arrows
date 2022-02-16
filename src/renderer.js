@@ -57,7 +57,7 @@ class Renderer {
     drawBoxText(box) {
         this.gfx.drawText(
             box.text,
-            box.charHeight,
+            textConstants.charHeight,
             { x: box.coord.x + textConstants.xPadding, y: box.coord.y + textConstants.charHeight },
             2
         );

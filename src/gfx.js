@@ -1,8 +1,9 @@
+import { textConstants } from "./text_constants";
+
 class Gfx {
     constructor() {
         this.canvas = document.getElementById("myCanvas")
         this.ctx = this.canvas.getContext("2d");
-        this.textStyle = "Consolas";
         this.queue = [];
     }
 
@@ -43,7 +44,7 @@ class Gfx {
     // note that y-coord is *bottom* left side of text
     drawText(text, size, coord, z=0) {
         const command = (ctx) => {
-            ctx.font = `${size}px ${this.textStyle}`;
+            ctx.font = `${size}px ${textConstants.textStyle}`;
             ctx.fillStyle = "#000000";
             ctx.fillText(text, coord.x, coord.y);
         };

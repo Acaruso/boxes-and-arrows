@@ -4,14 +4,6 @@ class Box {
     constructor(text, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        // this.charHeight = 14;
-        // this.charWidth = this.charHeight * 0.55;
-        this.charHeight = textConstants.charHeight;
-        this.charWidth = textConstants.charWidth;
-        // this.xPadding = 4;
-        // this.yPadding = 6;
-        this.xPadding = textConstants.xPadding;
-        this.yPadding = textConstants.yPadding;
         this.text = text;
         this.rect = {};
 
@@ -41,8 +33,8 @@ class Box {
         this.rect = {
             x: this.coord.x,
             y: this.coord.y,
-            w: Math.floor(length * this.charWidth) + (this.xPadding * 2),
-            h: this.charHeight + this.yPadding
+            w: Math.floor(length * textConstants.charWidth) + (textConstants.xPadding * 2),
+            h: textConstants.charHeight + textConstants.yPadding
         };
     }
 }
