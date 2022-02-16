@@ -1,6 +1,10 @@
 # boxes-and-arrows
 
-### Building and running application locally:
+### Description
+
+Boxes and Arrows is an application for quickly creating diagrams, graphs, tree structures, etc.
+
+### Building and running locally:
 
 - Prerequisites:
     - have npm and node installed locally
@@ -14,6 +18,6 @@
 - To run application:
     - open `dist/index.html` in a web browser
 
-### Viewing application online:
+### Online version:
 
 - visit https://acaruso.github.io/boxes-and-arrows.html
