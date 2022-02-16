@@ -14,6 +14,8 @@ class HelpDialog {
             "Delete selected boxes: Delete",
             "Horizontally align selected boxes: Ctrl-H",
             "Vertically align selected boxes: Ctrl-V",
+            "Save file: Ctrl-S",
+            "Load file: Ctrl-L",
         ];
 
         let maxWidth = -1;
