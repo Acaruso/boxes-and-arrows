@@ -30,3 +30,8 @@
 - Gfx is graphics system, handles actual drawing
     - makes calls to HTML canvas to draw stuff
     - manages z-axis by sorting draw commands by z-axis and then drawing them in order
+
+- one of the key ideas here is to seperate the "drawing" code from the other code
+    - in typical OOP code, an object "knows" how to do various things
+    - for example, it might know how to draw itself to the screen
+    - however, in this code, an object, for example, Box, is decoupled from drawing logic

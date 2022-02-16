@@ -13,6 +13,18 @@ class Renderer {
         this.drawLine();
         this.drawConnections();
         this.drawSelectedRegion();
+        this.drawHelpDialog();
+    }
+
+    drawHelpDialog() {
+        const helpDialog = this.model.helpDialog;
+        this.gfx.drawRect(helpDialog.rect, 11);
+        this.gfx.drawText(
+            helpDialog.text,
+            helpDialog.charHeight,
+            { x: helpDialog.rect.x + helpDialog.xPadding, y: helpDialog.rect.y + helpDialog.charHeight },
+            12
+        );
     }
 
     drawBoxes() {
