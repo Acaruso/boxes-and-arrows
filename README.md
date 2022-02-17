@@ -1,10 +1,10 @@
-# boxes-and-arrows
+# boxes-and-lines
 
 ### Description
 
-Boxes and Arrows is an application for quickly creating diagrams, graphs, tree structures, etc.
+Boxes and Lines is an application for quickly creating diagrams, graphs, tree structures, etc.
 
-https://acaruso.github.io/boxes-and-arrows.html
+https://acaruso.github.io/boxes-and-lines.html
 
 ### Building and running locally:
 

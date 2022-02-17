@@ -6,7 +6,7 @@ class HelpDialog {
         this.visible = true;
 
         this.text = [
-            "Welcome to Boxes and Arrows",
+            "Welcome to Boxes and Lines",
             "",
             "Controls:",
             "Create a box: double click",
