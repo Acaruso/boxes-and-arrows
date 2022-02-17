@@ -5,18 +5,30 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "webpack:test": "webpack --config test/webpack.test.config.js",
+    "jest": "jest test/bundle.test.js",
+    "test": "npm run webpack:test && npm run jest"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "css-loader": "^5.2.4",
+    "jest": "^27.5.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
     "copy-webpack-plugin": "^8.1.1"
   }
 }
