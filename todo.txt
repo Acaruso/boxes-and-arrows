@@ -1,2 +1,0 @@
-- fix bug:
-    - when you alt tab out of app and then back in, alt key is "stuck"
