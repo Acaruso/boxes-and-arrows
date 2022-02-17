@@ -12,6 +12,7 @@ const makeState = () => {
             control: false,
             shift: false,
             alt: false,
+            tab: false,
             backspace: false,
             a: false,
             b: false,

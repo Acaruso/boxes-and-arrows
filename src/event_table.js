@@ -14,6 +14,7 @@ class EventTable {
         e.mousedown = e.type === "mousedown";
         e.mouseup = e.type === "mouseup";
         e.keydown = e.type === "keydown";
+        e.dblclick = e.type === "dblclick";
         e.insideBox = false;
         e.mouseBox = null;
         e.keyboard = this.state.cur.keyboard;

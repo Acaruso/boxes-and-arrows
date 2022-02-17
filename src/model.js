@@ -1,8 +1,10 @@
 import { Boxes } from "./boxes";
+import { HelpDialog } from "./help_dialog"
 
 class Model {
     constructor() {
         this.boxes = new Boxes();
+        this.helpDialog = new HelpDialog();
 
         this.selectedBoxIds = [];
 

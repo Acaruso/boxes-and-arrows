@@ -1,8 +1,9 @@
+import { textConstants } from "./text_constants";
+
 class Gfx {
     constructor() {
         this.canvas = document.getElementById("myCanvas")
         this.ctx = this.canvas.getContext("2d");
-        this.textStyle = "Consolas";
         this.queue = [];
     }
 
@@ -28,22 +29,22 @@ class Gfx {
         });
     }
 
-    strokeRect(rect, z=0) {
+    strokeRect(rect, z=0, color="#000000") {
         const upperLeft = { x: rect.x, y: rect.y };
         const upperRight = { x: rect.x + rect.w, y: rect.y };
         const lowerRight = { x: rect.x + rect.w, y: rect.y + rect.h };
         const lowerLeft = { x: rect.x, y: rect.y + rect.h };
 
-        this.drawLine(upperLeft, upperRight, z);
-        this.drawLine(upperRight, lowerRight, z);
-        this.drawLine(lowerRight, lowerLeft, z);
-        this.drawLine(lowerLeft, upperLeft, z);
+        this.drawLine(upperLeft, upperRight, z, color);
+        this.drawLine(upperRight, lowerRight, z, color);
+        this.drawLine(lowerRight, lowerLeft, z, color);
+        this.drawLine(lowerLeft, upperLeft, z, color);
     }
 
     // note that y-coord is *bottom* left side of text
     drawText(text, size, coord, z=0) {
         const command = (ctx) => {
-            ctx.font = `${size}px ${this.textStyle}`;
+            ctx.font = `${size}px ${textConstants.textStyle}`;
             ctx.fillStyle = "#000000";
             ctx.fillText(text, coord.x, coord.y);
         };
@@ -54,9 +55,9 @@ class Gfx {
         });
     }
 
-    drawLine(beginCoord, endCoord, z=0) {
+    drawLine(beginCoord, endCoord, z=0, color="#000000") {
         const command = (ctx) => {
-            ctx.fillStyle = "#000000";
+            ctx.strokeStyle = color;
             ctx.beginPath();
             ctx.moveTo(beginCoord.x, beginCoord.y);
             ctx.lineTo(endCoord.x, endCoord.y);

@@ -1,3 +1,4 @@
+import { textConstants } from "./text_constants";
 import { getMidpoint } from "./util"
 
 class Renderer {
@@ -13,6 +14,49 @@ class Renderer {
         this.drawLine();
         this.drawConnections();
         this.drawSelectedRegion();
+        this.drawHelpDialog();
+    }
+
+    drawHelpDialog() {
+        const helpDialog = this.model.helpDialog;
+
+        if (helpDialog.visible == false) {
+            return;
+        }
+
+        this.gfx.drawRect(helpDialog.rect, 11);
+
+        for (let i = 0; i < helpDialog.text.length; i++) {
+            this.gfx.drawText(
+                helpDialog.text[i],
+                textConstants.charHeight,
+                {
+                    x: helpDialog.rect.x + textConstants.xPadding,
+                    y: helpDialog.rect.y + (textConstants.charHeight * (i + 1))
+                },
+                12
+            );
+        }
+
+        this.drawCloseButton();
+    }
+
+    drawCloseButton() {
+        const cbRect = this.model.helpDialog.closeButtonRect;
+
+        this.gfx.strokeRect(cbRect, 20);
+
+        this.gfx.drawLine(
+            { x: cbRect.x, y: cbRect.y },
+            { x: cbRect.x + cbRect.w, y: cbRect.y + cbRect.h },
+            20
+        );
+
+        this.gfx.drawLine(
+            { x: cbRect.x + cbRect.w, y: cbRect.y },
+            { x: cbRect.x, y: cbRect.y + cbRect.h },
+            20
+        );
     }
 
     drawBoxes() {
@@ -37,8 +81,8 @@ class Renderer {
     drawBoxText(box) {
         this.gfx.drawText(
             box.text,
-            box.charHeight,
-            { x: box.coord.x + box.xPadding, y: box.coord.y + box.charHeight },
+            textConstants.charHeight,
+            { x: box.coord.x + textConstants.xPadding, y: box.coord.y + textConstants.charHeight },
             2
         );
     }
