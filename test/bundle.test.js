@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
 /* 0 */,
 /* 1 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Model": () => (/* binding */ Model)
@@ -62,7 +62,6 @@ class Model {
 /* 2 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Boxes": () => (/* binding */ Boxes)
@@ -160,7 +159,6 @@ class Boxes {
 /* 3 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Box": () => (/* binding */ Box)
@@ -214,7 +212,6 @@ class Box {
 /* 4 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "textConstants": () => (/* binding */ textConstants)
@@ -236,7 +233,6 @@ const textConstants = {
 /* 5 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "HelpDialog": () => (/* binding */ HelpDialog)
@@ -304,7 +300,6 @@ class HelpDialog {
 /* 6 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getMidpoint": () => (/* binding */ getMidpoint),
@@ -462,10 +457,8 @@ const getWidthOfText = (text, charWidth, xPadding) => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
-var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
@@ -473,34 +466,8 @@ __webpack_require__.r(__webpack_exports__);
 describe("Model", () => {
     test("do stuff", () => {
         const model = new _src_model__WEBPACK_IMPORTED_MODULE_0__.Model();
-
         model.boxes.addBox("test box", { x: 0, y: 0 });
-
-        expect(model.boxes.length).toEqual(1);
-    });
-});
-
-})();
-
-// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
-(() => {
-function filterByTerm(inputArr, searchTerm) {
-    return inputArr.filter(function (arrayElement) {
-        return arrayElement.url.match(searchTerm);
-    });
-}
-
-describe("Filter function", () => {
-    test("it should filter by a search term (link)", () => {
-        const input = [
-        { id: 1, url: "https://www.url1.dev" },
-        { id: 2, url: "https://www.url2.dev" },
-        { id: 3, url: "https://www.link3.dev" },
-        ];
-
-        const output = [{ id: 3, url: "https://www.link3.dev" }];
-
-        expect(filterByTerm(input, "link")).toEqual(output);
+        expect(model.boxes.boxes.length).toEqual(1);
     });
 });
 
