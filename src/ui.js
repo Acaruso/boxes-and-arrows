@@ -9,24 +9,13 @@ class Ui {
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
+        addEventListener("dblclick", e => this.eventTable.onEvent(e));
         addEventListener("keydown", e => this.eventTable.onEvent(e));
 
         this.addEventListeners();
     }
 
     addEventListeners() {
-        this.eventTable.addEvent(
-            "closeHelpDialog",
-            e => (
-                e.mousedown
-                && this.state.isMouseInside(this.model.helpDialog.closeButtonRect)
-                && this.model.helpDialog.visible
-            ),
-            e => {
-                this.model.helpDialog.visible = false;
-            }
-        );
-
         this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
@@ -39,7 +28,10 @@ class Ui {
 
         this.eventTable.addEvent(
             "addBox",
-            e => e.mousedown && e.keyboard.alt && !e.insideBox,
+            e => (
+                ((e.mousedown && e.keyboard.alt) || e.dblclick)
+                && !e.insideBox
+            ),
             e => {
                 const text = this.scripter.getNext();
                 const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
@@ -272,6 +264,16 @@ class Ui {
                 this.state.cur.keyboard.control = false;
                 this.state.cur.keyboard.l = false;
             }
+        );
+
+        this.eventTable.addEvent(
+            "closeHelpDialog",
+            e => (
+                e.mousedown
+                && this.state.isMouseInside(this.model.helpDialog.closeButtonRect)
+                && this.model.helpDialog.visible
+            ),
+            e => this.model.helpDialog.visible = false
         );
     }
 
