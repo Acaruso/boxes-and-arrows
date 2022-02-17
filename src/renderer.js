@@ -33,6 +33,41 @@ class Renderer {
                 12
             );
         }
+
+        // draw "x" button in upper right corner
+        const boxW = textConstants.charHeight;
+
+        const rx = (
+            (helpDialog.rect.x + helpDialog.rect.w)
+            - (boxW + textConstants.yPadding)
+        );
+
+        const ry = helpDialog.rect.y + textConstants.yPadding;
+
+        const rw = boxW;
+        const rh = textConstants.charHeight;
+
+        this.gfx.strokeRect(
+            {
+                x: rx,
+                y: ry,
+                w: rw,
+                h: rh,
+            },
+            20
+        );
+
+        this.gfx.drawLine(
+            { x: rx, y: ry },
+            { x: rx + rw, y: ry + rh },
+            20
+        );
+
+        this.gfx.drawLine(
+            { x: rx + rw, y: ry },
+            { x: rx, y: ry + rh },
+            20
+        );
     }
 
     drawBoxes() {
