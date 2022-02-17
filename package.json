@@ -9,12 +9,6 @@
     "jest": "jest tests/bundle.test.js",
     "test": "npm run webpack:test && npm run jest"
   },
-  "jest": {
-    "verbose": true,
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    }
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
