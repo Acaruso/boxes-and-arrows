@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode development",
-    "webpack:test": "webpack --config test/webpack.test.config.js",
-    "jest": "jest test/bundle.test.js",
+    "webpack:test": "webpack --config tests/webpack.test.config.js",
+    "jest": "jest tests/bundle.test.js",
     "test": "npm run webpack:test && npm run jest"
   },
   "jest": {
