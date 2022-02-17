@@ -34,38 +34,23 @@ class Renderer {
             );
         }
 
-        // draw "x" button in upper right corner
-        const boxW = textConstants.charHeight;
+        this.drawCloseButton();
+    }
 
-        const rx = (
-            (helpDialog.rect.x + helpDialog.rect.w)
-            - (boxW + textConstants.yPadding)
-        );
+    drawCloseButton() {
+        const cbRect = this.model.helpDialog.closeButtonRect;
 
-        const ry = helpDialog.rect.y + textConstants.yPadding;
+        this.gfx.strokeRect(cbRect, 20);
 
-        const rw = boxW;
-        const rh = textConstants.charHeight;
-
-        this.gfx.strokeRect(
-            {
-                x: rx,
-                y: ry,
-                w: rw,
-                h: rh,
-            },
+        this.gfx.drawLine(
+            { x: cbRect.x, y: cbRect.y },
+            { x: cbRect.x + cbRect.w, y: cbRect.y + cbRect.h },
             20
         );
 
         this.gfx.drawLine(
-            { x: rx, y: ry },
-            { x: rx + rw, y: ry + rh },
-            20
-        );
-
-        this.gfx.drawLine(
-            { x: rx + rw, y: ry },
-            { x: rx, y: ry + rh },
+            { x: cbRect.x + cbRect.w, y: cbRect.y },
+            { x: cbRect.x, y: cbRect.y + cbRect.h },
             20
         );
     }

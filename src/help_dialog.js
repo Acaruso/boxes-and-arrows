@@ -3,6 +3,8 @@ import { getWidthOfText } from "./util"
 
 class HelpDialog {
     constructor() {
+        this.visible = true;
+
         this.text = [
             "Welcome to Boxes and Arrows",
             "",
@@ -38,6 +40,15 @@ class HelpDialog {
         };
 
         this.rect.h = this.rect.y + (textConstants.charHeight * this.text.length);
+
+        const cbW = textConstants.charHeight;
+
+        this.closeButtonRect = {
+            x: (this.rect.x + this.rect.w) - (cbW + textConstants.yPadding),
+            y: this.rect.y + textConstants.yPadding,
+            w: cbW,
+            h: textConstants.charHeight,
+        };
     }
 }
 
