@@ -16,6 +16,18 @@ class Ui {
 
     addEventListeners() {
         this.eventTable.addEvent(
+            "closeHelpDialog",
+            e => (
+                e.mousedown
+                && this.state.isMouseInside(this.model.helpDialog.closeButtonRect)
+                && this.model.helpDialog.visible
+            ),
+            e => {
+                this.model.helpDialog.visible = false;
+            }
+        );
+
+        this.eventTable.addEvent(
             "beginConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
             e => {

@@ -20,6 +20,10 @@ class Renderer {
     drawHelpDialog() {
         const helpDialog = this.model.helpDialog;
 
+        if (helpDialog.visible == false) {
+            return;
+        }
+
         this.gfx.drawRect(helpDialog.rect, 11);
 
         for (let i = 0; i < helpDialog.text.length; i++) {
