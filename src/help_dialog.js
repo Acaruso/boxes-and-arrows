@@ -8,8 +8,8 @@ class HelpDialog {
         this.text = [
             "Welcome to Boxes and Arrows",
             "",
-            "Keyboard shortcuts:",
-            "Create a box: Alt-click",
+            "Controls:",
+            "Create a box: double click",
             "Create a connection: Ctrl-click within a box,",
             "    then drag to another box",
             "Duplicate a box: Alt-click within a box",

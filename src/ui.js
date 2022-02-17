@@ -28,11 +28,9 @@ class Ui {
 
         this.eventTable.addEvent(
             "addBox",
-            e => (
-                ((e.mousedown && e.keyboard.alt) || e.dblclick)
-                && !e.insideBox
-            ),
+            e => e.dblclick && !e.insideBox,
             e => {
+                console.log(e.mouse.coord)
                 const text = this.scripter.getNext();
                 const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
