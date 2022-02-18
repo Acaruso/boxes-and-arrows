@@ -1,10 +1,6 @@
 import { Box } from "../src/box";
 
 describe("Box", () => {
-    // test("", () => {
-    //     expect().toEqual();
-    // });
-
     test("append chars", () => {
         const box = new Box("", { x: 0, y: 0 }, 1);
         box.appendChar("a");
@@ -43,5 +39,4 @@ describe("Box", () => {
         expect(box.rect.x).toEqual(10);
         expect(box.rect.y).toEqual(20);
     });
-
 });

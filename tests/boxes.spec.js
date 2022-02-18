@@ -52,5 +52,4 @@ describe("Boxes", () => {
         const connections = boxes.getConnections(id1, id2);
         expect(connections.length).toEqual(0);
     });
-
 });
