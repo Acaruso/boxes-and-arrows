@@ -7,9 +7,84 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Box": () => (/* binding */ Box)
+/* harmony export */ });
+/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+
+
+class Box {
+    constructor(text, coord, id=0) {
+        this.coord = { ...coord };
+        this.id = id;
+        this.text = text;
+        this.rect = {};
+
+        this.updateRect();
+    }
+
+    appendChar(c) {
+        this.text += c;
+        this.updateRect();
+    }
+
+    deleteChar() {
+        if (this.text.length > 0) {
+            this.text = this.text.slice(0, -1);
+        }
+        this.updateRect();
+    }
+
+    setCoord(newCoord) {
+        this.coord = { ...newCoord };
+        this.updateRect();
+    }
+
+    updateRect() {
+        const length = this.text.length > 0 ? this.text.length : 1;
+
+        this.rect = {
+            x: this.coord.x,
+            y: this.coord.y,
+            w: Math.floor(length * _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.charWidth) + (_text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.xPadding * 2),
+            h: _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.charHeight + _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.yPadding
+        };
+    }
+}
+
+
+
+
+/***/ }),
+/* 2 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "textConstants": () => (/* binding */ textConstants)
+/* harmony export */ });
+const charHeight = 14;
+
+const textConstants = {
+    textStyle: "Consolas",
+    charHeight: charHeight,
+    charWidth: charHeight * 0.55,
+    xPadding: 4,
+    yPadding: 6,
+};
+
+
+
+
+/***/ }),
+/* 3 */,
+/* 4 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Boxes": () => (/* binding */ Boxes)
 /* harmony export */ });
-/* harmony import */ var _box__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _box__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 
 class Boxes {
@@ -107,90 +182,16 @@ class Boxes {
 
 
 /***/ }),
-/* 2 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Box": () => (/* binding */ Box)
-/* harmony export */ });
-/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-
-
-class Box {
-    constructor(text, coord, id=0) {
-        this.coord = { ...coord };
-        this.id = id;
-        this.text = text;
-        this.rect = {};
-
-        this.updateRect();
-    }
-
-    appendChar(c) {
-        this.text += c;
-        this.updateRect();
-    }
-
-    deleteChar() {
-        if (this.text.length > 0) {
-            this.text = this.text.slice(0, -1);
-        }
-        this.updateRect();
-    }
-
-    setCoord(newCoord) {
-        this.coord = { ...newCoord };
-        this.updateRect();
-    }
-
-    updateRect() {
-        const length = this.text.length > 0 ? this.text.length : 1;
-
-        this.rect = {
-            x: this.coord.x,
-            y: this.coord.y,
-            w: Math.floor(length * _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.charWidth) + (_text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.xPadding * 2),
-            h: _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.charHeight + _text_constants__WEBPACK_IMPORTED_MODULE_0__.textConstants.yPadding
-        };
-    }
-}
-
-
-
-
-/***/ }),
-/* 3 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "textConstants": () => (/* binding */ textConstants)
-/* harmony export */ });
-const charHeight = 14;
-
-const textConstants = {
-    textStyle: "Consolas",
-    charHeight: charHeight,
-    charWidth: charHeight * 0.55,
-    xPadding: 4,
-    yPadding: 6,
-};
-
-
-
-
-/***/ }),
-/* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Model": () => (/* binding */ Model)
 /* harmony export */ });
-/* harmony import */ var _boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _help_dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _help_dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 
 
 
@@ -239,15 +240,15 @@ class Model {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "HelpDialog": () => (/* binding */ HelpDialog)
 /* harmony export */ });
-/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
 
 
 
@@ -306,7 +307,7 @@ class HelpDialog {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -470,24 +471,88 @@ var __webpack_exports__ = {};
 (() => {
 var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _src_box__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
+describe("Box", () => {
+    // test("", () => {
+    //     expect().toEqual();
+    // });
+
+    test("append chars", () => {
+        const box = new _src_box__WEBPACK_IMPORTED_MODULE_0__.Box("", { x: 0, y: 0 }, 1);
+        box.appendChar("a");
+        box.appendChar("b");
+        box.appendChar("c");
+        expect(box.text).toEqual("abc");
+    });
+
+    test("delete chars", () => {
+        const box = new _src_box__WEBPACK_IMPORTED_MODULE_0__.Box("", { x: 0, y: 0 }, 1);
+        box.appendChar("a");
+        box.appendChar("b");
+        box.appendChar("c");
+        box.deleteChar();
+        box.deleteChar();
+        expect(box.text).toEqual("a");
+    });
+
+    test("delete more chars than exist", () => {
+        const box = new _src_box__WEBPACK_IMPORTED_MODULE_0__.Box("", { x: 0, y: 0 }, 1);
+        box.appendChar("a");
+        box.deleteChar();
+        box.deleteChar();
+        expect(box.text).toEqual("");
+    });
+
+    test("update coord", () => {
+        const box = new _src_box__WEBPACK_IMPORTED_MODULE_0__.Box("", { x: 0, y: 0 }, 1);
+        box.setCoord({ x: 10, y: 20 });
+        expect(box.coord).toEqual({ x: 10, y: 20 });
+    });
+
+    test("update coord, should update rect", () => {
+        const box = new _src_box__WEBPACK_IMPORTED_MODULE_0__.Box("", { x: 0, y: 0 }, 1);
+        box.setCoord({ x: 10, y: 20 });
+        expect(box.rect.x).toEqual(10);
+        expect(box.rect.y).toEqual(20);
+    });
+
+});
+
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+var __webpack_exports__ = {};
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 
 
 describe("Boxes", () => {
-    test("add box", () => {
+    test("add box, boxes length should be 1", () => {
         const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
         boxes.addBox("test box", { x: 0, y: 0 });
         expect(boxes.getLength()).toEqual(1);
     });
 
-    test("add and delete box", () => {
+    test("add and delete box, boxes length should be 0", () => {
         const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
         const id = boxes.addBox("test box", { x: 0, y: 0 });
         boxes.deleteBox(id);
         expect(boxes.getLength()).toEqual(0);
     });
 
-    test("create connection", () => {
+    test("add boxes, delete all boxes, boxes length should be 0", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        boxes.addBox("1", { x: 43, y: 2 });
+        boxes.addBox("2", { x: 34, y: 7 });
+        boxes.addBox("3", { x: 87, y: 34 });
+        boxes.deleteAll();
+        expect(boxes.getLength()).toEqual(0);
+    });
+
+    test("create connection, connection should exist", () => {
         const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
         const id1 = boxes.addBox("1", { x: 0, y: 0 });
         const id2 = boxes.addBox("1", { x: 13, y: 1414 });
@@ -524,7 +589,7 @@ describe("Boxes", () => {
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
 (() => {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _src_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 
 
 describe("Model", () => {
