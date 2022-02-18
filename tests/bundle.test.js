@@ -7,66 +7,9 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Model": () => (/* binding */ Model)
-/* harmony export */ });
-/* harmony import */ var _boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _help_dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-
-
-
-class Model {
-    constructor() {
-        this.boxes = new _boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
-        this.helpDialog = new _help_dialog__WEBPACK_IMPORTED_MODULE_1__.HelpDialog();
-
-        this.selectedBoxIds = [];
-
-        this.selectedBoxId = -1;
-        this.draggingBoxes = false;
-        this.draggingSelectedRegion = false;
-
-        this.lineBegin = { x: 0, y: 0 };
-        this.drawingLine = false;
-        this.outBox = {};
-
-        this.numLevels = 1;
-
-        this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
-    }
-
-    anyBoxesSelected() {
-        return this.selectedBoxIds.length > 0;
-    }
-
-    isBoxSelected(id) {
-        return this.selectedBoxIds.includes(id);
-    }
-
-    addSelectedBoxId(id) {
-        if (!this.selectedBoxIds.includes(id)) {
-            this.selectedBoxIds.push(id);
-        }
-    }
-
-    clearSelectedBoxIds() {
-        while (this.selectedBoxIds.length > 0) {
-            this.selectedBoxIds.pop();
-        }
-    }
-}
-
-
-
-
-/***/ }),
-/* 2 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Boxes": () => (/* binding */ Boxes)
 /* harmony export */ });
-/* harmony import */ var _box__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _box__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 
 
 class Boxes {
@@ -87,6 +30,10 @@ class Boxes {
         return box.id;
     }
 
+    getLength() {
+        return this.boxes.length;
+    }
+
     loadBoxes(boxesStr) {
         const boxData = JSON.parse(boxesStr);
         let maxId = -1;
@@ -102,6 +49,10 @@ class Boxes {
 
     loadConnections(connStr) {
         this.connections = new Map(JSON.parse(connStr));
+    }
+
+    getBoxes() {
+        return this.boxes;
     }
 
     getBox(id) {
@@ -156,14 +107,14 @@ class Boxes {
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Box": () => (/* binding */ Box)
 /* harmony export */ });
-/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 
 
 class Box {
@@ -209,7 +160,7 @@ class Box {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -230,15 +181,73 @@ const textConstants = {
 
 
 /***/ }),
+/* 4 */,
 /* 5 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Model": () => (/* binding */ Model)
+/* harmony export */ });
+/* harmony import */ var _boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _help_dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+
+
+
+class Model {
+    constructor() {
+        this.boxes = new _boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        this.helpDialog = new _help_dialog__WEBPACK_IMPORTED_MODULE_1__.HelpDialog();
+
+        this.selectedBoxIds = [];
+
+        this.selectedBoxId = -1;
+        this.draggingBoxes = false;
+        this.draggingSelectedRegion = false;
+
+        this.lineBegin = { x: 0, y: 0 };
+        this.drawingLine = false;
+        this.outBox = {};
+
+        this.numLevels = 1;
+
+        this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
+    }
+
+    anyBoxesSelected() {
+        return this.selectedBoxIds.length > 0;
+    }
+
+    isBoxSelected(id) {
+        return this.selectedBoxIds.includes(id);
+    }
+
+    addSelectedBoxId(id) {
+        if (!this.selectedBoxIds.includes(id)) {
+            this.selectedBoxIds.push(id);
+        }
+    }
+
+    clearSelectedBoxIds() {
+        while (this.selectedBoxIds.length > 0) {
+            this.selectedBoxIds.pop();
+        }
+    }
+}
+
+
+
+
+/***/ }),
+/* 6 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "HelpDialog": () => (/* binding */ HelpDialog)
 /* harmony export */ });
-/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _text_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 
 
 
@@ -297,7 +306,7 @@ class HelpDialog {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -457,14 +466,69 @@ const getWidthOfText = (text, charWidth, xPadding) => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+var __webpack_exports__ = {};
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_boxes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
+describe("Boxes", () => {
+    test("add box", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        boxes.addBox("test box", { x: 0, y: 0 });
+        expect(boxes.getLength()).toEqual(1);
+    });
+
+    test("add and delete box", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        const id = boxes.addBox("test box", { x: 0, y: 0 });
+        boxes.deleteBox(id);
+        expect(boxes.getLength()).toEqual(0);
+    });
+
+    test("create connection", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        const id1 = boxes.addBox("1", { x: 0, y: 0 });
+        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        boxes.addConnection(id1, id2);
+        const connections = boxes.getConnections(id1, id2);
+        expect(connections[0][0].id).toEqual(id1);
+        expect(connections[0][1].id).toEqual(id2);
+    });
+
+    test("create connection, delete source, connection should be deleted", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        const id1 = boxes.addBox("1", { x: 0, y: 0 });
+        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        boxes.addConnection(id1, id2);
+        boxes.deleteBox(id1);
+        const connections = boxes.getConnections(id1, id2);
+        expect(connections.length).toEqual(0);
+    });
+
+    test("create connection, delete destination, connection should be deleted", () => {
+        const boxes = new _src_boxes__WEBPACK_IMPORTED_MODULE_0__.Boxes();
+        const id1 = boxes.addBox("1", { x: 0, y: 0 });
+        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        boxes.addConnection(id1, id2);
+        boxes.deleteBox(id2);
+        const connections = boxes.getConnections(id1, id2);
+        expect(connections.length).toEqual(0);
+    });
+
+});
+
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
 (() => {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _src_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 
 
 describe("Model", () => {
-    test("do stuff", () => {
+    test("add box", () => {
         const model = new _src_model__WEBPACK_IMPORTED_MODULE_0__.Model();
         model.boxes.addBox("test box", { x: 0, y: 0 });
         expect(model.boxes.boxes.length).toEqual(1);

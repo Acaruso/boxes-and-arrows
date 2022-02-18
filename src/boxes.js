@@ -18,6 +18,10 @@ class Boxes {
         return box.id;
     }
 
+    getLength() {
+        return this.boxes.length;
+    }
+
     loadBoxes(boxesStr) {
         const boxData = JSON.parse(boxesStr);
         let maxId = -1;
@@ -33,6 +37,10 @@ class Boxes {
 
     loadConnections(connStr) {
         this.connections = new Map(JSON.parse(connStr));
+    }
+
+    getBoxes() {
+        return this.boxes;
     }
 
     getBox(id) {
