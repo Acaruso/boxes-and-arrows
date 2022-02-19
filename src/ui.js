@@ -24,6 +24,18 @@ class Ui {
                 this.model.drawingLine = true;
             }
         );
+        
+        this.eventTable.addEvent(
+            "addConnection",
+            e => e.mouseup && e.insideBox && this.model.drawingLine,
+            e => {
+                this.model.boxes.addConnection(
+                    this.model.outBox.id,
+                    e.mouseBox.id
+                );
+                this.model.drawingLine = false;
+            }
+        );
 
         this.eventTable.addEvent(
             "addBox",
@@ -109,18 +121,6 @@ class Ui {
                     h: 0,
                     alpha: 0.3,
                 };
-            }
-        );
-
-        this.eventTable.addEvent(
-            "addConnection",
-            e => e.mouseup && e.insideBox && this.model.drawingLine,
-            e => {
-                this.model.boxes.addConnection(
-                    this.model.outBox.id,
-                    e.mouseBox.id
-                );
-                this.model.drawingLine = false;
             }
         );
 
