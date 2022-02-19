@@ -4,7 +4,7 @@ class Scripter {
         this.boxes = model.boxes;
         this.xPadding = 80;
         this.yPadding = 80;
-        this.arr = [0, 3, 2, 3];
+        this.arr = [0, 2, 3, 4];
         this.levels = [];
         this.maxLevelWidth = 0;
     }
