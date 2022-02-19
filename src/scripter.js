@@ -78,7 +78,7 @@ class Scripter {
                 let childrenIds = this.boxes.getDests(id);
                 let mid = this.getChildrensMidpoint(childrenIds);
                 box.setCoord({
-                    x: mid,
+                    x: mid - (box.rect.w / 2),
                     y: box.coord.y
                 });
             }
