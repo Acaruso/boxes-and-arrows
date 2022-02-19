@@ -79,6 +79,10 @@ class Boxes {
         return out;
     }
 
+    getDests(id) {
+        return this.connections.get(id);
+    }
+
     deleteConnections(id) {
         this.connections.delete(id);
         for (let [source, destArr] of this.connections) {

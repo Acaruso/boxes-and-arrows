@@ -6,6 +6,24 @@ class Scripter {
         this.yPadding = 80;
         this.arr = [0, 3, 2, 3];
         this.levels = [];
+        this.maxLevelWidth = 0;
+    }
+
+    run() {
+        let rootId = this.addBox(null, 0);
+        this.inner(rootId, 1);
+        this.maxLevelWidth = this.getMaxLevelWidth();
+        this.layout();
+        this.layout2();
+    }
+
+    inner(parentId, level) {
+        if (level < this.arr.length) {
+            for (let i = 0; i < this.arr[level]; i++) {
+                let curId = this.addBox(parentId, level);
+                this.inner(curId, level + 1);
+            }
+        }
     }
 
     addBox(parentId, levelIdx) {
@@ -24,21 +42,17 @@ class Scripter {
         return id;
     }
 
-    run() {
-        let rootId = this.addBox(null, 0);
-        this.inner(rootId, 1);
-        console.log(this.levels);
-        this.layout();
-        console.log(this.boxes.getBoxes())
-    }
-
-    inner(parentId, level) {
-        if (level < this.arr.length) {
-            for (let i = 0; i < this.arr[level]; i++) {
-                let curId = this.addBox(parentId, level);
-                this.inner(curId, level + 1);
+    getMaxLevelWidth() {
+        let maxLevelWidth = 0;
+        for (const level of this.levels) {
+            let levelWidth = 0;
+            for (const id of level) {
+                const box = this.boxes.getBox(id);
+                levelWidth += box.rect.w + this.xPadding;
             }
+            maxLevelWidth = Math.max(maxLevelWidth, levelWidth);
         }
+        return maxLevelWidth;
     }
 
     layout() {
@@ -51,58 +65,39 @@ class Scripter {
             for (let k = 0; k < curLevel.length; k++) {
                 let box = this.boxes.getBox(curLevel[k]);
                 box.setCoord({ x, y });
-                // box.rect.x = x;
-                // box.rect.y = y;
                 x += this.xPadding;
             }
             y += this.yPadding;
         }
     }
 
-    getMaxLevelWidth() {
-        let maxLevelWidth = 0;
-        for (const level of levels) {
-            let levelWidth = 0;
-            for (const id of level) {
-                const box = this.boxes.getBox(id);
-                levelWidth += box.rect.w + this.xPadding;
+    layout2() {
+        for (let i = this.levels.length - 2; i >= 0; i--) {
+            for (let id of this.levels[i]) {
+                let box = this.boxes.getBox(id);
+                let childrenIds = this.boxes.getDests(id);
+                let mid = this.getChildrensMidpoint(childrenIds);
+                box.setCoord({
+                    x: mid,
+                    y: box.coord.y
+                });
             }
-            maxLevelWidth = Math.max(maxLevelWidth, levelWidth);
         }
-        return maxLevelWidth;
     }
 
-    // run() {
-    //     let rootId = this.boxes.addBox("", { x: 0, y: 0 });
-    //     this.inner(rootId, 0);
-    // }
+    getChildrensMidpoint(childrenIds) {
+        let min = 9999999;
+        let max = -1;
 
-    // inner(parentId, level) {
-    //     if (level < this.arr.length) {
-    //         for (let i = 0; i < this.arr[level]; i++) {
-    //             let curId = this.boxes.addBox("", { x: 0, y: 0 });
-    //             this.boxes.addConnection(parentId, curId);
-    //             this.inner(curId, level + 1);
-    //         }
-    //     }
-    // }
-
-    // run() {
-    //     let prevId = null;
-    //     let curId = null;
-
-    //     for (let i = 0; i < 10; i++) {
-    //         curId = this.model.boxes.addBox(i, { x: this.x, y: this.y });
-
-    //         this.y += this.yIncrement;
-            
-    //         if (prevId !== null) {
-    //             this.model.boxes.addConnection(prevId, curId);
-    //         }
-
-    //         prevId = curId;
-    //     }
-    // }
+        for (const childId of childrenIds) {
+            let childBox = this.boxes.getBox(childId);
+            const lhs = childBox.rect.x;
+            const rhs = childBox.rect.x + childBox.rect.w;
+            min = Math.min(min, lhs);
+            max = Math.max(max, rhs);
+        }
+        return min + ((max - min) / 2);
+    }
 }
 
 export { Scripter };
