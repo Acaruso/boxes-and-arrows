@@ -1,10 +1,9 @@
 import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
-    constructor(state, model, scripter, eventTable) {
+    constructor(state, model, eventTable) {
         this.state = state;
         this.model = model;
-        this.scripter = scripter;
         this.eventTable = eventTable;
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
@@ -31,7 +30,7 @@ class Ui {
             e => e.dblclick && !e.insideBox,
             e => {
                 console.log(e.mouse.coord)
-                const text = this.scripter.getNext();
+                const text = "";
                 const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
