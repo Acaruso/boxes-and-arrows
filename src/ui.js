@@ -24,7 +24,7 @@ class Ui {
                 this.model.drawingLine = true;
             }
         );
-        
+
         this.eventTable.addEvent(
             "addConnection",
             e => e.mouseup && e.insideBox && this.model.drawingLine,
@@ -41,7 +41,6 @@ class Ui {
             "addBox",
             e => e.dblclick && !e.insideBox,
             e => {
-                console.log(e.mouse.coord)
                 const text = "";
                 const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();

@@ -29,6 +29,7 @@ class Scripter {
         this.inner(rootId, 1);
         console.log(this.levels);
         this.layout();
+        console.log(this.boxes.getBoxes())
     }
 
     inner(parentId, level) {
@@ -49,8 +50,9 @@ class Scripter {
             x = 0;
             for (let k = 0; k < curLevel.length; k++) {
                 let box = this.boxes.getBox(curLevel[k]);
-                box.rect.x = x;
-                box.rect.y = y;
+                box.setCoord({ x, y });
+                // box.rect.x = x;
+                // box.rect.y = y;
                 x += this.xPadding;
             }
             y += this.yPadding;
