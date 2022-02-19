@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "webpack:test": "webpack --config tests/webpack.test.config.js",
+    "jest": "jest tests/bundle.test.js",
+    "test": "npm run webpack:test && npm run jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^5.2.4",
+    "jest": "^27.5.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0"
