@@ -15,7 +15,7 @@ https://acaruso.github.io/boxes-and-lines.html
     - `npm install`
 
 - To build:
-    - `npm build`
+    - `npm run build`
 
 - To run application:
     - open `dist/index.html` in a web browser
