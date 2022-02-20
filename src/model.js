@@ -8,7 +8,6 @@ class Model {
 
         this.selectedBoxIds = [];
 
-        this.selectedBoxId = -1;
         this.draggingBoxes = false;
         this.draggingSelectedRegion = false;
 
@@ -39,6 +38,10 @@ class Model {
         while (this.selectedBoxIds.length > 0) {
             this.selectedBoxIds.pop();
         }
+    }
+
+    treeFormat() {
+
     }
 }
 

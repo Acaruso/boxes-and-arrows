@@ -13,8 +13,8 @@ class Scripter {
     run() {
         let rootId = this.addBox(null, 0);
         this.buildTree(rootId, 1);
-        this.layout();
-        this.layout2();
+        this.leftLayout();
+        this.centerLayout();
     }
 
     buildTree(parentId, level) {
@@ -42,7 +42,7 @@ class Scripter {
         return id;
     }
 
-    layout() {
+    leftLayout() {
         let x = 500;
         let y = 100;
 
@@ -58,7 +58,7 @@ class Scripter {
         }
     }
 
-    layout2() {
+    centerLayout() {
         for (let i = this.levels.length - 2; i >= 0; i--) {
             for (let id of this.levels[i]) {
                 let box = this.boxes.getBox(id);
