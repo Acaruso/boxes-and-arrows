@@ -44,8 +44,12 @@ class Model {
         const levels = this.makeLevels(rootId);
         console.log("levels:");
         console.log(levels);
+        this.sortLevelsByX(levels);
+        console.log("sorted levels:");
+        console.log(levels);
         const rootBox = this.boxes.getBox(rootId);
         this.leftLayout(levels, rootBox.coord.x, rootBox.coord.y);
+        // this.centerLayout(levels);
     }
 
     makeLevels(rootId) {
@@ -55,22 +59,36 @@ class Model {
         queue.push(rootId);
 
         while (queue.length > 0) {
-            let n = queue.length;
+            const n = queue.length;
             for (let i = 0; i < n; i++) {
-                let curId = queue.shift();
-                let childrenIds = this.boxes.getConnections(curId);
+                const curId = queue.shift();
+                const curBox = this.boxes.getBox(curId);
+                const childrenIds = this.boxes.getConnections(curId);
                 for (const cid of childrenIds) {
                     queue.push(cid);
                 }
                 if (levels.length - 1 < curLevel) {
                     levels.push([]);
                 }
-                levels[curLevel].push(curId);
+                levels[curLevel].push([curId, curBox.coord.x]);
             }
             curLevel++;
         }
 
         return levels;
+    }
+
+    sortLevelsByX(levels) {
+        for (let i = 0; i < levels.length; i++) {
+            levels[i].sort((a, b) => a[1] < b[1]);
+        }
+
+        for (let i = 0; i < levels.length; i++) {
+            const level = levels[i];
+            for (let k = 0; k < level.length; k++) {
+                level[k] = level[k][0];
+            }
+        }
     }
 
     leftLayout(levels, rootX, rootY) {
@@ -91,6 +109,33 @@ class Model {
         }
     }
 
+    centerLayout(levels) {
+        for (let i = levels.length - 2; i >= 0; i--) {
+            for (let id of levels[i]) {
+                let box = this.boxes.getBox(id);
+                let childrenIds = this.boxes.getConnections(id);
+                let mid = this.getChildrensMidpoint(childrenIds);
+                box.setCoord({
+                    x: mid - (box.rect.w / 2),
+                    y: box.coord.y
+                });
+            }
+        }
+    }
+
+    getChildrensMidpoint(childrenIds) {
+        let min = 9999999;
+        let max = -1;
+
+        for (const childId of childrenIds) {
+            let childBox = this.boxes.getBox(childId);
+            const lhs = childBox.rect.x;
+            const rhs = childBox.rect.x + childBox.rect.w;
+            min = Math.min(min, lhs);
+            max = Math.max(max, rhs);
+        }
+        return min + ((max - min) / 2);
+    }
 }
 
 export { Model };
