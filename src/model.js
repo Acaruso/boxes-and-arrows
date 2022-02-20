@@ -44,6 +44,8 @@ class Model {
         const levels = this.makeLevels(rootId);
         this.sortLevelsByX(levels);
 
+        console.log(levels);
+
         const rootBox = this.boxes.getBox(rootId);
         this.leftLayout(levels, rootBox.coord.x, rootBox.coord.y);
 
@@ -59,27 +61,27 @@ class Model {
 
         queue.push({
             id: rootId,
-            parentX: rootBox.coord.x,
+            parentId: -1,
         });
 
         while (queue.length > 0) {
             const n = queue.length;
             for (let i = 0; i < n; i++) {
                 const cur = queue.shift();
-                const curId = cur.id
-                const curBox = this.boxes.getBox(curId);
-                const childrenIds = this.boxes.getConnections(curId);
+                const curBox = this.boxes.getBox(cur.id);
+                const childrenIds = this.boxes.getConnections(cur.id);
                 for (const cid of childrenIds) {
                     queue.push({
                         id: cid,
-                        parentX: cur.parentX
+                        parentId: cur.id
                     });
                 }
                 if (levels.length - 1 < curLevel) {
                     levels.push([]);
                 }
                 levels[curLevel].push({
-                    id: curId, 
+                    id: cur.id,
+                    parentId: cur.parentId,
                     x: curBox.coord.x,
                 });
             }
