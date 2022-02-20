@@ -42,7 +42,10 @@ class Model {
 
     treeFormat(rootId) {
         const levels = this.makeLevels(rootId);
+        console.log("levels:");
         console.log(levels);
+        const rootBox = this.boxes.getBox(rootId);
+        this.leftLayout(levels, rootBox.coord.x, rootBox.coord.y);
     }
 
     makeLevels(rootId) {
@@ -70,13 +73,15 @@ class Model {
         return levels;
     }
 
-    leftLayout(x, y) {
+    leftLayout(levels, rootX, rootY) {
+        let x = rootX;
+        let y = rootY;
         const xPadding = 80;
         const yPadding = 80;
 
         for (let i = 0; i < levels.length; i++) {
             let curLevel = levels[i];
-            x = 0;
+            x = rootX;
             for (let k = 0; k < curLevel.length; k++) {
                 let box = this.boxes.getBox(curLevel[k]);
                 box.setCoord({ x, y });
