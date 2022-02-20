@@ -41,13 +41,33 @@ class Model {
     }
 
     treeFormat(rootId) {
-
+        const levels = this.makeLevels(rootId);
+        console.log(levels);
     }
 
     makeLevels(rootId) {
+        let queue = [];
         let levels = [];
-        levels.push([rootId]);
-        // let childrenIds = 
+        let curLevel = 0;
+        queue.push(rootId);
+
+        while (queue.length > 0) {
+            let n = queue.length;
+            for (let i = 0; i < n; i++) {
+                let curId = queue.shift();
+                let childrenIds = this.boxes.getConnections(curId);
+                for (const cid of childrenIds) {
+                    queue.push(cid);
+                }
+                if (levels.length - 1 < curLevel) {
+                    levels.push([]);
+                }
+                levels[curLevel].push(curId);
+            }
+            curLevel++;
+        }
+
+        return levels;
     }
 
     leftLayout(x, y) {
