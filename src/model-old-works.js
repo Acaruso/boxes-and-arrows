@@ -103,8 +103,16 @@ class Model {
         for (let i = 0; i < levels.length; i++) {
             levels[i].sort(sortFn);
         }
+
+        // for (let i = 0; i < levels.length; i++) {
+        //     const level = levels[i];
+        //     for (let k = 0; k < level.length; k++) {
+        //         level[k] = level[k].id;
+        //     }
+        // }
     }
 
+    // new version -- expects level elt to be { id, x, parentX }
     leftLayout(levels, rootX, rootY) {
         let x = rootX;
         let y = rootY;
@@ -123,6 +131,25 @@ class Model {
             y += yPadding;
         }
     }
+
+    // old version -- expects level elt to be just id
+    // leftLayout(levels, rootX, rootY) {
+    //     let x = rootX;
+    //     let y = rootY;
+    //     const xPadding = 80;
+    //     const yPadding = 80;
+
+    //     for (let i = 0; i < levels.length; i++) {
+    //         let curLevel = levels[i];
+    //         x = rootX;
+    //         for (let k = 0; k < curLevel.length; k++) {
+    //             let box = this.boxes.getBox(curLevel[k]);
+    //             box.setCoord({ x, y });
+    //             x += xPadding;
+    //         }
+    //         y += yPadding;
+    //     }
+    // }
 
     centerLayout(levels) {
         for (let i = levels.length - 2; i >= 0; i--) {
