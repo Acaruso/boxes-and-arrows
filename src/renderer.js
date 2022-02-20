@@ -113,7 +113,7 @@ class Renderer {
     }
 
     drawConnections() {
-        this.model.boxes.getConnections()
+        this.model.boxes.getAllConnections()
             .map(([box1, box2]) => [getMidpoint(box1.rect), getMidpoint(box2.rect)])
             .forEach(([begin, end]) => this.gfx.drawLine(begin, end, -1));
     }

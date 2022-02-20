@@ -40,9 +40,32 @@ class Model {
         }
     }
 
-    treeFormat() {
+    treeFormat(rootId) {
 
     }
+
+    makeLevels(rootId) {
+        let levels = [];
+        levels.push([rootId]);
+        // let childrenIds = 
+    }
+
+    leftLayout(x, y) {
+        const xPadding = 80;
+        const yPadding = 80;
+
+        for (let i = 0; i < levels.length; i++) {
+            let curLevel = levels[i];
+            x = 0;
+            for (let k = 0; k < curLevel.length; k++) {
+                let box = this.boxes.getBox(curLevel[k]);
+                box.setCoord({ x, y });
+                x += xPadding;
+            }
+            y += yPadding;
+        }
+    }
+
 }
 
 export { Model };

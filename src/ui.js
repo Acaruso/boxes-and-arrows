@@ -224,7 +224,9 @@ class Ui {
                 && this.model.selectedBoxIds.length === 1
             ),
             e => {
-                console.log("treeFormat!");
+                this.model.treeFormat(
+                    this.model.selectedBoxIds[0]
+                );
             }
         );
 

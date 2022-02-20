@@ -7,6 +7,10 @@ class Boxes {
 
         // key: id of source
         // value: array of ids of destinations
+        // ex: { 
+        //     1: [2, 3, 4], 
+        //     2: [8, 9] 
+        // }
         this.connections = new Map();
     }
 
@@ -64,7 +68,7 @@ class Boxes {
         }
     }
 
-    getConnections() {
+    getAllConnections() {
         let out = [];
 
         for (const [source, destArr] of this.connections) {
@@ -79,8 +83,10 @@ class Boxes {
         return out;
     }
 
-    getDests(id) {
-        return this.connections.get(id);
+    getConnections(id) {
+        return this.connections.has(id)
+            ? this.connections.get(id)
+            : [];
     }
 
     deleteConnections(id) {

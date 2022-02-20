@@ -62,7 +62,7 @@ class Scripter {
         for (let i = this.levels.length - 2; i >= 0; i--) {
             for (let id of this.levels[i]) {
                 let box = this.boxes.getBox(id);
-                let childrenIds = this.boxes.getDests(id);
+                let childrenIds = this.boxes.getConnections(id);
                 let mid = this.getChildrensMidpoint(childrenIds);
                 box.setCoord({
                     x: mid - (box.rect.w / 2),
