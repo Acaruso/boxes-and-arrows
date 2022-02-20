@@ -1,10 +1,11 @@
 import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
-    constructor(state, model, eventTable) {
+    constructor(state, model, eventTable, scripter) {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
+        this.scripter = scripter;
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -211,6 +212,19 @@ class Ui {
                         y: box.coord.y
                     });
                 }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "treeFormat",
+            e => (
+                e.keydown 
+                && e.keyboard.control 
+                && e.keyboard.q 
+                && this.model.selectedBoxIds.length === 1
+            ),
+            e => {
+                console.log("treeFormat!");
             }
         );
 

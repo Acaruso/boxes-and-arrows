@@ -16,7 +16,8 @@ class App {
         this.ui = new Ui(
             this.state,
             this.model,
-            this.eventTable
+            this.eventTable,
+            this.scripter
         );
         this.renderer = new Renderer(this.gfx, this.state, this.model);
         this.interval = {};

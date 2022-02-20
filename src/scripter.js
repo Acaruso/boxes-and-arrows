@@ -4,24 +4,24 @@ class Scripter {
         this.boxes = model.boxes;
         this.xPadding = 80;
         this.yPadding = 80;
-        this.arr = [0, 2, 3, 4];
+        // num children at each level
+        // level 0 is root node
+        this.arr = [0, 2, 2, 3, 2, 2];
         this.levels = [];
-        this.maxLevelWidth = 0;
     }
 
     run() {
         let rootId = this.addBox(null, 0);
-        this.inner(rootId, 1);
-        this.maxLevelWidth = this.getMaxLevelWidth();
+        this.buildTree(rootId, 1);
         this.layout();
         this.layout2();
     }
 
-    inner(parentId, level) {
+    buildTree(parentId, level) {
         if (level < this.arr.length) {
             for (let i = 0; i < this.arr[level]; i++) {
                 let curId = this.addBox(parentId, level);
-                this.inner(curId, level + 1);
+                this.buildTree(curId, level + 1);
             }
         }
     }
@@ -40,19 +40,6 @@ class Scripter {
         this.levels[levelIdx].push(id);
 
         return id;
-    }
-
-    getMaxLevelWidth() {
-        let maxLevelWidth = 0;
-        for (const level of this.levels) {
-            let levelWidth = 0;
-            for (const id of level) {
-                const box = this.boxes.getBox(id);
-                levelWidth += box.rect.w + this.xPadding;
-            }
-            maxLevelWidth = Math.max(maxLevelWidth, levelWidth);
-        }
-        return maxLevelWidth;
     }
 
     layout() {
@@ -97,6 +84,20 @@ class Scripter {
             max = Math.max(max, rhs);
         }
         return min + ((max - min) / 2);
+    }
+
+    // do we even need this?
+    getMaxLevelWidth() {
+        let maxLevelWidth = 0;
+        for (const level of this.levels) {
+            let levelWidth = 0;
+            for (const id of level) {
+                const box = this.boxes.getBox(id);
+                levelWidth += box.rect.w + this.xPadding;
+            }
+            maxLevelWidth = Math.max(maxLevelWidth, levelWidth);
+        }
+        return maxLevelWidth;
     }
 }
 
