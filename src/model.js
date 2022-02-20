@@ -116,11 +116,23 @@ class Model {
         for (let i = 0; i < levels.length; i++) {
             let curLevel = levels[i];
             x = rootX;
+            let prevParentId = -10;
             for (let k = 0; k < curLevel.length; k++) {
                 const levelElt = curLevel[k];
+
+                // if this is a new sibling set,
+                // potentially need to correct x coord
+                if (levelElt.parentId !== prevParentId && levelElt.parentId !== -1) {
+                    const parentBox = this.boxes.getBox(levelElt.parentId);
+                    if (x < parentBox.coord.x) {
+                        x = parentBox.coord.x;
+                    }
+                }
+
                 let box = this.boxes.getBox(levelElt.id);
                 box.setCoord({ x, y });
                 x += xPadding;
+                prevParentId = levelElt.parentId;
             }
             y += yPadding;
         }
