@@ -57,8 +57,6 @@ class Model {
         let levels = [];
         let curLevel = 0;
 
-        const rootBox = this.boxes.getBox(rootId);
-
         queue.push({
             id: rootId,
             parentId: -1,
@@ -116,12 +114,13 @@ class Model {
         for (let i = 0; i < levels.length; i++) {
             let curLevel = levels[i];
             x = rootX;
-            let prevParentId = -10;
+            let prevParentId = -2;
             for (let k = 0; k < curLevel.length; k++) {
                 const levelElt = curLevel[k];
 
                 // if this is a new sibling set,
-                // potentially need to correct x coord
+                // potentially need to move x coord over to be under parent
+                // also recall that root elt has parentId = -1
                 if (levelElt.parentId !== prevParentId && levelElt.parentId !== -1) {
                     const parentBox = this.boxes.getBox(levelElt.parentId);
                     if (x < parentBox.coord.x) {
