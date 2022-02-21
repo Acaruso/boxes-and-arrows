@@ -49,7 +49,7 @@ class Model {
         const rootBox = this.boxes.getBox(rootId);
         this.leftLayout(levels, rootBox.coord.x, rootBox.coord.y);
 
-        // this.centerLayout(levels);
+        this.centerLayout(levels);
     }
 
     makeLevels(rootId) {
@@ -150,20 +150,30 @@ class Model {
                 // handle last sibling group:
                 if (k === curLevel.length - 1) {
                     siblingIds.push(levelElt.id);
-                    const mid = this.getXMidpoint(siblingIds);
-                    const parentBox = this.boxes.getBox(levelElt.parentId);
-                    parentBox.setCoord({
-                        x: mid - (parentBox.rect.w / 2),
-                        y: parentBox.coord.y
-                    });
+
+                    const parentLevel = levels[i - 1];
+                    const xDelta = this.getXDelta(siblingIds);
+                    this.moveParentsRight(parentLevel, levelElt.parentId, xDelta)
+                    
+                    // const mid = this.getXMidpoint(siblingIds);
+                    // const parentBox = this.boxes.getBox(levelElt.parentId);
+                    // parentBox.setCoord({
+                    //     x: mid - (parentBox.rect.w / 2),
+                    //     y: parentBox.coord.y
+                    // });
+
                 } else {
                     if (levelElt.parentId !== prevParentId) {
-                        const mid = this.getXMidpoint(siblingIds);
-                        const parentBox = this.boxes.getBox(prevParentId);
-                        parentBox.setCoord({
-                            x: mid - (parentBox.rect.w / 2),
-                            y: parentBox.coord.y
-                        });
+                        // const mid = this.getXMidpoint(siblingIds);
+                        // const parentBox = this.boxes.getBox(prevParentId);
+                        // parentBox.setCoord({
+                        //     x: mid - (parentBox.rect.w / 2),
+                        //     y: parentBox.coord.y
+                        // });
+
+                        const parentLevel = levels[i - 1];
+                        const xDelta = this.getXDelta(siblingIds);
+                        this.moveParentsRight(parentLevel, prevParentId, xDelta)
 
                         siblingIds = [];
                     }
@@ -176,11 +186,10 @@ class Model {
         }
     }
 
-    moveParentsRight(levels, i, k, parentId, xDelta) {
-        const parentLevel = levels[i - 1];
-        const levelElt = curLevel[k];
+    moveParentsRight(parentLevel, parentId, xDelta) {
+        console.log('moveparentsright')
 
-        const parentIdx = -1;
+        let parentIdx = -1;
         for (let z = 0; z < parentLevel.length; z++) {
             const curParent = parentLevel[z];
             if (curParent.id === parentId) {
@@ -191,9 +200,11 @@ class Model {
 
         for (let z = parentIdx; z < parentLevel.length; z++) {
             const curParentId = parentLevel[z].id;
+            console.log("moving parent right: " + curParentId)
             const parentBox = this.boxes.getBox(curParentId);
-            parentBox.setCoord({
-                x: mid - (parentBox.rect.w / 2),
+            const curMid = parentBox.coord.x + (parentBox.rect.w / 2);
+            parentBox.setCoordMidpoint({
+                x: curMid + xDelta,
                 y: parentBox.coord.y
             });
         }
