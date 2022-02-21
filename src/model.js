@@ -153,7 +153,8 @@ class Model {
 
                     const parentLevel = levels[i - 1];
                     const xDelta = this.getXDelta(siblingIds);
-                    this.moveParentsRight(parentLevel, levelElt.parentId, xDelta)
+
+                    this.moveParentsRight(parentLevel, levelElt.parentId, xDelta);
                     
                     // const mid = this.getXMidpoint(siblingIds);
                     // const parentBox = this.boxes.getBox(levelElt.parentId);
@@ -173,7 +174,8 @@ class Model {
 
                         const parentLevel = levels[i - 1];
                         const xDelta = this.getXDelta(siblingIds);
-                        this.moveParentsRight(parentLevel, prevParentId, xDelta)
+
+                        this.moveParentsRight(parentLevel, prevParentId, xDelta);
 
                         siblingIds = [];
                     }
@@ -197,9 +199,9 @@ class Model {
         }
 
         for (let z = parentIdx; z < parentLevel.length; z++) {
-            setTimeout(() => {}, 1000)
             const curParentId = parentLevel[z].id;
             console.log("moving parent right: " + curParentId)
+            console.log("xDelta: " + xDelta);
             const parentBox = this.boxes.getBox(curParentId);
             const curMid = parentBox.coord.x + (parentBox.rect.w / 2);
             parentBox.setCoordMidpoint({
