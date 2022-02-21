@@ -138,20 +138,43 @@ class Model {
     }
 
     centerLayout(levels) {
-        for (let i = levels.length - 2; i >= 0; i--) {
-            for (let id of levels[i]) {
-                let box = this.boxes.getBox(id);
-                let childrenIds = this.boxes.getConnections(id);
-                let mid = this.getChildrensMidpoint(childrenIds);
-                box.setCoord({
-                    x: mid - (box.rect.w / 2),
-                    y: box.coord.y
-                });
+        for (let i = levels.length - 1; i >= 0; i--) {
+            const curLevel = levels[i];
+
+            let prevParentId = curLevel[0].parentId;
+            let siblingIds = [];
+            let updateParentX = false;
+
+            for (let k = 0; k < curLevel.length; k++) {
+                const levelElt = curLevel[k];
+
+                if (k === curLevel.length - 1) {
+
+                }
+
+                if (levelElt.parentId !== prevParentId) {
+                    updateParentX = true;
+                } else {
+                    updateParentX = false;
+                }
+
+                if (updateParentX === true) {
+                    // push elt to siblings
+                    // get midpoint of siblings
+                    // set parent x of prev sibling group to midpoint
+                    // set siblingIds to []
+                    // set newSiblingGroup to false
+                    // how to handle last sibling group?
+                } else {
+                    siblingIds.push(levelElt.id);
+                }
+
+                prevParentId = levelElt.parentId;
             }
         }
     }
 
-    getChildrensMidpoint(childrenIds) {
+    getChildrensXMidpoint(childrenIds) {
         let min = 9999999;
         let max = -1;
 
@@ -162,8 +185,23 @@ class Model {
             min = Math.min(min, lhs);
             max = Math.max(max, rhs);
         }
+
         return min + ((max - min) / 2);
     }
+
+    // centerLayout(levels) {
+    //     for (let i = levels.length - 2; i >= 0; i--) {
+    //         for (let id of levels[i]) {
+    //             let box = this.boxes.getBox(id);
+    //             let childrenIds = this.boxes.getConnections(id);
+    //             let mid = this.getChildrensMidpoint(childrenIds);
+    //             box.setCoord({
+    //                 x: mid - (box.rect.w / 2),
+    //                 y: box.coord.y
+    //             });
+    //         }
+    //     }
+    // }
 }
 
 export { Model };
