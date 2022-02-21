@@ -187,8 +187,6 @@ class Model {
     }
 
     moveParentsRight(parentLevel, parentId, xDelta) {
-        console.log('moveparentsright')
-
         let parentIdx = -1;
         for (let z = 0; z < parentLevel.length; z++) {
             const curParent = parentLevel[z];
@@ -199,6 +197,7 @@ class Model {
         }
 
         for (let z = parentIdx; z < parentLevel.length; z++) {
+            setTimeout(() => {}, 1000)
             const curParentId = parentLevel[z].id;
             console.log("moving parent right: " + curParentId)
             const parentBox = this.boxes.getBox(curParentId);
