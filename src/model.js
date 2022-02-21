@@ -143,45 +143,47 @@ class Model {
 
             let prevParentId = curLevel[0].parentId;
             let siblingIds = [];
-            let updateParentX = false;
 
             for (let k = 0; k < curLevel.length; k++) {
                 const levelElt = curLevel[k];
-
+                
+                // handle last sibling group:
                 if (k === curLevel.length - 1) {
-
-                }
-
-                if (levelElt.parentId !== prevParentId) {
-                    updateParentX = true;
-                } else {
-                    updateParentX = false;
-                }
-
-                if (updateParentX === true) {
-                    // push elt to siblings
-                    // get midpoint of siblings
-                    // set parent x of prev sibling group to midpoint
-                    // set siblingIds to []
-                    // set newSiblingGroup to false
-                    // how to handle last sibling group?
-                } else {
                     siblingIds.push(levelElt.id);
-                }
+                    const mid = getXMidpoint(siblingIds);
+                    const parentBox = this.boxes.getBox(levelElt.parentId);
+                    parentBox.setCoord({
+                        x: mid - (parentBox.rect.w / 2),
+                        y: parentBox.coord.y
+                    });
+                } else {
+                    if (levelElt.parentId !== prevParentId) {
+                        const mid = getXMidpoint(siblingIds);
+                        const parentBox = this.boxes.getBox(prevParentId);
+                        parentBox.setCoord({
+                            x: mid - (parentBox.rect.w / 2),
+                            y: parentBox.coord.y
+                        });
 
-                prevParentId = levelElt.parentId;
+                        siblingIds = [];
+                    }
+
+                    siblingIds.push(levelElt.id);
+    
+                    prevParentId = levelElt.parentId;
+                }
             }
         }
     }
 
-    getChildrensXMidpoint(childrenIds) {
+    getXMidpoint(ids) {
         let min = 9999999;
         let max = -1;
 
-        for (const childId of childrenIds) {
-            let childBox = this.boxes.getBox(childId);
-            const lhs = childBox.rect.x;
-            const rhs = childBox.rect.x + childBox.rect.w;
+        for (const id of ids) {
+            let box = this.boxes.getBox(id);
+            const lhs = box.rect.x;
+            const rhs = box.rect.x + box.rect.w;
             min = Math.min(min, lhs);
             max = Math.max(max, rhs);
         }
