@@ -138,7 +138,7 @@ class Model {
     }
 
     centerLayout(levels) {
-        for (let i = levels.length - 1; i >= 0; i--) {
+        for (let i = levels.length - 1; i > 0; i--) {
             const curLevel = levels[i];
 
             let prevParentId = curLevel[0].parentId;
@@ -150,7 +150,7 @@ class Model {
                 // handle last sibling group:
                 if (k === curLevel.length - 1) {
                     siblingIds.push(levelElt.id);
-                    const mid = getXMidpoint(siblingIds);
+                    const mid = this.getXMidpoint(siblingIds);
                     const parentBox = this.boxes.getBox(levelElt.parentId);
                     parentBox.setCoord({
                         x: mid - (parentBox.rect.w / 2),
@@ -158,7 +158,7 @@ class Model {
                     });
                 } else {
                     if (levelElt.parentId !== prevParentId) {
-                        const mid = getXMidpoint(siblingIds);
+                        const mid = this.getXMidpoint(siblingIds);
                         const parentBox = this.boxes.getBox(prevParentId);
                         parentBox.setCoord({
                             x: mid - (parentBox.rect.w / 2),
@@ -174,6 +174,44 @@ class Model {
                 }
             }
         }
+    }
+
+    moveParentsRight(levels, i, k, parentId, xDelta) {
+        const parentLevel = levels[i - 1];
+        const levelElt = curLevel[k];
+
+        const parentIdx = -1;
+        for (let z = 0; z < parentLevel.length; z++) {
+            const curParent = parentLevel[z];
+            if (curParent.id === parentId) {
+                parentIdx = z;
+                break;
+            }
+        }
+
+        for (let z = parentIdx; z < parentLevel.length; z++) {
+            const curParentId = parentLevel[z].id;
+            const parentBox = this.boxes.getBox(curParentId);
+            parentBox.setCoord({
+                x: mid - (parentBox.rect.w / 2),
+                y: parentBox.coord.y
+            });
+        }
+    }
+
+    getXDelta(ids) {
+        let min = 9999999;
+        let max = -1;
+
+        for (const id of ids) {
+            let box = this.boxes.getBox(id);
+            const lhs = box.rect.x;
+            const rhs = box.rect.x + box.rect.w;
+            min = Math.min(min, lhs);
+            max = Math.max(max, rhs);
+        }
+
+        return (max - min) / 2;
     }
 
     getXMidpoint(ids) {

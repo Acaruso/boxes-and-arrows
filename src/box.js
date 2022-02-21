@@ -27,6 +27,12 @@ class Box {
         this.updateRect();
     }
 
+    setCoordMidpoint(newCoord) {
+        this.coord.x = newCoord.x - (this.rect.w / 2);
+        this.coord.y = newCoord.y;
+        this.updateRect();
+    }
+
     updateRect() {
         const length = this.text.length > 0 ? this.text.length : 1;
 
