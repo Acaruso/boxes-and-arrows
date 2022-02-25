@@ -42,6 +42,66 @@ class Model {
 
     treeFormat(rootId) {
         const levels = this.makeLevels(rootId);
+        this.assignInitialXValues(levels);
+        console.log(
+            this.boxes.getBoxes()
+        );
+    }
+
+    assignInitialXValues(levels) {
+        for (const level of levels) {
+            let prevParentId = -2;
+            let curX = 0;
+            for (const elt of level) {
+                if (prevParentId !== elt.parentId) {
+                    curX = 0;
+                }
+                let curBox = this.boxes.getBox(elt.id);
+                curBox.treeX = curX;
+                curX++;
+                prevParentId = elt.parentId;
+            }
+        }
+    }
+
+    makeLevels(rootId) {
+        let queue = [];
+        let levels = [];
+        let curLevel = 0;
+
+        queue.push({
+            id: rootId,
+            parentId: -1,
+        });
+
+        while (queue.length > 0) {
+            const n = queue.length;
+            for (let i = 0; i < n; i++) {
+                const cur = queue.shift();
+                const curBox = this.boxes.getBox(cur.id);
+                const childrenIds = this.boxes.getConnections(cur.id);
+                for (const cid of childrenIds) {
+                    queue.push({
+                        id: cid,
+                        parentId: cur.id
+                    });
+                }
+                if (levels.length - 1 < curLevel) {
+                    levels.push([]);
+                }
+                levels[curLevel].push({
+                    id: cur.id,
+                    parentId: cur.parentId,
+                });
+            }
+            curLevel++;
+        }
+
+        return levels;
+    }
+
+    treeFormat_old(rootId) {
+        const levels = this.makeLevels(rootId);
         this.sortLevelsByX(levels);
 
         console.log(levels);
@@ -52,7 +112,7 @@ class Model {
         this.centerLayout(levels);
     }
 
-    makeLevels(rootId) {
+    makeLevels_old(rootId) {
         let queue = [];
         let levels = [];
         let curLevel = 0;
@@ -146,7 +206,7 @@ class Model {
 
             for (let k = 0; k < curLevel.length; k++) {
                 const levelElt = curLevel[k];
-                
+
                 // handle last sibling group:
                 if (k === curLevel.length - 1) {
                     siblingIds.push(levelElt.id);
@@ -155,7 +215,7 @@ class Model {
                     const xDelta = this.getXDelta(siblingIds);
 
                     this.moveParentsRight(parentLevel, levelElt.parentId, xDelta);
-                    
+
                     // const mid = this.getXMidpoint(siblingIds);
                     // const parentBox = this.boxes.getBox(levelElt.parentId);
                     // parentBox.setCoord({
@@ -181,7 +241,7 @@ class Model {
                     }
 
                     siblingIds.push(levelElt.id);
-    
+
                     prevParentId = levelElt.parentId;
                 }
             }
