@@ -44,13 +44,19 @@ if parent node doesn't have siblings to the left:
 if parent node does have siblings to the left:
     set parent.mod = parent.x - desiredX
 
-iterate over tree again
-for any nodes that have mod property set, move node's children over by mod amount
-ie: child.x += parent.mod
+note that we don't actually use the mod value until the final step of the algo
 
 
 
+check for node conflicts:
 
+if a node has children, loop thru all children, check if x value conflicts with any other
+nodes x values at that same level
+
+for each child of node:
+    find min x position
+
+do this right to left on parents
 
 
 
