@@ -75,7 +75,7 @@ class TreeFormatter {
             }
         }
 
-        if (childIds.length > 0 && this.boxes.isLeftMost(id)) {
+        if (childIds.length > 0 && !this.boxes.isLeftMost(id)) {
             this.checkForConflicts(id);
         }
     }
@@ -86,6 +86,7 @@ class TreeFormatter {
         let sibling = this.boxes.getBox(siblingId);
 
         const minDistance = this.xPadding;
+        // const minDistance = this.xPadding + box.rect.w;
         
         let shiftValue = 0;
         let nodeContour = new Map();
@@ -169,10 +170,10 @@ class TreeFormatter {
         const leftBox = this.boxes.getBox(leftId);
         const rightBox = this.boxes.getBox(rightId);
 
-        const leftParentChildIds = this.getConnections(leftBox.parentId);
+        const leftParentChildIds = this.boxes.getConnections(leftBox.parentId);
         const leftIdx = leftParentChildIds.indexOf(leftId);
 
-        const rightParentChildIds = this.getConnections(rightBox.parentId);
+        const rightParentChildIds = this.boxes.getConnections(rightBox.parentId);
         const rightIdx = rightParentChildIds.indexOf(rightId);
 
         let numNodesBetween = (rightIdx - leftIdx) - 1;
