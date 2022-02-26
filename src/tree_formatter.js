@@ -29,6 +29,8 @@ class TreeFormatter {
 
         const childIds = this.boxes.getConnections(id);
         for (const cid of childIds) {
+            let childBox = this.boxes.getBox(cid);
+            childBox.parentId = id;
             this.initializeNodes(cid, level + 1);
         }
     }
@@ -45,7 +47,7 @@ class TreeFormatter {
 
         if (this.boxes.isLeaf(id)) {
             if (!this.boxes.isLeftMost(id)) {
-                box.setX(prevSib.coord.x + this.xPadding);
+                box.setX(prevSib.coord.x + prevSib.rect.w + this.xPadding);
             } else {
                 box.setX(0);
             }
@@ -54,7 +56,7 @@ class TreeFormatter {
             if (this.boxes.isLeftMost(id)) {
                 box.setX(child.coord.x)
             } else {
-                box.setX(prevSib.coord.x + this.xPadding);
+                box.setX(prevSib.coord.x + prevSib.rect.w + this.xPadding);
                 box.mod = box.coord.x - child.coord.x;
             }
         } else {
@@ -67,7 +69,7 @@ class TreeFormatter {
             if (this.boxes.isLeftMost(id)) {
                 box.setX(mid);
             } else {
-                box.setX(prevSib.x + this.xPadding);
+                box.setX(prevSib.coord.x + prevSib.rect.w + this.xPadding);
                 box.mod = box.coord.x - mid;
             }
         }

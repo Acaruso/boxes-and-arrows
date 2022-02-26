@@ -120,7 +120,7 @@ class Boxes {
         if (box.parentId === null) {
             return true;
         } else {
-            const parentChildIds = this.getConnections(parentId);
+            const parentChildIds = this.getConnections(box.parentId);
             return (firstElt(parentChildIds) === id);
         }
     }
