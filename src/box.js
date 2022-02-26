@@ -10,6 +10,12 @@ class Box {
         this.updateRect();
     }
 
+    appendStr(s) {
+        for (let i = 0; i < s.length; i++) {
+            this.appendChar(s[i]);
+        }
+    }
+
     appendChar(c) {
         this.text += c;
         this.updateRect();

@@ -1,3 +1,11 @@
+function lastElt(arr) {
+    if (arr.length > 0) {
+        return arr[arr.length - 1];
+    } else {
+        return null;
+    }
+}
+
 class Scripter {
     constructor(model) {
         this.model = model;
@@ -8,14 +16,89 @@ class Scripter {
         // level 0 is root node
         this.arr = [0, 2, 2, 3, 2, 2];
         this.levels = [];
+        this.rootNodeId = null;
     }
 
     run() {
-        let rootId = this.addBox(null, 0);
-        this.buildTree(rootId, 1);
-        this.leftLayout();
-        this.centerLayout();
+        const x = this.fib(5, null);
+        console.log(this.rootNodeId);
+        const levels = this.makeLevels(this.rootNodeId);
+        console.log(levels);
+        this.leftLayout(levels);
     }
+
+    log(s, parentId) {
+        let id = this.boxes.addBox(s, { x: 0, y: 0 });
+
+        if (this.rootNodeId === null) {
+            this.rootNodeId = id;
+        }
+
+        if (parentId !== null) {
+            this.boxes.addConnection(parentId, id);
+        }
+
+        return id;
+    }
+
+    logAppend(s, id) {
+        let box = this.boxes.getBox(id);
+        box.appendStr(s);
+    }
+
+    fib(n, parentId) {
+        let str = `fib(${n})`;
+        const id = this.log(str, parentId);
+        
+        let res = 0;
+
+        if (n === 0) {
+            res = 0;
+        } else if (n === 1) {
+            res = 1;
+        } else {
+            res = this.fib(n - 1, id) + this.fib(n - 2, id);
+        }
+
+        this.logAppend(` -> ${res}`, id);
+
+        return res;
+    }
+
+    makeLevels(rootNodeId) {
+        let queue = [];
+        let levels = [];
+        let curLevel = 0;
+
+        queue.push(rootNodeId);
+
+        while (queue.length > 0) {
+            const n = queue.length;
+            for (let i = 0; i < n; i++) {
+                const curId = queue.shift();
+                const childrenIds = this.boxes.getConnections(curId);
+                for (const cid of childrenIds) {
+                    queue.push(cid);
+                }
+                if (levels.length - 1 < curLevel) {
+                    levels.push([]);
+                }
+                levels[curLevel].push(curId);
+            }
+            curLevel++;
+        }
+
+        return levels;
+    }
+
+
+
+    // run() {
+    //     let rootId = this.addBox(null, 0);
+    //     this.buildTree(rootId, 1);
+    //     this.leftLayout();
+    //     this.centerLayout();
+    // }
 
     buildTree(parentId, level) {
         if (level < this.arr.length) {
@@ -42,12 +125,12 @@ class Scripter {
         return id;
     }
 
-    leftLayout() {
+    leftLayout(levels) {
         let x = 500;
         let y = 100;
 
-        for (let i = 0; i < this.levels.length; i++) {
-            let curLevel = this.levels[i];
+        for (let i = 0; i < levels.length; i++) {
+            let curLevel = levels[i];
             x = 0;
             for (let k = 0; k < curLevel.length; k++) {
                 let box = this.boxes.getBox(curLevel[k]);
