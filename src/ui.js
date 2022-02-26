@@ -228,9 +228,6 @@ class Ui {
                 this.treeFormatter.treeFormat(
                     this.model.selectedBoxIds[0]
                 );
-                // this.model.treeFormat(
-                //     this.model.selectedBoxIds[0]
-                // );
             }
         );
 

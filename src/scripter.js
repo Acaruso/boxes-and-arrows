@@ -8,7 +8,7 @@ class Scripter {
     }
 
     run() {
-        const fibResult = this.fib(7, null);
+        const fibResult = this.fib(5, null);
 
         this.treeFormatter.treeFormat(this.rootNodeId);
         // this.treeFormatter.leftLayout(this.rootNodeId);

@@ -4,7 +4,7 @@ class TreeFormatter {
     constructor(model) {
         this.boxes = model.boxes;
         this.xPadding = 50;
-        this.yPadding = 50;
+        this.yPadding = 70;
     }
 
     treeFormat(rootId) {
@@ -17,14 +17,9 @@ class TreeFormatter {
         const box = this.boxes.getBox(id);
 
         box.setCoord({
-            x: -1,
+            x: 0,
             y: level * this.yPadding
         });
-
-        // box.setCoord({
-        //     x: 0,
-        //     y: level * this.yPadding
-        // });
 
         box.mod = 0;
 
