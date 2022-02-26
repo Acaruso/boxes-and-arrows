@@ -6,23 +6,20 @@ class Box {
         this.id = id;
         this.text = text;
         this.rect = {};
-
-        // new:
         this.parentId = null;
 
         this.updateRect();
     }
 
-    appendStr(s) {
-        for (let i = 0; i < s.length; i++) {
-            this.appendChar(s[i]);
-        }
-    }
-
-    appendChar(c) {
-        this.text += c;
+    appendString(s) {
+        this.text += s;
         this.updateRect();
     }
+
+    // appendChar(c) {
+    //     this.text += c;
+    //     this.updateRect();
+    // }
 
     deleteChar() {
         if (this.text.length > 0) {
@@ -37,7 +34,6 @@ class Box {
     }
 
     setX(x) {
-        console.log("setX: " + x);
         this.coord.x = x;
         this.updateRect();
     }

@@ -144,7 +144,7 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "appendChar",
+            "appendString",
             e => {
                 return e.keydown
                     && this.model.anyBoxesSelected()
@@ -154,7 +154,7 @@ class Ui {
             e => {
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
-                    box.appendChar(e.key_);
+                    box.appendString(e.key_);
                 }
             }
         );

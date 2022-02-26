@@ -86,14 +86,13 @@ class TreeFormatter {
         let sibling = this.boxes.getBox(siblingId);
 
         // const minDistance = this.xPadding;
-        const minDistance = this.xPadding + box.rect.w;
+        const minDistance = box.rect.w + this.xPadding;
         
         let shiftValue = 0;
         let nodeContour = new Map();
         this.getLeftContour(id, 0, nodeContour);
 
         while (siblingId !== null && siblingId !== id) {
-            console.log("asdf");
             let siblingContour = new Map();
             this.getRightContour(siblingId, 0, siblingContour);
             
@@ -111,10 +110,7 @@ class TreeFormatter {
                 }
             }
 
-            console.log("shiftValue: " + shiftValue);
-
             if (shiftValue > 0) {
-                console.log("!!!!!!!!!!!!");
                 box.setX(box.coord.x + shiftValue);
                 box.mod += shiftValue;
 

@@ -20,7 +20,7 @@ class Scripter {
     }
 
     run() {
-        const x = this.fib(5, null);
+        const x = this.fib(7, null);
         const levels = this.makeLevels(this.rootNodeId);
         this.leftLayout(levels);
     }
@@ -41,7 +41,7 @@ class Scripter {
 
     appendToNode(s, id) {
         let box = this.boxes.getBox(id);
-        box.appendStr(s);
+        box.appendString(s);
     }
 
     fib(n, parentId) {

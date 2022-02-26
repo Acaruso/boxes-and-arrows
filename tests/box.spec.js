@@ -3,17 +3,17 @@ import { Box } from "../src/box";
 describe("Box", () => {
     test("append chars", () => {
         const box = new Box("", { x: 0, y: 0 }, 1);
-        box.appendChar("a");
-        box.appendChar("b");
-        box.appendChar("c");
+        box.appendString("a");
+        box.appendString("b");
+        box.appendString("c");
         expect(box.text).toEqual("abc");
     });
 
     test("delete chars", () => {
         const box = new Box("", { x: 0, y: 0 }, 1);
-        box.appendChar("a");
-        box.appendChar("b");
-        box.appendChar("c");
+        box.appendString("a");
+        box.appendString("b");
+        box.appendString("c");
         box.deleteChar();
         box.deleteChar();
         expect(box.text).toEqual("a");
@@ -21,7 +21,7 @@ describe("Box", () => {
 
     test("delete more chars than exist", () => {
         const box = new Box("", { x: 0, y: 0 }, 1);
-        box.appendChar("a");
+        box.appendString("a");
         box.deleteChar();
         box.deleteChar();
         expect(box.text).toEqual("");
