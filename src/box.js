@@ -16,11 +16,6 @@ class Box {
         this.updateRect();
     }
 
-    // appendChar(c) {
-    //     this.text += c;
-    //     this.updateRect();
-    // }
-
     deleteChar() {
         if (this.text.length > 0) {
             this.text = this.text.slice(0, -1);

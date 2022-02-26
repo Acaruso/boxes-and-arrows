@@ -72,14 +72,6 @@ const loadFile = async () => {
     return content;
 };
 
-// const loadFile = async (cb) => {
-//     const [fileHandle] = await window.showOpenFilePicker();
-//     const file = await fileHandle.getFile();
-//     const content = await file.text();
-//     cb(content);
-//     // return content;
-// };
-
 const getWidthOfText = (text, charWidth, xPadding) => {
     return Math.floor(text.length * charWidth) + (xPadding * 2);
 };

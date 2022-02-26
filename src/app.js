@@ -1,11 +1,11 @@
-import { Gfx } from "./gfx"
-import { Renderer } from "./renderer"
-import { State } from "./state"
-import { Model } from "./model"
-import { Ui } from "./ui"
 import { EventTable } from "./event_table"
+import { Gfx } from "./gfx"
+import { Model } from "./model"
+import { Renderer } from "./renderer"
 import { Scripter } from "./scripter"
+import { State } from "./state"
 import { TreeFormatter } from "./tree_formatter"
+import { Ui } from "./ui"
 
 class App {
     constructor() {
@@ -13,7 +13,7 @@ class App {
         this.state = new State();
         this.model = new Model();
         this.treeFormatter = new TreeFormatter(this.model);
-        this.scripter = new Scripter(this.model);
+        this.scripter = new Scripter(this.model, this.treeFormatter);
         this.eventTable = new EventTable(this.state, this.model);
         this.ui = new Ui(
             this.state,

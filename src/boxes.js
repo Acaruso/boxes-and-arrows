@@ -101,9 +101,7 @@ class Boxes {
         this.boxes.forEach(fn);
     }
 
-
-
-    // new ///////////////////
+    // tree methods ///////////////////
 
     hasParent(id) {
         const box = this.getBox(id);

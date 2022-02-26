@@ -212,6 +212,58 @@ class TreeFormatter {
 
         // }
     }
+
+
+    // left layout ////////////////////////////////////////////
+    
+    leftLayout(rootNodeId) {
+        let levels = this.makeLevels(rootNodeId);
+
+        const xStart = 500;
+        const yStart = 100;
+        const xPadding = 40;
+        const yPadding = 80;
+
+        let x = xStart;
+        let y = yStart;
+
+        for (let i = 0; i < levels.length; i++) {
+            let curLevel = levels[i];
+            x = xStart;
+            for (let k = 0; k < curLevel.length; k++) {
+                let box = this.boxes.getBox(curLevel[k]);
+                box.setCoord({ x, y });
+                x += box.rect.w + xPadding;
+            }
+            y += yPadding;
+        }
+    }
+
+    makeLevels(rootNodeId) {
+        let queue = [];
+        let levels = [];
+        let curLevel = 0;
+
+        queue.push(rootNodeId);
+
+        while (queue.length > 0) {
+            const n = queue.length;
+            for (let i = 0; i < n; i++) {
+                const curId = queue.shift();
+                const childrenIds = this.boxes.getConnections(curId);
+                for (const cid of childrenIds) {
+                    queue.push(cid);
+                }
+                if (levels.length - 1 < curLevel) {
+                    levels.push([]);
+                }
+                levels[curLevel].push(curId);
+            }
+            curLevel++;
+        }
+
+        return levels;
+    }
 }
 
 const getMaxKey = (map) => {
