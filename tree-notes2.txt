@@ -1,0 +1,80 @@
+node (box) should have:
+
+parentId
+
+methods:
+
+isLeaf()
+    this.children.length == 0
+
+isLeftMost()
+    if this.parent == null:
+        return true
+    else:
+        return this.parent.children[0] == this
+
+isRightMost()
+    if this.parent == null:
+        return true
+    else:
+        return this.parent.children.lastElt() == this
+
+getPrevSibling()
+    if this.parent == null || this.isLeftMost():
+        return null
+    else:
+        let thisIdx = this.parent.children.indexOf(this)
+        return this.parent.children[thisIdx - 1]
+
+getNextSibling()
+    if this.parent == null || this.isRightMost():
+        return null
+    else:
+        let thisIdx = this.parent.children.indexOf(this)
+        return this.parent.children[thisIdx + 1]
+
+getLeftMostSibling()
+    if this.parent == null:
+        return null
+    else if this.isLeftMost():
+        return this
+    else:
+        return this.parent.children[0]
+
+getLeftMostChild()
+    if this.children.length == 0:
+        return null
+    else:
+        return this.children[0]
+
+getRightMostChild
+    if this.children.length == 0:
+        return null
+    else:
+        return this.children.lastElt()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

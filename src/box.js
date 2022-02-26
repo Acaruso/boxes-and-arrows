@@ -7,6 +7,9 @@ class Box {
         this.text = text;
         this.rect = {};
 
+        // new:
+        this.parentId = null;
+
         this.updateRect();
     }
 
