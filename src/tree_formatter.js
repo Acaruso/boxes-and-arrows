@@ -85,8 +85,8 @@ class TreeFormatter {
         let siblingId = this.boxes.getLeftMostSibling(id);
         let sibling = this.boxes.getBox(siblingId);
 
-        const minDistance = this.xPadding;
-        // const minDistance = this.xPadding + box.rect.w;
+        // const minDistance = this.xPadding;
+        const minDistance = this.xPadding + box.rect.w;
         
         let shiftValue = 0;
         let nodeContour = new Map();
