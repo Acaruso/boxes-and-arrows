@@ -55,7 +55,7 @@ class Scripter {
         } else {
             res = this.fib(n - 1, id) + this.fib(n - 2, id);
         }
-        this.appendToNode(` -> ${res} id: ${id}`, id);
+        this.appendToNode(` -> ${res}`, id);
         return res;
     }
 
