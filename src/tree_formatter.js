@@ -10,20 +10,21 @@ class TreeFormatter {
     treeFormat(rootId) {
         this.initializeNodes(rootId, 0);
         this.calculateInitialX(rootId);
+        this.calculateFinalPositions(rootId, 0);
     }
 
     initializeNodes(id, level) {
         const box = this.boxes.getBox(id);
 
-        // box.setCoord({
-        //     x: -1,
-        //     y: level * yPadding
-        // });
-
         box.setCoord({
-            x: 0,
+            x: -1,
             y: level * this.yPadding
         });
+
+        // box.setCoord({
+        //     x: 0,
+        //     y: level * this.yPadding
+        // });
 
         box.mod = 0;
 
@@ -83,14 +84,15 @@ class TreeFormatter {
         const box = this.boxes.getBox(id);
         let siblingId = this.boxes.getLeftMostSibling(id);
         let sibling = this.boxes.getBox(siblingId);
-        const childIds = this.boxes.getConnections(id);
 
         const minDistance = this.xPadding;
+        
         let shiftValue = 0;
         let nodeContour = new Map();
         this.getLeftContour(id, 0, nodeContour);
 
         while (siblingId !== null && siblingId !== id) {
+            console.log("asdf");
             let siblingContour = new Map();
             this.getRightContour(siblingId, 0, siblingContour);
             
@@ -108,11 +110,14 @@ class TreeFormatter {
                 }
             }
 
+            console.log("shiftValue: " + shiftValue);
+
             if (shiftValue > 0) {
+                console.log("!!!!!!!!!!!!");
                 box.setX(box.coord.x + shiftValue);
                 box.mod += shiftValue;
 
-                // this.centerNodeBetween(id, sibling);
+                this.centerNodesBetween(id, siblingId);
 
                 shiftValue = 0;
             }
@@ -158,6 +163,57 @@ class TreeFormatter {
         for (const cid of childIds) {
             this.getRightContour(cid, modSum, values);
         }
+    }
+
+    centerNodesBetween(leftId, rightId) {
+        const leftBox = this.boxes.getBox(leftId);
+        const rightBox = this.boxes.getBox(rightId);
+
+        const leftParentChildIds = this.getConnections(leftBox.parentId);
+        const leftIdx = leftParentChildIds.indexOf(leftId);
+
+        const rightParentChildIds = this.getConnections(rightBox.parentId);
+        const rightIdx = rightParentChildIds.indexOf(rightId);
+
+        let numNodesBetween = (rightIdx - leftIdx) - 1;
+
+        if (numNodesBetween > 0) {
+            let distanceBetweenNodes = (
+                (leftBox.coord.x - rightBox.coord.x) / (numNodesBetween + 1)
+            );
+
+            let count = 1;
+
+            for (let i = leftIdx + 1; i < rightIdx; i++) {
+                let middleNodeId = leftParentChildIds[i];
+                let middleNode = this.boxes.getBox(middleNodeId);
+
+                let desiredX = rightBox.coord.x + (distanceBetweenNodes * count);
+                let offset = desiredX - middleNode.coord.x;
+                middleNode.setX(middleNode.coord.x + offset);
+                middleNode.mod += offset;
+
+                count++;
+            }
+
+            this.checkForConflicts(leftId);
+        }
+    }
+
+    calculateFinalPositions(id, modSum) {
+        const box = this.boxes.getBox(id);
+        const childIds = this.boxes.getConnections(id);
+
+        box.setX(box.coord.x + modSum);
+        modSum += box.mod;
+
+        for (const cid of childIds) {
+            this.calculateFinalPositions(cid, modSum);
+        }
+
+        // if (childIds.length === 0) {
+
+        // }
     }
 }
 
