@@ -83,9 +83,7 @@ class TreeFormatter {
     checkForConflicts(id) {
         const box = this.boxes.getBox(id);
         let siblingId = this.boxes.getLeftMostSibling(id);
-        let sibling = this.boxes.getBox(siblingId);
 
-        // const minDistance = this.xPadding;
         const minDistance = box.rect.w + this.xPadding;
         
         let shiftValue = 0;
@@ -120,7 +118,6 @@ class TreeFormatter {
             }
 
             siblingId = this.boxes.getNextSibling(siblingId);
-            sibling = this.boxes.getBox(siblingId);
         }
     }
 
@@ -207,10 +204,6 @@ class TreeFormatter {
         for (const cid of childIds) {
             this.calculateFinalPositions(cid, modSum);
         }
-
-        // if (childIds.length === 0) {
-
-        // }
     }
 
 
