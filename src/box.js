@@ -36,6 +36,17 @@ class Box {
         this.updateRect();
     }
 
+    setX(x) {
+        console.log("setX: " + x);
+        this.coord.x = x;
+        this.updateRect();
+    }
+
+    setY(y) {
+        this.coord.y = y;
+        this.updateRect();
+    }
+
     setCoordMidpoint(newCoord) {
         this.coord.x = newCoord.x - (this.rect.w / 2);
         this.coord.y = newCoord.y;

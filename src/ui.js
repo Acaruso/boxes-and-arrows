@@ -1,11 +1,12 @@
 import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
 
 class Ui {
-    constructor(state, model, eventTable, scripter) {
+    constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
         this.scripter = scripter;
+        this.treeFormatter = treeFormatter;
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -224,9 +225,12 @@ class Ui {
                 && this.model.selectedBoxIds.length === 1
             ),
             e => {
-                this.model.treeFormat(
+                this.treeFormatter.treeFormat(
                     this.model.selectedBoxIds[0]
                 );
+                // this.model.treeFormat(
+                //     this.model.selectedBoxIds[0]
+                // );
             }
         );
 
