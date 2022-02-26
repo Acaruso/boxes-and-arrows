@@ -10,7 +10,7 @@ class Scripter {
     constructor(model) {
         this.model = model;
         this.boxes = model.boxes;
-        this.xPadding = 80;
+        this.xPadding = 40;
         this.yPadding = 80;
         // num children at each level
         // level 0 is root node
@@ -21,13 +21,11 @@ class Scripter {
 
     run() {
         const x = this.fib(5, null);
-        console.log(this.rootNodeId);
         const levels = this.makeLevels(this.rootNodeId);
-        console.log(levels);
         this.leftLayout(levels);
     }
 
-    log(s, parentId) {
+    newNode(s, parentId) {
         let id = this.boxes.addBox(s, { x: 0, y: 0 });
 
         if (this.rootNodeId === null) {
@@ -41,17 +39,15 @@ class Scripter {
         return id;
     }
 
-    logAppend(s, id) {
+    appendToNode(s, id) {
         let box = this.boxes.getBox(id);
         box.appendStr(s);
     }
 
     fib(n, parentId) {
         let str = `fib(${n})`;
-        const id = this.log(str, parentId);
-        
+        const id = this.newNode(str, parentId);
         let res = 0;
-
         if (n === 0) {
             res = 0;
         } else if (n === 1) {
@@ -59,9 +55,7 @@ class Scripter {
         } else {
             res = this.fib(n - 1, id) + this.fib(n - 2, id);
         }
-
-        this.logAppend(` -> ${res}`, id);
-
+        this.appendToNode(` -> ${res}`, id);
         return res;
     }
 
@@ -91,7 +85,31 @@ class Scripter {
         return levels;
     }
 
+    leftLayout(levels) {
+        const xStart = 500;
+        const yStart = 100;
+        const xPadding = 40;
+        const yPadding = 80;
 
+        let x = xStart;
+        let y = yStart;
+
+        for (let i = 0; i < levels.length; i++) {
+            let curLevel = levels[i];
+            x = xStart;
+            for (let k = 0; k < curLevel.length; k++) {
+                let box = this.boxes.getBox(curLevel[k]);
+                box.setCoord({ x, y });
+                x += box.rect.w + xPadding;
+            }
+            y += yPadding;
+        }
+    }
+
+
+
+
+    // old stuff
 
     // run() {
     //     let rootId = this.addBox(null, 0);
@@ -125,21 +143,21 @@ class Scripter {
         return id;
     }
 
-    leftLayout(levels) {
-        let x = 500;
-        let y = 100;
+    // leftLayout(levels) {
+    //     let x = 500;
+    //     let y = 100;
 
-        for (let i = 0; i < levels.length; i++) {
-            let curLevel = levels[i];
-            x = 0;
-            for (let k = 0; k < curLevel.length; k++) {
-                let box = this.boxes.getBox(curLevel[k]);
-                box.setCoord({ x, y });
-                x += this.xPadding;
-            }
-            y += this.yPadding;
-        }
-    }
+    //     for (let i = 0; i < levels.length; i++) {
+    //         let curLevel = levels[i];
+    //         x = 0;
+    //         for (let k = 0; k < curLevel.length; k++) {
+    //             let box = this.boxes.getBox(curLevel[k]);
+    //             box.setCoord({ x, y });
+    //             x += this.xPadding;
+    //         }
+    //         y += this.yPadding;
+    //     }
+    // }
 
     centerLayout() {
         for (let i = this.levels.length - 2; i >= 0; i--) {
