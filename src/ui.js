@@ -1,4 +1,10 @@
-import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
+import {
+    getMidpoint,
+    rectsOverlap,
+    isPrintableKeycode,
+    saveFile,
+    loadFile,
+} from "./util"
 
 class Ui {
     constructor(state, model, eventTable, scripter, treeFormatter) {
@@ -219,9 +225,9 @@ class Ui {
         this.eventTable.addEvent(
             "treeFormat",
             e => (
-                e.keydown 
-                && e.keyboard.control 
-                && e.keyboard.q 
+                e.keydown
+                && e.keyboard.control
+                && e.keyboard.q
                 && this.model.selectedBoxIds.length === 1
             ),
             e => {
@@ -261,12 +267,12 @@ class Ui {
 
         this.eventTable.addEvent(
             "loadFile",
-            e => e.keydown && e.keyboard.control && e.keyboard.l,
+            e => e.keydown && e.keyboard.control && !e.keyboard.shift && e.keyboard.l,
             async e => {
+                console.log("loadFile");
                 e.preventDefault();
                 try {
                     const content = await loadFile();
-
                     this.model.boxes.deleteAll();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
@@ -275,6 +281,30 @@ class Ui {
                     console.log(e);
                 }
                 this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.l = false;
+            }
+        );
+
+        this.eventTable.addEvent(
+            "loadScript",
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.l,
+            async e => {
+                e.preventDefault();
+                console.log("loadScript");
+                try {
+                    this.model.boxes.deleteAll();
+                    const scriptElt = document.createElement("script");
+                    const content = await loadFile();
+                    const textNode = document.createTextNode(content);
+                    scriptElt.appendChild(textNode);
+                    const targetElt = document.getElementById("userScripts");
+                    targetElt.append(scriptElt);
+                    testFn();
+                } catch (e) {
+                    console.log(e);
+                }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.shift = false;
                 this.state.cur.keyboard.l = false;
             }
         );
