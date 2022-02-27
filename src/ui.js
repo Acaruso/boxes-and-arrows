@@ -290,16 +290,16 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.l,
             async e => {
                 e.preventDefault();
-                console.log("loadScript");
                 try {
-                    this.model.boxes.deleteAll();
                     const scriptElt = document.createElement("script");
                     const content = await loadFile();
                     const textNode = document.createTextNode(content);
                     scriptElt.appendChild(textNode);
                     const targetElt = document.getElementById("userScripts");
                     targetElt.append(scriptElt);
-                    testFn();
+                    this.model.boxes.deleteAll();
+                    this.scripter.runUserFn(testFn);
+                    // testFn();
                 } catch (e) {
                     console.log(e);
                 }
