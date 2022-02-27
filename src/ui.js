@@ -298,8 +298,7 @@ class Ui {
                     const targetElt = document.getElementById("userScripts");
                     targetElt.append(scriptElt);
                     this.model.boxes.deleteAll();
-                    this.scripter.runUserFn(testFn);
-                    // testFn();
+                    this.scripter.runUserFn(userFn);
                 } catch (e) {
                     console.log(e);
                 }

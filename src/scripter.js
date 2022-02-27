@@ -35,17 +35,12 @@ class Scripter {
     }
 
     runUserFn(fn) {
-        // const logger = {};
-        // logger.newNode = this.newNode;
-        // logger.appendToNode = this.appendToNode;
-        // logger.test = () => { console.log('logger test'); };
         fn(this.logger);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);
     }
 
     run() {
         const fibResult = this.fib(5, null);
-
         this.treeFormatter.treeFormat(this.rootNodeId);
         // this.treeFormatter.leftLayout(this.rootNodeId);
     }
