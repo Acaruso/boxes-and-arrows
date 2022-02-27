@@ -35,6 +35,7 @@ class Scripter {
     }
 
     runUserFn(fn) {
+        this.logger.rootNodeId = null;
         fn(this.logger);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);
     }
