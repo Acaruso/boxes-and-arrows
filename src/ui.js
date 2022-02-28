@@ -298,6 +298,7 @@ class Ui {
                     const targetElt = document.getElementById("userScripts");
                     targetElt.append(scriptElt);
                     this.model.boxes.deleteAll();
+                    setTimeout(() => {}, 0);    // wait for one event-cycle
                     this.scripter.runUserFn(userFn);
                 } catch (e) {
                     console.log(e);

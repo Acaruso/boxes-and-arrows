@@ -11,6 +11,8 @@ class TreeFormatter {
         this.initializeNodes(rootId, 0);
         this.calculateInitialX(rootId);
         this.calculateFinalPositions(rootId, 0);
+        const nodes = this.getAllNodes(rootId);
+        return nodes;
     }
 
     initializeNodes(id, level) {
@@ -80,7 +82,7 @@ class TreeFormatter {
         let siblingId = this.boxes.getLeftMostSibling(id);
 
         const minDistance = box.rect.w + this.xPadding;
-        
+
         let shiftValue = 0;
         let nodeContour = new Map();
         this.getLeftContour(id, 0, nodeContour);
@@ -88,7 +90,7 @@ class TreeFormatter {
         while (siblingId !== null && siblingId !== id) {
             let siblingContour = new Map();
             this.getRightContour(siblingId, 0, siblingContour);
-            
+
             const sMax = getMaxKey(siblingContour);
             const nMax = getMaxKey(nodeContour);
 
@@ -203,7 +205,7 @@ class TreeFormatter {
 
 
     // left layout ////////////////////////////////////////////
-    
+
     leftLayout(rootNodeId) {
         let levels = this.makeLevels(rootNodeId);
 
@@ -251,6 +253,26 @@ class TreeFormatter {
         }
 
         return levels;
+    }
+
+    // other ////////////////////////////////
+
+    getAllNodes(rootId) {
+        let nodes = [];
+        let stack = [];
+        stack.push(rootId);
+
+        let childIds = null;
+        let curId = null;
+
+        while (stack.length > 0) {
+            curId = stack.pop();
+            nodes.push(curId);
+            childIds = this.boxes.getConnections(curId);
+            stack.push(...childIds);
+        }
+
+        return nodes;
     }
 }
 
