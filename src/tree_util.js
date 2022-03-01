@@ -1,5 +1,4 @@
-const getAllIdsInTree = (rootId, boxes) => {
-    let nodes = [];
+const depthFirstTraversal = (rootId, boxes, fn) => {
     let stack = [];
     stack.push(rootId);
 
@@ -8,10 +7,18 @@ const getAllIdsInTree = (rootId, boxes) => {
 
     while (stack.length > 0) {
         curId = stack.pop();
-        nodes.push(curId);
+        fn(curId);
         childIds = boxes.getConnections(curId);
         stack.push(...childIds);
     }
+}
+
+const getAllIdsInTree = (rootId, boxes) => {
+    let nodes = [];
+
+    const fn = (id) => nodes.push(id);
+
+    depthFirstTraversal(rootId, boxes, fn);
 
     return nodes;
 }
