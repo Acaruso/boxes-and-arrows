@@ -1,3 +1,5 @@
+import { getAllIdsInTree, moveBoxesByDelta } from "./tree_util";
+
 class Logger {
     constructor(boxes) {
         this.boxes = boxes;
@@ -5,7 +7,7 @@ class Logger {
     }
 
     newNode(s, parentId) {
-        let id = this.boxes.addBox(s, { x: 0, y: 0 });
+        const id = this.boxes.addBox(s, { x: 0, y: 0 });
 
         if (this.rootNodeId === null) {
             this.rootNodeId = id;
@@ -19,7 +21,7 @@ class Logger {
     }
 
     appendToNode(s, id) {
-        let box = this.boxes.getBox(id);
+        const box = this.boxes.getBox(id);
         box.appendString(s);
     }
 }
@@ -30,7 +32,6 @@ class Scripter {
         this.boxes = model.boxes;
         this.treeFormatter = treeFormatter;
         this.logger = new Logger(this.boxes);
-
         this.rootNodeId = null;
     }
 
@@ -38,12 +39,13 @@ class Scripter {
         this.logger.rootNodeId = null;
         fn(this.logger);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);
+        const treeIds = getAllIdsInTree(this.logger.rootNodeId, this.boxes);
+        moveBoxesByDelta(treeIds, 5, 5, this.boxes);
     }
 
     run() {
         const fibResult = this.fib(5, null);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);
-        // this.treeFormatter.leftLayout(this.rootNodeId);
     }
 
     fib(n, parentId) {

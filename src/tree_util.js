@@ -35,7 +35,18 @@ const moveBoxes = (ids, coord, boxes) => {
     }
 }
 
+const moveBoxesByDelta = (ids, xDelta, yDelta, boxes) => {
+    for (const id of ids) {
+        const box = boxes.getBox(id);
+        box.setCoord({
+            x: box.coord.x + xDelta,
+            y: box.coord.y + yDelta
+        });
+    }
+}
+
 export {
     getAllIdsInTree,
     moveBoxes,
+    moveBoxesByDelta,
 };
