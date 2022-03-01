@@ -273,7 +273,8 @@ class Ui {
                 e.preventDefault();
                 try {
                     const content = await loadFile();
-                    this.model.boxes.deleteAll();
+                    // this.model.boxes.deleteAll();
+                    this.model.init();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
                     this.model.boxes.loadConnections(connStr);
@@ -297,7 +298,7 @@ class Ui {
                     scriptElt.appendChild(textNode);
                     const targetElt = document.getElementById("userScripts");
                     targetElt.append(scriptElt);
-                    this.model.boxes.deleteAll();
+                    this.model.init();
                     setTimeout(() => {}, 0);    // wait for one event-cycle
                     this.scripter.runUserFn(userFn);
                 } catch (e) {

@@ -1,5 +1,5 @@
 import { Box } from "./box";
-import { firstElt, lastElt } from "./util";
+import { firstElt, lastElt, clearArray } from "./util";
 
 class Boxes {
     constructor() {
@@ -8,9 +8,9 @@ class Boxes {
 
         // key: id of source
         // value: array of ids of destinations
-        // ex: { 
-        //     1: [2, 3, 4], 
-        //     2: [8, 9] 
+        // ex: {
+        //     1: [2, 3, 4],
+        //     2: [8, 9]
         // }
         this.connections = new Map();
     }
@@ -58,7 +58,9 @@ class Boxes {
     }
 
     deleteAll() {
-        this.boxes.forEach(box => this.deleteBox(box.id));
+        // this.boxes.forEach(box => this.deleteBox(box.id));
+        clearArray(this.boxes);
+        this.connections.clear();
     }
 
     addConnection(source, dest) {

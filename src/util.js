@@ -92,6 +92,12 @@ const lastElt = (arr) => {
     }
 }
 
+const clearArray = (arr) => {
+    while (arr.length > 0) {
+        arr.pop();
+    }
+}
+
 export {
     getMidpoint,
     distanceBetweenCoords,
@@ -102,4 +108,5 @@ export {
     getWidthOfText,
     firstElt,
     lastElt,
+    clearArray,
 };
