@@ -269,11 +269,9 @@ class Ui {
             "loadFile",
             e => e.keydown && e.keyboard.control && !e.keyboard.shift && e.keyboard.l,
             async e => {
-                console.log("loadFile");
                 e.preventDefault();
                 try {
                     const content = await loadFile();
-                    // this.model.boxes.deleteAll();
                     this.model.init();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);

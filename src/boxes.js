@@ -58,7 +58,6 @@ class Boxes {
     }
 
     deleteAll() {
-        // this.boxes.forEach(box => this.deleteBox(box.id));
         clearArray(this.boxes);
         this.connections.clear();
     }
