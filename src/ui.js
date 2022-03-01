@@ -6,6 +6,11 @@ import {
     loadFile,
 } from "./util"
 
+import {
+    getAllIdsInTree,
+    moveBoxes,
+ } from "./tree_util";
+
 class Ui {
     constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;
@@ -232,8 +237,9 @@ class Ui {
             ),
             e => {
                 const selectedBox = this.model.selectedBoxIds[0]
-                const ids = this.treeFormatter.treeFormat(selectedBox);
-                this.treeFormatter.moveBoxes(ids, this.state.cur.mouse.coord);
+                this.treeFormatter.treeFormat(selectedBox);
+                const treeIds = getAllIdsInTree(selectedBox, this.model.boxes);
+                moveBoxes(treeIds, this.state.cur.mouse.coord, this.model.boxes);
             }
         );
 
