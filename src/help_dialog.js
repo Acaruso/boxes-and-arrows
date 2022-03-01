@@ -33,13 +33,13 @@ class HelpDialog {
         }
 
         this.rect = {
-            x: 5,
-            y: 5,
+            x: 500,
+            y: 250,
             w: maxWidth,
             color: "#A3BFFF",
         };
 
-        this.rect.h = this.rect.y + (textConstants.charHeight * this.text.length);
+        this.rect.h = (textConstants.charHeight * this.text.length) + textConstants.yPadding;
 
         const cbW = textConstants.charHeight;
 
