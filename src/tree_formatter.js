@@ -274,6 +274,25 @@ class TreeFormatter {
 
         return nodes;
     }
+
+    moveBoxes(ids, coord) {
+        if (ids.length === 0) {
+            return;
+        }
+
+        const rootId = ids[0];
+        const rootBox = this.boxes.getBox(rootId);
+        const xDelta = coord.x - rootBox.coord.x;
+        const yDelta = coord.y - rootBox.coord.y;
+
+        for (const id of ids) {
+            const box = this.boxes.getBox(id);
+            box.setCoord({
+                x: box.coord.x + xDelta,
+                y: box.coord.y + yDelta
+            });
+        }
+    }
 }
 
 const getMaxKey = (map) => {

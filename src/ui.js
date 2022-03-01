@@ -231,9 +231,9 @@ class Ui {
                 && this.model.selectedBoxIds.length === 1
             ),
             e => {
-                this.treeFormatter.treeFormat(
-                    this.model.selectedBoxIds[0]
-                );
+                const selectedBox = this.model.selectedBoxIds[0]
+                const ids = this.treeFormatter.treeFormat(selectedBox);
+                this.treeFormatter.moveBoxes(ids, this.state.cur.mouse.coord);
             }
         );
 
@@ -317,6 +317,12 @@ class Ui {
                 && this.model.helpDialog.visible
             ),
             e => this.model.helpDialog.visible = false
+        );
+
+        this.eventTable.addEvent(
+            "printAllBoxes",
+            e => e.keydown && e.keyboard.control && e.keyboard.space,
+            e => console.log(this.model.boxes)
         );
     }
 

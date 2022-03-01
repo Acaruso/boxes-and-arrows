@@ -8,7 +8,11 @@ class State {
         const eventListener = (e) => {
             // handle keyboard events
             if (e.key) {
-                const key = e.key.toLowerCase();
+                let key = e.key.toLowerCase();
+                if (key === " ") {
+                    key = "space";
+                }
+
                 if (e.type === "keydown") {
                     this.cur.keyboard[key] = true;
                 } else if (e.type === "keyup") {
