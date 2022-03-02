@@ -9,6 +9,7 @@ import {
 import {
     getAllIdsInTree,
     moveBoxes,
+    isTree,
  } from "./tree_util";
 
 class Ui {
@@ -237,6 +238,10 @@ class Ui {
             ),
             e => {
                 const selectedBox = this.model.selectedBoxIds[0]
+                if (!isTree(selectedBox, this.model.boxes)) {
+                    console.log("not a tree!");
+                    return;
+                }
                 this.treeFormatter.treeFormat(selectedBox);
                 const treeIds = getAllIdsInTree(selectedBox, this.model.boxes);
                 moveBoxes(treeIds, this.state.cur.mouse.coord, this.model.boxes);
