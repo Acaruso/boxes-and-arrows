@@ -14,6 +14,7 @@ class HelpDialog {
             "    then drag to another box",
             "Duplicate a box: Alt-click within a box",
             "Delete selected boxes: Delete",
+            "Select all boxes: Ctrl-A",
             "Tree format: select root node, then do Ctrl-Q",
             "Horizontally align selected boxes: Ctrl-H",
             "Vertically align selected boxes: Ctrl-V",
