@@ -14,7 +14,8 @@ class TreeFormatter {
     }
 
     initializeNodes(id, level) {
-        const box = this.boxes.getBox(id);
+        let box = this.boxes.getBox(id);
+        box.parentId = null;
 
         box.setCoord({
             x: 0,
