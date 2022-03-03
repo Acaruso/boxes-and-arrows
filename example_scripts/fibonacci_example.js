@@ -14,5 +14,5 @@ function userFn(logger) {
         return res;
     }
 
-    fib(3, null);
+    fib(6, null);
 }

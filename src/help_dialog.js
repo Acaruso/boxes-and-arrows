@@ -14,10 +14,12 @@ class HelpDialog {
             "    then drag to another box",
             "Duplicate a box: Alt-click within a box",
             "Delete selected boxes: Delete",
+            "Tree format: select root node, then do Ctrl-Q",
             "Horizontally align selected boxes: Ctrl-H",
             "Vertically align selected boxes: Ctrl-V",
             "Save file: Ctrl-S",
             "Load file: Ctrl-L",
+            "Load script: Ctrl-Shift-L",
         ];
 
         let maxWidth = -1;
@@ -33,8 +35,8 @@ class HelpDialog {
         }
 
         this.rect = {
-            x: 500,
-            y: 250,
+            x: 200,
+            y: 200,
             w: maxWidth,
             color: "#A3BFFF",
         };

@@ -22,7 +22,9 @@ class Logger {
 
     appendToNode(s, id) {
         const box = this.boxes.getBox(id);
-        box.appendString(s);
+        if (box !== null && box !== undefined) {
+            box.appendString(s);
+        }
     }
 }
 
