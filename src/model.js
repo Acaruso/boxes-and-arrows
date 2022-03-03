@@ -1,5 +1,6 @@
 import { Boxes } from "./boxes";
 import { HelpDialog } from "./help_dialog"
+import { clearArray } from "./util";
 
 class Model {
     constructor() {
@@ -8,7 +9,6 @@ class Model {
 
         this.selectedBoxIds = [];
 
-        this.selectedBoxId = -1;
         this.draggingBoxes = false;
         this.draggingSelectedRegion = false;
 
@@ -16,8 +16,17 @@ class Model {
         this.drawingLine = false;
         this.outBox = {};
 
-        this.numLevels = 1;
+        this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
+    }
 
+    init() {
+        this.boxes.deleteAll();
+        clearArray(this.selectedBoxIds);
+        this.draggingBoxes = false;
+        this.draggingSelectedRegion = false;
+        this.lineBegin = { x: 0, y: 0 };
+        this.drawingLine = false;
+        this.outBox = {};
         this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
     }
 

@@ -1,11 +1,24 @@
-import { getMidpoint, rectsOverlap, isPrintableKeycode, saveFile, loadFile } from "./util"
+import {
+    getMidpoint,
+    rectsOverlap,
+    isPrintableKeycode,
+    saveFile,
+    loadFile,
+} from "./util"
+
+import {
+    getAllIdsInTree,
+    moveBoxes,
+    isTree,
+ } from "./tree_util";
 
 class Ui {
-    constructor(state, model, scripter, eventTable) {
+    constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;
         this.model = model;
-        this.scripter = scripter;
         this.eventTable = eventTable;
+        this.scripter = scripter;
+        this.treeFormatter = treeFormatter;
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -27,11 +40,22 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "addConnection",
+            e => e.mouseup && e.insideBox && this.model.drawingLine,
+            e => {
+                this.model.boxes.addConnection(
+                    this.model.outBox.id,
+                    e.mouseBox.id
+                );
+                this.model.drawingLine = false;
+            }
+        );
+
+        this.eventTable.addEvent(
             "addBox",
             e => e.dblclick && !e.insideBox,
             e => {
-                console.log(e.mouse.coord)
-                const text = this.scripter.getNext();
+                const text = "";
                 const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
@@ -114,18 +138,6 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "addConnection",
-            e => e.mouseup && e.insideBox && this.model.drawingLine,
-            e => {
-                this.model.boxes.addConnection(
-                    this.model.outBox.id,
-                    e.mouseBox.id
-                );
-                this.model.drawingLine = false;
-            }
-        );
-
-        this.eventTable.addEvent(
             "endDraggingBoxes",
             e => e.mouseup,
             e => this.model.draggingBoxes = false
@@ -144,7 +156,7 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "appendChar",
+            "appendString",
             e => {
                 return e.keydown
                     && this.model.anyBoxesSelected()
@@ -154,7 +166,7 @@ class Ui {
             e => {
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
-                    box.appendChar(e.key_);
+                    box.appendString(e.key_);
                 }
             }
         );
@@ -217,6 +229,26 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "treeFormat",
+            e => (
+                e.keydown
+                && e.keyboard.control
+                && e.keyboard.q
+                && this.model.selectedBoxIds.length === 1
+            ),
+            e => {
+                const selectedBox = this.model.selectedBoxIds[0]
+                if (!isTree(selectedBox, this.model.boxes)) {
+                    console.log("not a tree!");
+                    return;
+                }
+                this.treeFormatter.treeFormat(selectedBox);
+                const treeIds = getAllIdsInTree(selectedBox, this.model.boxes);
+                moveBoxes(treeIds, this.state.cur.mouse.coord, this.model.boxes);
+            }
+        );
+
+        this.eventTable.addEvent(
             "selectAll",
             e => e.keydown && e.keyboard.control && e.keyboard.a,
             e => {
@@ -246,13 +278,12 @@ class Ui {
 
         this.eventTable.addEvent(
             "loadFile",
-            e => e.keydown && e.keyboard.control && e.keyboard.l,
+            e => e.keydown && e.keyboard.control && !e.keyboard.shift && e.keyboard.l,
             async e => {
                 e.preventDefault();
                 try {
                     const content = await loadFile();
-
-                    this.model.boxes.deleteAll();
+                    this.model.init();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
                     this.model.boxes.loadConnections(connStr);
@@ -265,6 +296,30 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "loadScript",
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.l,
+            async e => {
+                e.preventDefault();
+                try {
+                    const scriptElt = document.createElement("script");
+                    const content = await loadFile();
+                    const textNode = document.createTextNode(content);
+                    scriptElt.appendChild(textNode);
+                    const targetElt = document.getElementById("userScripts");
+                    targetElt.append(scriptElt);
+                    this.model.init();
+                    setTimeout(() => {}, 0);    // wait for one event-cycle
+                    this.scripter.runUserFunction(userFunction);
+                } catch (e) {
+                    console.log(e);
+                }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.shift = false;
+                this.state.cur.keyboard.l = false;
+            }
+        );
+
+        this.eventTable.addEvent(
             "closeHelpDialog",
             e => (
                 e.mousedown
@@ -272,6 +327,12 @@ class Ui {
                 && this.model.helpDialog.visible
             ),
             e => this.model.helpDialog.visible = false
+        );
+
+        this.eventTable.addEvent(
+            "printAllBoxes",
+            e => e.keydown && e.keyboard.control && e.keyboard.space,
+            e => console.log(this.model.boxes)
         );
     }
 

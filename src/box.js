@@ -6,12 +6,13 @@ class Box {
         this.id = id;
         this.text = text;
         this.rect = {};
+        this.parentId = null;
 
         this.updateRect();
     }
 
-    appendChar(c) {
-        this.text += c;
+    appendString(s) {
+        this.text += s;
         this.updateRect();
     }
 
@@ -23,7 +24,20 @@ class Box {
     }
 
     setCoord(newCoord) {
-        this.coord = { ...newCoord };
+        this.coord = {
+            x: Math.floor(newCoord.x),
+            y: Math.floor(newCoord.y)
+        };
+        this.updateRect();
+    }
+
+    setX(x) {
+        this.coord.x = Math.floor(x);
+        this.updateRect();
+    }
+
+    setY(y) {
+        this.coord.y = Math.floor(y);
         this.updateRect();
     }
 

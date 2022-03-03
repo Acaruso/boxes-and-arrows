@@ -14,10 +14,13 @@ class HelpDialog {
             "    then drag to another box",
             "Duplicate a box: Alt-click within a box",
             "Delete selected boxes: Delete",
+            "Select all boxes: Ctrl-A",
+            "Tree format: select root node, then do Ctrl-Q",
             "Horizontally align selected boxes: Ctrl-H",
             "Vertically align selected boxes: Ctrl-V",
             "Save file: Ctrl-S",
             "Load file: Ctrl-L",
+            "Load script: Ctrl-Shift-L",
         ];
 
         let maxWidth = -1;
@@ -33,13 +36,13 @@ class HelpDialog {
         }
 
         this.rect = {
-            x: 5,
-            y: 5,
+            x: 200,
+            y: 200,
             w: maxWidth,
             color: "#A3BFFF",
         };
 
-        this.rect.h = this.rect.y + (textConstants.charHeight * this.text.length);
+        this.rect.h = (textConstants.charHeight * this.text.length) + textConstants.yPadding;
 
         const cbW = textConstants.charHeight;
 

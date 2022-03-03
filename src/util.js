@@ -72,17 +72,31 @@ const loadFile = async () => {
     return content;
 };
 
-// const loadFile = async (cb) => {
-//     const [fileHandle] = await window.showOpenFilePicker();
-//     const file = await fileHandle.getFile();
-//     const content = await file.text();
-//     cb(content);
-//     // return content;
-// };
-
 const getWidthOfText = (text, charWidth, xPadding) => {
     return Math.floor(text.length * charWidth) + (xPadding * 2);
 };
+
+const firstElt = (arr) => {
+    if (arr.length === 0) {
+        return null;
+    } else {
+        return arr[0];
+    }
+}
+
+const lastElt = (arr) => {
+    if (arr.length === 0) {
+        return null;
+    } else {
+        return arr[arr.length - 1];
+    }
+}
+
+const clearArray = (arr) => {
+    while (arr.length > 0) {
+        arr.pop();
+    }
+}
 
 export {
     getMidpoint,
@@ -91,5 +105,8 @@ export {
     isPrintableKeycode,
     saveFile,
     loadFile,
-    getWidthOfText
+    getWidthOfText,
+    firstElt,
+    lastElt,
+    clearArray,
 };

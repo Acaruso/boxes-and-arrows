@@ -23,33 +23,33 @@ describe("Boxes", () => {
         expect(boxes.getLength()).toEqual(0);
     });
 
-    test("create connection, connection should exist", () => {
+    test("create connection between 1 and 2, connection from 1 to 2 should exist", () => {
         const boxes = new Boxes();
-        const id1 = boxes.addBox("1", { x: 0, y: 0 });
-        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        const id1 = boxes.addBox("", { x: 0, y: 0 });
+        const id2 = boxes.addBox("", { x: 0, y: 0 });
         boxes.addConnection(id1, id2);
-        const connections = boxes.getConnections(id1, id2);
-        expect(connections[0][0].id).toEqual(id1);
-        expect(connections[0][1].id).toEqual(id2);
+        const connections = boxes.getConnections(id1);
+        console.log(connections)
+        expect(connections[0]).toEqual(id2);
     });
 
     test("create connection, delete source, connection should be deleted", () => {
         const boxes = new Boxes();
-        const id1 = boxes.addBox("1", { x: 0, y: 0 });
-        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        const id1 = boxes.addBox("", { x: 0, y: 0 });
+        const id2 = boxes.addBox("", { x: 0, y: 0 });
         boxes.addConnection(id1, id2);
         boxes.deleteBox(id1);
-        const connections = boxes.getConnections(id1, id2);
+        const connections = boxes.getConnections(id1);
         expect(connections.length).toEqual(0);
     });
 
     test("create connection, delete destination, connection should be deleted", () => {
         const boxes = new Boxes();
-        const id1 = boxes.addBox("1", { x: 0, y: 0 });
-        const id2 = boxes.addBox("1", { x: 13, y: 1414 });
+        const id1 = boxes.addBox("", { x: 0, y: 0 });
+        const id2 = boxes.addBox("", { x: 0, y: 0 });
         boxes.addConnection(id1, id2);
         boxes.deleteBox(id2);
-        const connections = boxes.getConnections(id1, id2);
+        const connections = boxes.getConnections(id1);
         expect(connections.length).toEqual(0);
     });
 });
