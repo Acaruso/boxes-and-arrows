@@ -37,7 +37,7 @@ class Scripter {
         this.rootNodeId = null;
     }
 
-    runUserFn(fn) {
+    runUserFunction(fn) {
         this.logger.rootNodeId = null;
         fn(this.logger);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);

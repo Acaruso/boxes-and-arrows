@@ -309,7 +309,7 @@ class Ui {
                     targetElt.append(scriptElt);
                     this.model.init();
                     setTimeout(() => {}, 0);    // wait for one event-cycle
-                    this.scripter.runUserFn(userFn);
+                    this.scripter.runUserFunction(userFunction);
                 } catch (e) {
                     console.log(e);
                 }

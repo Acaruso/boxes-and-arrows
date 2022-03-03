@@ -1,4 +1,4 @@
-function userFn(logger) {
+function userFunction(logger) {
 
     function fib(n, parentId) {
         var id = logger.newNode("fib(" + n + ")", parentId);
@@ -14,5 +14,5 @@ function userFn(logger) {
         return res;
     }
 
-    fib(6, null);
+    fib(5, null);
 }
