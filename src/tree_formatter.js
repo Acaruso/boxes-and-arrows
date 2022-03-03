@@ -8,6 +8,8 @@ class TreeFormatter {
     }
 
     treeFormat(rootId) {
+        let box = this.boxes.getBox(rootId);
+        box.parentId = null;
         this.initializeNodes(rootId, 0);
         this.calculateInitialX(rootId);
         this.calculateFinalPositions(rootId, 0);
@@ -15,7 +17,6 @@ class TreeFormatter {
 
     initializeNodes(id, level) {
         let box = this.boxes.getBox(id);
-        box.parentId = null;
 
         box.setCoord({
             x: 0,
