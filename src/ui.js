@@ -118,9 +118,25 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "endDraggingBoxes",
+            e => e.mouseup,
+            e => this.model.draggingBoxes = false
+        );
+
+        this.eventTable.addEvent(
             "beginDraggingSelectedRegion",
             e => e.mousedown && !e.keyboard.control && !e.insideBox,
-            e => this.model.draggingSelectedRegion = true
+            e => {
+                this.model.draggingSelectedRegion = true;
+                console.log("this.model.selectedRegion")
+                console.log(this.model.selectedRegion)
+            }
+        );
+
+        this.eventTable.addEvent(
+            "endDraggingSelectedRegion",
+            e => e.mouseup,
+            e => this.model.draggingSelectedRegion = false
         );
 
         this.eventTable.addEvent(
@@ -138,21 +154,9 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "endDraggingBoxes",
-            e => e.mouseup,
-            e => this.model.draggingBoxes = false
-        );
-
-        this.eventTable.addEvent(
             "endDrawingLine",
             e => e.mouseup,
             e => this.model.drawingLine = false
-        );
-
-        this.eventTable.addEvent(
-            "endDraggingSelectedRegion",
-            e => e.mouseup,
-            e => this.model.draggingSelectedRegion = false
         );
 
         this.eventTable.addEvent(

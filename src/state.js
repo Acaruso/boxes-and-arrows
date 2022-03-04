@@ -23,8 +23,12 @@ class State {
             // handle mouse events
             else if (e.type === "mousedown") {
                 this.cur.mouse.clicked = true;
+                // this.cur.mouse.coord.x = e.offsetX;
+                // this.cur.mouse.coord.y = e.offsetY;
             } else if (e.type === "mouseup") {
                 this.cur.mouse.clicked = false;
+                // this.cur.mouse.coord.x = e.offsetX;
+                // this.cur.mouse.coord.y = e.offsetY;
             } else if (e.type === "mousemove") {
                 this.cur.mouse.coord.x = e.offsetX;
                 this.cur.mouse.coord.y = e.offsetY;
