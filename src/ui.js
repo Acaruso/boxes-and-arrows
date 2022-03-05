@@ -128,8 +128,6 @@ class Ui {
             e => e.mousedown && !e.keyboard.control && !e.insideBox,
             e => {
                 this.model.draggingSelectedRegion = true;
-                console.log("this.model.selectedRegion")
-                console.log(this.model.selectedRegion)
             }
         );
 

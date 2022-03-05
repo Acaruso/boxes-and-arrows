@@ -120,7 +120,6 @@ class Renderer {
 
     drawSelectedRegion() {
         if (this.model.draggingSelectedRegion) {
-            // console.log(this.model.selectedRegion);
             this.gfx.drawRect(this.model.selectedRegion, 10);
         }
     }

@@ -5,6 +5,8 @@ class State {
         this.cur = makeState();
         this.prev = makeState();
 
+        this.initialMouseClick = true;
+
         const eventListener = (e) => {
             // handle keyboard events
             if (e.key) {
@@ -23,12 +25,17 @@ class State {
             // handle mouse events
             else if (e.type === "mousedown") {
                 this.cur.mouse.clicked = true;
-                // this.cur.mouse.coord.x = e.offsetX;
-                // this.cur.mouse.coord.y = e.offsetY;
+                this.cur.mouse.coord.x = e.offsetX;
+                this.cur.mouse.coord.y = e.offsetY;
+                if (this.initialMouseClick === true) {
+                    this.prev.mouse.coord.x = this.cur.mouse.coord.x;
+                    this.prev.mouse.coord.y = this.cur.mouse.coord.y;
+                    this.initialMouseClick = false;
+                }
             } else if (e.type === "mouseup") {
                 this.cur.mouse.clicked = false;
-                // this.cur.mouse.coord.x = e.offsetX;
-                // this.cur.mouse.coord.y = e.offsetY;
+                this.cur.mouse.coord.x = e.offsetX;
+                this.cur.mouse.coord.y = e.offsetY;
             } else if (e.type === "mousemove") {
                 this.cur.mouse.coord.x = e.offsetX;
                 this.cur.mouse.coord.y = e.offsetY;
