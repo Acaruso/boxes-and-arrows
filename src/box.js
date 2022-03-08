@@ -1,10 +1,11 @@
 import { textConstants } from "./text_constants";
+import { getTextRect } from "./util";
 
 class Box {
     constructor(text, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        this.text = text;
+        this.text = [text];
         this.rect = {};
         this.parentId = null;
 
@@ -12,7 +13,12 @@ class Box {
     }
 
     appendString(s) {
-        this.text += s;
+        if (s === "\n") {
+            this.text.push("");
+        } else {
+            this.text[this.text.length - 1] += s;
+        }
+
         this.updateRect();
     }
 
@@ -42,14 +48,16 @@ class Box {
     }
 
     updateRect() {
-        const length = this.text.length > 0 ? this.text.length : 1;
+        this.rect = getTextRect(this.text, this.coord);
 
-        this.rect = {
-            x: this.coord.x,
-            y: this.coord.y,
-            w: Math.floor(length * textConstants.charWidth) + (textConstants.xPadding * 2),
-            h: textConstants.charHeight + textConstants.yPadding
-        };
+        // const length = this.text.length > 0 ? this.text.length : 1;
+
+        // this.rect = {
+        //     x: this.coord.x,
+        //     y: this.coord.y,
+        //     w: Math.floor(length * textConstants.charWidth) + (textConstants.xPadding * 2),
+        //     h: textConstants.charHeight + textConstants.yPadding
+        // };
     }
 }
 

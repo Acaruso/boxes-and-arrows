@@ -75,7 +75,7 @@ const loadFile = async () => {
     return content;
 };
 
-const getTextRect = (text) => {
+const getTextRect = (text, coord) => {
     let maxWidth = -1;
 
     for (const str of text) {
@@ -89,8 +89,8 @@ const getTextRect = (text) => {
     }
 
     let rect = {
-        x: 200,
-        y: 200,
+        x: coord.x,
+        y: coord.y,
         w: maxWidth,
     };
 
@@ -100,7 +100,8 @@ const getTextRect = (text) => {
 }
 
 const getWidthOfText = (text, charWidth, xPadding) => {
-    return Math.floor(text.length * charWidth) + (xPadding * 2);
+    let len = text.length > 0 ? text.length : 1;
+    return Math.floor(len * charWidth) + (xPadding * 2);
 };
 
 const firstElt = (arr) => {

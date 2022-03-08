@@ -23,7 +23,9 @@ class HelpDialog {
             "Load script: Ctrl-Shift-L",
         ];
 
-        this.rect = getTextRect(this.text);
+        this.coord = { x: 200, y: 200 };
+
+        this.rect = getTextRect(this.text, this.coord);
 
         this.rect.color = "#A3BFFF";
 
