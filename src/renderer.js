@@ -92,18 +92,6 @@ class Renderer {
             12
         );
 
-        // for (let i = 0; i < helpDialog.text.length; i++) {
-        //     this.gfx.drawText(
-        //         helpDialog.text[i],
-        //         textConstants.charHeight,
-        //         {
-        //             x: helpDialog.rect.x + textConstants.xPadding,
-        //             y: helpDialog.rect.y + (textConstants.charHeight * (i + 1))
-        //         },
-        //         12
-        //     );
-        // }
-
         this.drawCloseButton();
     }
 

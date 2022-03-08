@@ -8,7 +8,11 @@ class Box {
         if (Array.isArray(text)) {
             this.text = [...text];
         } else {
+            console.log("splitting");
             this.text = text.split('\n');
+            console.log(text);
+            console.log(text.split('\n'));
+            console.log("text: " + this.text);
         }
 
         this.rect = {};
@@ -18,10 +22,18 @@ class Box {
     }
 
     appendString(s) {
-        if (s === "\n") {
-            this.text.push("");
+        const arr = s.split('\n');
+
+        if (arr.length > 1) {
+            for (const elt of arr) {
+                this.text.push(elt);
+            }
         } else {
-            this.text[this.text.length - 1] += s;
+            if (s === "\n") {
+                this.text.push("");
+            } else {
+                this.text[this.text.length - 1] += s;
+            }
         }
 
         this.updateRect();

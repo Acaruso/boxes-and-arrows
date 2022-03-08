@@ -10,7 +10,7 @@ function userFunction(logger) {
         } else {
             res = fib(n - 1, id) + fib(n - 2, id);
         }
-        logger.appendToNode(" -> " + res, id);
+        logger.appendToNode("\n-> " + res, id);
         return res;
     }
 
