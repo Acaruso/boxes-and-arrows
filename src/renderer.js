@@ -37,24 +37,7 @@ class Renderer {
     }
 
     drawBoxText(box) {
-        for (let i = 0; i < box.text.length; i++) {
-            this.gfx.drawText(
-                box.text[i],
-                textConstants.charHeight,
-                {
-                    x: box.rect.x + textConstants.xPadding,
-                    y: box.rect.y + (textConstants.charHeight * (i + 1))
-                },
-                2
-            );
-        }
-
-        // this.gfx.drawText(
-        //     box.text,
-        //     textConstants.charHeight,
-        //     { x: box.coord.x + textConstants.xPadding, y: box.coord.y + textConstants.charHeight },
-        //     2
-        // );
+        this.drawMultiLineText(box.text, box.coord, 2);
     }
 
     drawSelectedBoxes() {
@@ -103,17 +86,23 @@ class Renderer {
 
         this.gfx.drawRect(helpDialog.rect, 11);
 
-        for (let i = 0; i < helpDialog.text.length; i++) {
-            this.gfx.drawText(
-                helpDialog.text[i],
-                textConstants.charHeight,
-                {
-                    x: helpDialog.rect.x + textConstants.xPadding,
-                    y: helpDialog.rect.y + (textConstants.charHeight * (i + 1))
-                },
-                12
-            );
-        }
+        this.drawMultiLineText(
+            helpDialog.text,
+            { x: helpDialog.rect.x, y: helpDialog.rect.y },
+            12
+        );
+
+        // for (let i = 0; i < helpDialog.text.length; i++) {
+        //     this.gfx.drawText(
+        //         helpDialog.text[i],
+        //         textConstants.charHeight,
+        //         {
+        //             x: helpDialog.rect.x + textConstants.xPadding,
+        //             y: helpDialog.rect.y + (textConstants.charHeight * (i + 1))
+        //         },
+        //         12
+        //     );
+        // }
 
         this.drawCloseButton();
     }
@@ -136,6 +125,19 @@ class Renderer {
         );
     }
 
+    drawMultiLineText(text, coord, z=0) {
+        for (let i = 0; i < text.length; i++) {
+            this.gfx.drawText(
+                text[i],
+                textConstants.charHeight,
+                {
+                    x: coord.x + textConstants.xPadding,
+                    y: coord.y + (textConstants.charHeight * (i + 1))
+                },
+                z
+            );
+        }
+    }
 }
 
 export { Renderer };
