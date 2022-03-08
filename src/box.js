@@ -11,7 +11,6 @@ class Box {
             this.text = text.split('\n');
         }
 
-        console.log('text: ' + this.text);
         this.rect = {};
         this.parentId = null;
 
@@ -29,9 +28,12 @@ class Box {
     }
 
     deleteChar() {
-        if (this.text.length > 0) {
+        if (this.text[this.text.length - 1].length > 0) {
+            this.text[this.text.length - 1] = this.text[this.text.length - 1].slice(0, -1);
+        } else if (this.text.length > 1) {      // don't allow to delete last string from arr
             this.text = this.text.slice(0, -1);
         }
+
         this.updateRect();
     }
 
