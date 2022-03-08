@@ -13,6 +13,8 @@ class State {
                 let key = e.key.toLowerCase();
                 if (key === " ") {
                     key = "space";
+                } else if (key === "enter") {
+                    key = "\n";
                 }
 
                 if (e.type === "keydown") {

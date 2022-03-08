@@ -1,5 +1,5 @@
 import { textConstants } from "./text_constants";
-import { getWidthOfText } from "./util"
+import { getTextRect } from "./util"
 
 class HelpDialog {
     constructor() {
@@ -23,26 +23,9 @@ class HelpDialog {
             "Load script: Ctrl-Shift-L",
         ];
 
-        let maxWidth = -1;
+        this.rect = getTextRect(this.text);
 
-        for (const s of this.text) {
-            const curWidth = getWidthOfText(
-                s,
-                textConstants.charWidth,
-                textConstants.xPadding
-            );
-
-            maxWidth = Math.max(maxWidth, curWidth);
-        }
-
-        this.rect = {
-            x: 200,
-            y: 200,
-            w: maxWidth,
-            color: "#A3BFFF",
-        };
-
-        this.rect.h = (textConstants.charHeight * this.text.length) + textConstants.yPadding;
+        this.rect.color = "#A3BFFF";
 
         const cbW = textConstants.charHeight;
 

@@ -11,6 +11,11 @@ class EventTable {
 
     formatEvent(e) {
         e.key_ = e.key ? e.key.toLowerCase() : "";
+
+        if (e.key_ === "enter") {
+            e.key_ = "\n";
+        }
+
         e.mousedown = e.type === "mousedown";
         e.mouseup = e.type === "mouseup";
         e.keydown = e.type === "keydown";
