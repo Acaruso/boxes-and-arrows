@@ -1,11 +1,17 @@
-import { textConstants } from "./text_constants";
 import { getTextRect } from "./util";
 
 class Box {
     constructor(text, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        this.text = [text];
+
+        if (Array.isArray(text)) {
+            this.text = [...text];
+        } else {
+            this.text = text.split('\n');
+        }
+
+        console.log('text: ' + this.text);
         this.rect = {};
         this.parentId = null;
 
