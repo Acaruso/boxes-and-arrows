@@ -3,8 +3,10 @@ function userFunction(logger) {
 
     function helper(i, coins, amount, parentId) {
         // var id = logger.newNode("i: " + i + ", coins: " + coins + ", amount: " + amount, parentId);
-        var id = logger.newNode("i: " + i + ", amount: " + amount, parentId);
+        var str = "i: " + i + "\namount: " + amount;
+        var id = logger.newNode(str, parentId);
         if (amount === 0) {
+            logger.appendToNode("\n-> " + 0, id);
             return 0;
         }
 
@@ -24,15 +26,15 @@ function userFunction(logger) {
             }
 
             if (minCost === MAX_INT) {
-                logger.appendToNode(" -> " + -1, id);
+                logger.appendToNode("\n-> " + -1, id);
                 return -1;
             } else {
-                logger.appendToNode(" -> " + minCost, id);
+                logger.appendToNode("\n-> " + minCost, id);
                 return minCost
             }
         }
 
-        logger.appendToNode(" -> " + -1, id);
+        logger.appendToNode("\n-> " + -1, id);
         return -1;
     }
 
@@ -41,7 +43,7 @@ function userFunction(logger) {
     }
 
     var coins = [1, 2, 3];
-    var amount = 5;
+    var amount = 7;
 
     // var coins = [186,419,83,408];
     // var amount = 6249;

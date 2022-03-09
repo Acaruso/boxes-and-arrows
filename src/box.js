@@ -4,7 +4,7 @@ class Box {
     constructor(text, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        this.text = [text];
+        this.text = text.split('\n');
         this.rect = {};
         this.parentId = null;
 
@@ -18,7 +18,9 @@ class Box {
             this.text.push("");
         } else if (arr.length > 1) {
             for (const elt of arr) {
-                this.text.push(elt);
+                if (elt !== "") {
+                    this.text.push(elt);
+                }
             }
         } else {
             this.text[this.text.length - 1] += s;
