@@ -8,7 +8,7 @@
 
 function userFunction(logger) {
     function logEntrypoint(i, coins, amount, parentId) {
-        var curCoinStr = "";
+        let curCoinStr = "";
 
         if (i < coins.length) {
             curCoinStr = coins[i];
@@ -16,8 +16,8 @@ function userFunction(logger) {
             curCoinStr = "no coin";
         }
 
-        str = "i: " + i + "\ncurCoin: " + curCoinStr + "\namount: " + amount;
-        var id = logger.newNode(str, parentId);
+        const str = "i: " + i + "\ncurCoin: " + curCoinStr + "\namount: " + amount;
+        const id = logger.newNode(str, parentId);
         return id;
     }
 
@@ -25,10 +25,10 @@ function userFunction(logger) {
         logger.appendToNode("\n-> " + val, id);
     }
 
-    var MAX_INT = Number.MAX_SAFE_INTEGER;
+    const MAX_INT = Number.MAX_SAFE_INTEGER;
 
     function helper(i, coins, amount, parentId) {
-        var id = logEntrypoint(i, coins, amount, parentId);
+        const id = logEntrypoint(i, coins, amount, parentId);
 
         if (amount === 0) {
             logReturn(0, id);
@@ -36,13 +36,13 @@ function userFunction(logger) {
         }
 
         if (i < coins.length && amount > 0) {
-            var curCoin = coins[i];
-            var maxNumCoins = Math.floor(amount / curCoin);
-            var minCost = MAX_INT
+            const curCoin = coins[i];
+            const maxNumCoins = Math.floor(amount / curCoin);
+            let minCost = MAX_INT
 
-            for (var numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
+            for (let numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
                 if (numCoins * curCoin <= amount) {
-                    res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
+                    const res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
 
                     if (res !== -1) {
                         minCost = Math.min(minCost, res + numCoins);
@@ -67,12 +67,9 @@ function userFunction(logger) {
         return helper(0, coins, amount, null)
     }
 
-    var coins = [1, 2, 3];
-    var amount = 5;
+    const coins = [1, 2, 3];
+    const amount = 5;
 
-    // var coins = [186,419,83,408];
-    // var amount = 6249;
-
-    var res = coinChange(coins, amount);
+    const res = coinChange(coins, amount);
     console.log('res: ' + res);
 }
