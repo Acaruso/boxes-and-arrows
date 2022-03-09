@@ -17,7 +17,7 @@ function userFunction(logger) {
         }
 
         let str = "";
-        str += "\ni: " + i;
+        str += "i: " + i;
         str += "\ncurCoin: " + curCoinStr;
         str += "\namount: " + amount;
         const id = logger.newNode(str, parentId);
@@ -29,54 +29,69 @@ function userFunction(logger) {
         logger.appendToNode("\n-> " + val, id);
     }
 
+    function append(val, id) {
+        logger.appendToNode("\n" + val, id);
+    }
+
     const MAX_INT = Number.MAX_SAFE_INTEGER;
 
-    function helper(i, coins, amount, parentId) {
+    function helper({ i, coins, amount, parentId }) {
         const id = logEntrypoint(i, coins, amount, parentId);
 
         if (amount === 0) {
-            logReturn(0, id);
-            return 0;
+            logReturn(`{ found: true, numCoins: 0 }`, id);
+            return { found: true, numCoins: 0 };
         }
 
         if (i < coins.length && amount > 0) {
             const curCoin = coins[i];
-            const maxNumCoins = Math.floor(amount / curCoin);
-            let minCost = MAX_INT
+            const maxNumCurCoins = Math.floor(amount / curCoin);
 
-            for (let numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
-                if (numCoins * curCoin <= amount) {
-                    const res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
+            let curRes = { found: false, numCoins: MAX_INT };
 
-                    let s = `\nres:${res} = helper(...)`;
-                    logger.appendToNode(s, id);
+            for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
+                if (numCurCoins * curCoin <= amount) {
+                    const res = helper({
+                        i: i + 1,
+                        coins: coins,
+                        amount: amount - (numCurCoins * curCoin),
+                        parentId: id,
+                    });
 
-                    // minCost = Math.min(minCost, res + numCoins);
+                    append(JSON.stringify(res), id);
 
-                    if (res !== -1) {
-                        minCost = Math.min(minCost, res + numCoins);
+                    if (res.found) {
+                        curRes.numCoins = Math.min(
+                            curRes.numCoins,
+                            res.numCoins + numCurCoins
+                        );
+                        curRes.found = true;
                     }
                 }
             }
 
-            logger.appendToNode(`\nminCost:${minCost}`, id);
+            // logger.appendToNode(`\nminNumCoins:${minNumCoins}`, id);
 
-            if (minCost === MAX_INT) {
-                logger.appendToNode("\nminCost === MAX_INT", id);
-                logReturn(-1, id);
-                return -1;
+            if (curRes.found === false) {
+                logReturn(JSON.stringify(curRes), id);
+                return { found: false, numCoins: 0 };
             } else {
-                logReturn(minCost, id);
-                return minCost
+                logReturn(JSON.stringify(curRes), id);
+                return curRes;
             }
         }
 
-        logReturn(-1, id);
-        return -1;
+        logReturn("{ found: false, numCoins: 0 }", id);
+        return { found: false, numCoins: 0 };
     }
 
     function coinChange(coins, amount) {
-        return helper(0, coins, amount, null)
+        return helper({
+            i: 0,
+            coins: coins,
+            amount: amount,
+            parentId: null,
+        });
     }
 
     const coins = [1, 2];
@@ -86,5 +101,5 @@ function userFunction(logger) {
     // const amount = 5;
 
     const res = coinChange(coins, amount);
-    console.log('res: ' + res);
+    console.log('res: ' + res.numCoins);
 }
