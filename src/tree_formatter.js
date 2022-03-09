@@ -1,3 +1,6 @@
+// tree drawing algorithm adapted from:
+// https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/
+
 import { firstElt } from "./util";
 
 class TreeFormatter {
