@@ -47,8 +47,6 @@ function userFunction(logger) {
                         parentId: id,
                     });
 
-                    // `helper(${i}, [${coins}], ${amount})`
-
                     append(`helper(${i + 1}, [${coins}], ${amount - (numCurCoins * curCoin)})`, id);
                     append("-> " + JSON.stringify(res), id);
 
@@ -73,7 +71,6 @@ function userFunction(logger) {
 
         logReturn("{ found: false, numCoins: 0 }", id);
         return curRes;
-        // return { found: false, numCoins: 0 };
     }
 
     function coinChange(coins, amount) {
