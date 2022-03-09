@@ -4,6 +4,7 @@ import {
     isPrintableKeycode,
     saveFile,
     loadFile,
+    loadFileFromHandle,
 } from "./util"
 
 import {
@@ -19,6 +20,7 @@ class Ui {
         this.eventTable = eventTable;
         this.scripter = scripter;
         this.treeFormatter = treeFormatter;
+        this.prevFileHandle = null;
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -285,7 +287,7 @@ class Ui {
             async e => {
                 e.preventDefault();
                 try {
-                    const content = await loadFile();
+                    const [_, content] = await loadFile();
                     this.model.init();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
@@ -300,12 +302,13 @@ class Ui {
 
         this.eventTable.addEvent(
             "loadScript",
-            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.l,
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && !e.keyboard.alt && e.keyboard.l,
             async e => {
                 e.preventDefault();
                 try {
                     const scriptElt = document.createElement("script");
-                    const content = await loadFile();
+                    const [fileHandle, content] = await loadFile();
+                    this.prevFileHandle = fileHandle;
                     const textNode = document.createTextNode(content);
                     scriptElt.appendChild(textNode);
                     const targetElt = document.getElementById("userScripts");
@@ -318,6 +321,34 @@ class Ui {
                 }
                 this.state.cur.keyboard.control = false;
                 this.state.cur.keyboard.shift = false;
+                this.state.cur.keyboard.l = false;
+            }
+        );
+
+        this.eventTable.addEvent(
+            "reloadScript",
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.alt && e.keyboard.l,
+            async e => {
+                e.preventDefault();
+                try {
+                    if (this.prevFileHandle === null) {
+                        return;
+                    }
+                    const scriptElt = document.createElement("script");
+                    const content = await loadFileFromHandle(this.prevFileHandle);
+                    const textNode = document.createTextNode(content);
+                    scriptElt.appendChild(textNode);
+                    const targetElt = document.getElementById("userScripts");
+                    targetElt.append(scriptElt);
+                    this.model.init();
+                    setTimeout(() => {}, 0);    // wait for one event-cycle
+                    this.scripter.runUserFunction(userFunction);
+                } catch (e) {
+                    console.log(e);
+                }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.shift = false;
+                this.state.cur.keyboard.alt = false;
                 this.state.cur.keyboard.l = false;
             }
         );

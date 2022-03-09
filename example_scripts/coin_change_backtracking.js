@@ -1,12 +1,37 @@
+// https://leetcode.com/problems/coin-change/
+
+// You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+
+// Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+// You may assume that you have an infinite number of each kind of coin.
+
 function userFunction(logger) {
+    function logEntrypoint(i, coins, amount, parentId) {
+        var curCoinStr = "";
+
+        if (i < coins.length) {
+            curCoinStr = coins[i];
+        } else {
+            curCoinStr = "no coin";
+        }
+
+        str = "i: " + i + "\ncurCoin: " + curCoinStr + "\namount: " + amount;
+        var id = logger.newNode(str, parentId);
+        return id;
+    }
+
+    function logReturn(val, id) {
+        logger.appendToNode("\n-> " + val, id);
+    }
+
     var MAX_INT = Number.MAX_SAFE_INTEGER;
 
     function helper(i, coins, amount, parentId) {
-        // var id = logger.newNode("i: " + i + ", coins: " + coins + ", amount: " + amount, parentId);
-        var str = "i: " + i + "\namount: " + amount;
-        var id = logger.newNode(str, parentId);
+        var id = logEntrypoint(i, coins, amount, parentId);
+
         if (amount === 0) {
-            logger.appendToNode("\n-> " + 0, id);
+            logReturn(0, id);
             return 0;
         }
 
@@ -26,15 +51,15 @@ function userFunction(logger) {
             }
 
             if (minCost === MAX_INT) {
-                logger.appendToNode("\n-> " + -1, id);
+                logReturn(-1, id);
                 return -1;
             } else {
-                logger.appendToNode("\n-> " + minCost, id);
+                logReturn(minCost, id);
                 return minCost
             }
         }
 
-        logger.appendToNode("\n-> " + -1, id);
+        logReturn(-1, id);
         return -1;
     }
 
@@ -43,7 +68,7 @@ function userFunction(logger) {
     }
 
     var coins = [1, 2, 3];
-    var amount = 7;
+    var amount = 5;
 
     // var coins = [186,419,83,408];
     // var amount = 6249;

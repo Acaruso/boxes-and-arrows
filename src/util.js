@@ -72,6 +72,12 @@ const loadFile = async () => {
     const [fileHandle] = await window.showOpenFilePicker();
     const file = await fileHandle.getFile();
     const content = await file.text();
+    return [fileHandle, content];
+};
+
+const loadFileFromHandle = async (fileHandle) => {
+    const file = await fileHandle.getFile();
+    const content = await file.text();
     return content;
 };
 
@@ -133,6 +139,7 @@ export {
     isPrintableKeycode,
     saveFile,
     loadFile,
+    loadFileFromHandle,
     getTextRect,
     getWidthOfText,
     firstElt,
