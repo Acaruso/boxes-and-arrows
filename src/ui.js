@@ -66,7 +66,8 @@ class Ui {
             "duplicateBox",
             e => e.mousedown && e.keyboard.alt && e.insideBox,
             e => {
-                const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
+                // const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
+                const newBoxId = this.model.boxes.cloneBox(e.mouseBox, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }

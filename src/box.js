@@ -4,17 +4,7 @@ class Box {
     constructor(text, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-
-        if (Array.isArray(text)) {
-            this.text = [...text];
-        } else {
-            console.log("splitting");
-            this.text = text.split('\n');
-            console.log(text);
-            console.log(text.split('\n'));
-            console.log("text: " + this.text);
-        }
-
+        this.text = [text];
         this.rect = {};
         this.parentId = null;
 
@@ -24,16 +14,14 @@ class Box {
     appendString(s) {
         const arr = s.split('\n');
 
-        if (arr.length > 1) {
+        if (s === "\n") {
+            this.text.push("");
+        } else if (arr.length > 1) {
             for (const elt of arr) {
                 this.text.push(elt);
             }
         } else {
-            if (s === "\n") {
-                this.text.push("");
-            } else {
-                this.text[this.text.length - 1] += s;
-            }
+            this.text[this.text.length - 1] += s;
         }
 
         this.updateRect();

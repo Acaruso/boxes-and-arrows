@@ -23,6 +23,16 @@ class Boxes {
         return box.id;
     }
 
+    cloneBox(box, coord) {
+        let newBox = new Box("", coord, this.nextId);
+        this.nextId++;
+        newBox.text = [...box.text];
+        newBox.updateRect();
+        this.boxes.push(newBox);
+        this.connections.set(newBox.id, []);
+        return newBox.id;
+    }
+
     getLength() {
         return this.boxes.length;
     }
