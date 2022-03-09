@@ -11,11 +11,34 @@ class TreeFormatter {
     }
 
     treeFormat(rootId) {
+        const maxHeight = this.getMaxHeight(rootId);
+        if (maxHeight > this.yPadding) {
+            this.yPadding = maxHeight + this.yPadding;
+        }
+
         let box = this.boxes.getBox(rootId);
         box.parentId = null;
         this.initializeNodes(rootId, 0);
         this.calculateInitialX(rootId);
         this.calculateFinalPositions(rootId, 0);
+    }
+
+    getMaxHeight(rootId) {
+        const s = [];
+        s.push(rootId);
+        let maxHeight = -1;
+
+        while (s.length !== 0) {
+            let curId = s.pop();
+            let curBox = this.boxes.getBox(curId);
+            maxHeight = Math.max(maxHeight, curBox.rect.h);
+            const childIds = this.boxes.getConnections(curId);
+            for (const elt of childIds) {
+                s.push(elt);
+            }
+        }
+
+        return maxHeight;
     }
 
     initializeNodes(id, level) {
