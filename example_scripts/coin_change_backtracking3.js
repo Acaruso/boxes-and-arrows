@@ -63,18 +63,16 @@ function userFunction(logger) {
                             curMin = recurRes.numCoins + numCurCoins;
 
                             curCoinsUsed = { ...recurRes.coinsUsed };
-                            curCoinsUsed[curCoin] = numCurCoins;
+
+                            if (numCurCoins > 0) {
+                                curCoinsUsed[curCoin] = numCurCoins;
+                            }
                         }
                     }
                 }
-                // end for loop
-
-                res.coinsUsed = {
-                    ...curCoinsUsed,
-                };
 
                 res.numCoins = curMin;
-
+                res.coinsUsed = { ...curCoinsUsed };
                 logReturn(JSON.stringify(res), id);
                 return res;
             }
@@ -96,14 +94,14 @@ function userFunction(logger) {
     // const amount = 10;
 
     // gets curCoins wrong
-    // const coins = [1, 2, 3];
-    // const amount = 10;
+    const coins = [1, 2, 3];
+    const amount = 10;
 
     // const coins = [1, 2, 3];
     // const amount = 6;
 
-    const coins = [1, 2, 3];
-    const amount = 5;
+    // const coins = [1, 2, 3];
+    // const amount = 5;
 
     const res = coinChange(coins, amount);
     console.log('res: ' + res.numCoins);
