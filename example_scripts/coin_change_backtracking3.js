@@ -28,12 +28,12 @@ function userFunction(logger) {
         function helper({ i, amount, parentId, coinsUsed }) {
             const id = logEntrypoint(i, amount, parentId);
 
-            let curRes = { found: false, numCoins: MAX_INT };
+            let res = { found: false, numCoins: MAX_INT };
 
             if (amount === 0) {
-                curRes = { found: true, numCoins: 0 };
-                logReturn(JSON.stringify(curRes), id);
-                return curRes;
+                res = { found: true, numCoins: 0 };
+                logReturn(JSON.stringify(res), id);
+                return res;
             }
 
             if (i < coins.length && amount > 0) {
@@ -42,7 +42,7 @@ function userFunction(logger) {
 
                 for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
                     if (numCurCoins * curCoin <= amount) {
-                        const res = helper({
+                        const recurRes = helper({
                             i: i + 1,
                             amount: amount - (numCurCoins * curCoin),
                             parentId: id,
@@ -50,29 +50,28 @@ function userFunction(logger) {
                         });
 
                         append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
-                        append("-> " + JSON.stringify(res) + " \n ", id);
+                        append("-> " + JSON.stringify(recurRes) + " \n ", id);
 
-                        curRes
-                        if (res.found) {
-                            if (res.numCoins + numCurCoins < curRes.numCoins) {
-                                curRes.numCoins = res.numCoins + numCurCoins;
+                        if (recurRes.found) {
+                            if (recurRes.numCoins + numCurCoins < res.numCoins) {
+                                res.numCoins = recurRes.numCoins + numCurCoins;
                             }
-                            curRes.found = true;
+                            res.found = true;
                         }
                     }
                 }
 
-                if (curRes.found === false) {
-                    logReturn(JSON.stringify(curRes), id);
+                if (res.found === false) {
+                    logReturn(JSON.stringify(res), id);
                     return { found: false, numCoins: 0 };
                 } else {
-                    logReturn(JSON.stringify(curRes), id);
-                    return curRes;
+                    logReturn(JSON.stringify(res), id);
+                    return res;
                 }
             }
 
-            logReturn(JSON.stringify(curRes), id);
-            return curRes;
+            logReturn(JSON.stringify(res), id);
+            return res;
         }
 
         return helper({
