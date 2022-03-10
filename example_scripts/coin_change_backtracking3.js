@@ -28,7 +28,7 @@ function userFunction(logger) {
         function helper({ i, amount, parentId, coinsUsed }) {
             const id = logEntrypoint(i, amount, parentId);
 
-            let res = { found: false, numCoins: 0, coinsUsed: { ...coinsUsed } };
+            let res = { found: false, numCoins: 0, coinsUsed: {} };
             let curMin = MAX_INT;
 
             if (amount === 0) {
@@ -59,17 +59,17 @@ function userFunction(logger) {
 
                     if (recurRes.found === true) {
                         res.found = true;
-
                         if (curMin > recurRes.numCoins + numCurCoins) {
                             curMin = recurRes.numCoins + numCurCoins;
+
                             curCoinsUsed = { ...recurRes.coinsUsed };
-                            curCoinsUsed[curCoin] = recurRes.numCoins + numCurCoins
+                            curCoinsUsed[curCoin] = numCurCoins;
                         }
                     }
                 }
+                // end for loop
 
                 res.coinsUsed = {
-                    // ...res.coinsUsed,
                     ...curCoinsUsed,
                 };
 
@@ -96,11 +96,14 @@ function userFunction(logger) {
     // const amount = 10;
 
     // gets curCoins wrong
-    const coins = [1, 2, 3];
-    const amount = 10;
+    // const coins = [1, 2, 3];
+    // const amount = 10;
 
     // const coins = [1, 2, 3];
     // const amount = 6;
+
+    const coins = [1, 2, 3];
+    const amount = 5;
 
     const res = coinChange(coins, amount);
     console.log('res: ' + res.numCoins);
