@@ -34,9 +34,7 @@ function userFunction(logger) {
                 res = { found: true, numCoins: 0 };
                 logReturn(JSON.stringify(res), id);
                 return res;
-            }
-
-            if (i >= coins.length) {
+            } else if (i >= coins.length) {
                 logReturn(JSON.stringify(res), id);
                 return res;
             } else {
@@ -44,23 +42,21 @@ function userFunction(logger) {
                 const maxNumCurCoins = Math.floor(amount / curCoin);
 
                 for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
-                    if (numCurCoins * curCoin <= amount) {
-                        const recurRes = helper({
-                            i: i + 1,
-                            amount: amount - (numCurCoins * curCoin),
-                            parentId: id,
-                            coinsUsed: { ...coinsUsed },
-                        });
+                    const recurRes = helper({
+                        i: i + 1,
+                        amount: amount - (numCurCoins * curCoin),
+                        parentId: id,
+                        coinsUsed: { ...coinsUsed },
+                    });
 
-                        append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
-                        append("-> " + JSON.stringify(recurRes) + " \n ", id);
+                    append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
+                    append("-> " + JSON.stringify(recurRes) + " \n ", id);
 
-                        if (recurRes.found) {
-                            if (recurRes.numCoins + numCurCoins < res.numCoins) {
-                                res.numCoins = recurRes.numCoins + numCurCoins;
-                            }
-                            res.found = true;
+                    if (recurRes.found) {
+                        if (recurRes.numCoins + numCurCoins < res.numCoins) {
+                            res.numCoins = recurRes.numCoins + numCurCoins;
                         }
+                        res.found = true;
                     }
                 }
 
