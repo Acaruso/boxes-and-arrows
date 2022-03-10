@@ -25,7 +25,7 @@ function userFunction(logger) {
 
     function coinChange(coins, amount) {
 
-        function helper({ i, amount, parentId, coinsUsed }) {
+        function helper({ i, amount, parentId }) {
             const id = logEntrypoint(i, amount, parentId);
 
             let res = { found: false, numCoins: 0, coinsUsed: {} };
@@ -49,11 +49,10 @@ function userFunction(logger) {
                         i: i + 1,
                         amount: amount - (numCurCoins * curCoin),
                         parentId: id,
-                        coinsUsed: { ...coinsUsed },
                     });
 
                     append(
-                        `helper(${i + 1}, ${amount - (numCurCoins * curCoin)}), coinsUsed: ${JSON.stringify(coinsUsed)}`,
+                        `helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`,
                         id
                     );
                     append("-> " + JSON.stringify(recurRes) + " \n ", id);
@@ -83,7 +82,6 @@ function userFunction(logger) {
             i: 0,
             amount: amount,
             parentId: null,
-            coinsUsed: {},
         });
     }
 
