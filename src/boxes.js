@@ -42,7 +42,8 @@ class Boxes {
         let maxId = -1;
 
         for (const x of boxData) {
-            const box = new Box(x.text, x.coord, x.id);
+            const joinedStr = x.text.join("\n");
+            const box = new Box(joinedStr, x.coord, x.id);
             this.boxes.push(box);
             maxId = Math.max(maxId, x.id);
         }
