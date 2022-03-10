@@ -51,27 +51,29 @@ function userFunction(logger) {
                         coinsUsed: { ...coinsUsed },
                     });
 
-                    append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
+                    append(
+                        `helper(${i + 1}, ${amount - (numCurCoins * curCoin)}), coinsUsed: ${JSON.stringify(coinsUsed)}`,
+                        id
+                    );
                     append("-> " + JSON.stringify(recurRes) + " \n ", id);
 
                     if (recurRes.found === true) {
                         res.found = true;
 
+                        // res.numCoins represents the current minimum we've seen
+
                         if (recurRes.numCoins + numCurCoins < res.numCoins) {
-                            curCoinsUsed = {};
-                            curCoinsUsed[curCoin] = numCurCoins
-                            console.log('coinsUsed')
-                            console.log(curCoinsUsed)
+                            curCoinsUsed = { ...recurRes.coinsUsed };
+                            curCoinsUsed[curCoin] = recurRes.numCoins + numCurCoins
                         }
 
-                        // res.numCoins represents the current minimum we've seen
                         res.numCoins = Math.min(res.numCoins, recurRes.numCoins + numCurCoins);
                     }
                 }
 
                 res.coinsUsed = {
-                    ...res.coinsUsed,
-                    ...curCoinsUsed
+                    // ...res.coinsUsed,
+                    ...curCoinsUsed,
                 };
 
                 logReturn(JSON.stringify(res), id);
@@ -87,12 +89,18 @@ function userFunction(logger) {
         });
     }
 
-    // const coins = [1, 2, 3];
+    // works
+    // const coins = [1, 2];
     // const amount = 10;
 
+    // gets curCoins wrong
     const coins = [1, 2, 3];
-    const amount = 6;
+    const amount = 10;
+
+    // const coins = [1, 2, 3];
+    // const amount = 6;
 
     const res = coinChange(coins, amount);
     console.log('res: ' + res.numCoins);
+    console.log(res.coinsUsed);
 }
