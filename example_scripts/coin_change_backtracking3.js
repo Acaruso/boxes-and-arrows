@@ -7,8 +7,8 @@
 // You may assume that you have an infinite number of each kind of coin.
 
 function userFunction(logger) {
-    function logEntrypoint(i, coins, amount, parentId) {
-        let str = `helper(${i}, [${coins}], ${amount})\n`
+    function logEntrypoint(i, amount, parentId) {
+        let str = `helper(${i}, ${amount})\n`
         const id = logger.newNode(str, parentId);
         return id;
     }
@@ -23,62 +23,63 @@ function userFunction(logger) {
 
     const MAX_INT = Number.MAX_SAFE_INTEGER;
 
-    function helper({ i, coins, amount, parentId }) {
-        const id = logEntrypoint(i, coins, amount, parentId);
+    function coinChange(coins, amount) {
 
-        let curRes = { found: false, numCoins: MAX_INT };
+        function helper({ i, amount, parentId, coinsUsed }) {
+            const id = logEntrypoint(i, amount, parentId);
 
-        if (amount === 0) {
-            curRes = { found: true, numCoins: 0 };
+            let curRes = { found: false, numCoins: MAX_INT };
+
+            if (amount === 0) {
+                curRes = { found: true, numCoins: 0 };
+                logReturn(JSON.stringify(curRes), id);
+                return curRes;
+            }
+
+            if (i < coins.length && amount > 0) {
+                const curCoin = coins[i];
+                const maxNumCurCoins = Math.floor(amount / curCoin);
+
+                for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
+                    if (numCurCoins * curCoin <= amount) {
+                        const res = helper({
+                            i: i + 1,
+                            amount: amount - (numCurCoins * curCoin),
+                            parentId: id,
+                            coinsUsed: { ...coinsUsed },
+                        });
+
+                        append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
+                        append("-> " + JSON.stringify(res) + " \n ", id);
+
+                        curRes
+                        if (res.found) {
+                            if (res.numCoins + numCurCoins < curRes.numCoins) {
+                                curRes.numCoins = res.numCoins + numCurCoins;
+                            }
+                            curRes.found = true;
+                        }
+                    }
+                }
+
+                if (curRes.found === false) {
+                    logReturn(JSON.stringify(curRes), id);
+                    return { found: false, numCoins: 0 };
+                } else {
+                    logReturn(JSON.stringify(curRes), id);
+                    return curRes;
+                }
+            }
+
             logReturn(JSON.stringify(curRes), id);
             return curRes;
         }
 
-        if (i < coins.length && amount > 0) {
-            const curCoin = coins[i];
-            const maxNumCurCoins = Math.floor(amount / curCoin);
-
-            for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
-                if (numCurCoins * curCoin <= amount) {
-                    const res = helper({
-                        i: i + 1,
-                        coins: coins,
-                        amount: amount - (numCurCoins * curCoin),
-                        parentId: id,
-                    });
-
-                    append(`helper(${i + 1}, [${coins}], ${amount - (numCurCoins * curCoin)})`, id);
-                    append("-> " + JSON.stringify(res), id);
-
-                    if (res.found) {
-                        curRes.numCoins = Math.min(
-                            curRes.numCoins,
-                            res.numCoins + numCurCoins
-                        );
-                        curRes.found = true;
-                    }
-                }
-            }
-
-            if (curRes.found === false) {
-                logReturn(JSON.stringify(curRes), id);
-                return { found: false, numCoins: 0 };
-            } else {
-                logReturn(JSON.stringify(curRes), id);
-                return curRes;
-            }
-        }
-
-        logReturn("{ found: false, numCoins: 0 }", id);
-        return curRes;
-    }
-
-    function coinChange(coins, amount) {
         return helper({
             i: 0,
-            coins: coins,
             amount: amount,
             parentId: null,
+            coinsUsed: {},
         });
     }
 
