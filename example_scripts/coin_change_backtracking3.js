@@ -36,7 +36,10 @@ function userFunction(logger) {
                 return res;
             }
 
-            if (i < coins.length && amount > 0) {
+            if (i >= coins.length) {
+                logReturn(JSON.stringify(res), id);
+                return res;
+            } else {
                 const curCoin = coins[i];
                 const maxNumCurCoins = Math.floor(amount / curCoin);
 
@@ -61,17 +64,9 @@ function userFunction(logger) {
                     }
                 }
 
-                if (res.found === false) {
-                    logReturn(JSON.stringify(res), id);
-                    return { found: false, numCoins: 0 };
-                } else {
-                    logReturn(JSON.stringify(res), id);
-                    return res;
-                }
+                logReturn(JSON.stringify(res), id);
+                return res;
             }
-
-            logReturn(JSON.stringify(res), id);
-            return res;
         }
 
         return helper({
@@ -82,11 +77,11 @@ function userFunction(logger) {
         });
     }
 
-    const coins = [1, 2];
-    const amount = 10;
-
     // const coins = [1, 2, 3];
-    // const amount = 5;
+    // const amount = 10;
+
+    const coins = [1, 2, 3];
+    const amount = 6;
 
     const res = coinChange(coins, amount);
     console.log('res: ' + res.numCoins);
