@@ -29,7 +29,6 @@ function userFunction(logger) {
             const id = logEntrypoint(i, amount, parentId);
 
             let res = { found: false, numCoins: 0, coinsUsed: {} };
-            let curMin = MAX_INT;
 
             if (amount === 0) {
                 res.found = true;
@@ -40,7 +39,9 @@ function userFunction(logger) {
                 return res;
             } else {
                 const curCoin = coins[i];
+                let curMin = MAX_INT;
                 let curCoinsUsed = {};
+
                 const maxNumCurCoins = Math.floor(amount / curCoin);
 
                 for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
