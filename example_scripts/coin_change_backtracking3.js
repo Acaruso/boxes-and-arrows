@@ -28,10 +28,11 @@ function userFunction(logger) {
         function helper({ i, amount, parentId, coinsUsed }) {
             const id = logEntrypoint(i, amount, parentId);
 
-            let res = { found: false, numCoins: MAX_INT };
+            let res = { found: false, numCoins: MAX_INT, coinsUsed: { ...coinsUsed } };
 
             if (amount === 0) {
-                res = { found: true, numCoins: 0 };
+                res.found = true;
+                res.numCoins = 0;
                 logReturn(JSON.stringify(res), id);
                 return res;
             } else if (i >= coins.length) {
@@ -39,6 +40,7 @@ function userFunction(logger) {
                 return res;
             } else {
                 const curCoin = coins[i];
+                let curCoinsUsed = {};
                 const maxNumCurCoins = Math.floor(amount / curCoin);
 
                 for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
@@ -52,13 +54,25 @@ function userFunction(logger) {
                     append(`helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`, id);
                     append("-> " + JSON.stringify(recurRes) + " \n ", id);
 
-                    if (recurRes.found) {
-                        if (recurRes.numCoins + numCurCoins < res.numCoins) {
-                            res.numCoins = recurRes.numCoins + numCurCoins;
-                        }
+                    if (recurRes.found === true) {
                         res.found = true;
+
+                        if (recurRes.numCoins + numCurCoins < res.numCoins) {
+                            curCoinsUsed = {};
+                            curCoinsUsed[curCoin] = numCurCoins
+                            console.log('coinsUsed')
+                            console.log(curCoinsUsed)
+                        }
+
+                        // res.numCoins represents the current minimum we've seen
+                        res.numCoins = Math.min(res.numCoins, recurRes.numCoins + numCurCoins);
                     }
                 }
+
+                res.coinsUsed = {
+                    ...res.coinsUsed,
+                    ...curCoinsUsed
+                };
 
                 logReturn(JSON.stringify(res), id);
                 return res;
