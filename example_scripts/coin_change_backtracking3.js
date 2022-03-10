@@ -28,11 +28,11 @@ function userFunction(logger) {
         function helper({ i, amount, parentId, coinsUsed }) {
             const id = logEntrypoint(i, amount, parentId);
 
-            let res = { found: false, numCoins: MAX_INT, coinsUsed: { ...coinsUsed } };
+            let res = { found: false, numCoins: 0, coinsUsed: { ...coinsUsed } };
+            let curMin = MAX_INT;
 
             if (amount === 0) {
                 res.found = true;
-                res.numCoins = 0;
                 logReturn(JSON.stringify(res), id);
                 return res;
             } else if (i >= coins.length) {
@@ -60,14 +60,11 @@ function userFunction(logger) {
                     if (recurRes.found === true) {
                         res.found = true;
 
-                        // res.numCoins represents the current minimum we've seen
-
-                        if (recurRes.numCoins + numCurCoins < res.numCoins) {
+                        if (curMin > recurRes.numCoins + numCurCoins) {
+                            curMin = recurRes.numCoins + numCurCoins;
                             curCoinsUsed = { ...recurRes.coinsUsed };
                             curCoinsUsed[curCoin] = recurRes.numCoins + numCurCoins
                         }
-
-                        res.numCoins = Math.min(res.numCoins, recurRes.numCoins + numCurCoins);
                     }
                 }
 
@@ -75,6 +72,8 @@ function userFunction(logger) {
                     // ...res.coinsUsed,
                     ...curCoinsUsed,
                 };
+
+                res.numCoins = curMin;
 
                 logReturn(JSON.stringify(res), id);
                 return res;
@@ -91,6 +90,9 @@ function userFunction(logger) {
 
     // works
     // const coins = [1, 2];
+    // const amount = 10;
+
+    // const coins = [1, 2, 10];
     // const amount = 10;
 
     // gets curCoins wrong
