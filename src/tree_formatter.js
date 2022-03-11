@@ -7,14 +7,18 @@ class TreeFormatter {
     constructor(model) {
         this.boxes = model.boxes;
         this.xPadding = 50;
+        this.defaultYPadding = 70;
         this.yPadding = 70;
     }
 
     treeFormat(rootId) {
         const maxHeight = this.getMaxHeight(rootId);
-        if (maxHeight > this.yPadding) {
-            this.yPadding = maxHeight + this.yPadding;
-        }
+
+        // if (maxHeight > this.yPadding) {
+        //     this.yPadding = maxHeight + this.yPadding;
+        // }
+
+        this.yPadding = maxHeight + this.defaultYPadding;
 
         let box = this.boxes.getBox(rootId);
         box.parentId = null;
