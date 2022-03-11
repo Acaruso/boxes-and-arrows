@@ -12,7 +12,7 @@ function makeBoard(n) {
     return board;
 }
 
-function printBoard(board) {
+function boardToString(board) {
     const numRows = board.length;
     const numCols = board[0].length;
     let s = "";
@@ -24,11 +24,32 @@ function printBoard(board) {
         s += "\n";
     }
 
+    return s;
+}
+
+function printBoard(board) {
+    const s = boardToString(board);
     console.log(s);
 }
 
 
 function userFunction(logger) {
+    function logEntrypoint(n, parentId) {
+        let str = `nQueens(${n})\n`;
+        str += "\n \nboard: \n" + boardToString(board);
+        const id = logger.newNode(str, parentId);
+        return id;
+    }
+
+    function logBoard(id) {
+        let str = "\n \nboard: \n" + boardToString(board);
+        logger.appendToNode("\n" + str, id);
+    }
+
+    function append(val, id) {
+        logger.appendToNode("\n" + val, id);
+    }
+
     const boardSize = 4;
     let board = makeBoard(boardSize);
     printBoard(board);
@@ -57,8 +78,8 @@ function userFunction(logger) {
         return false;
     }
 
-    function nQueens(n) {
-        console.log(`nQueens(${n})`);
+    function nQueens(n, parentId) {
+        const id = logEntrypoint(n, parentId);
         if (n === 0) {
             return true;
         }
@@ -66,24 +87,28 @@ function userFunction(logger) {
         for (let row = 0; row < boardSize; row++) {
             for (let col = 0; col < boardSize; col++) {
                 if (!isAttacked(row, col) && board[row][col] !== 1) {
-                    console.log(`placing ${row} ${col}`);
+                    append(`setting board[${row}][${col}]`, id);
                     board[row][col] = 1;
 
-                    if (nQueens(n - 1) === true) {
-                        console.log(`nQueens(${n} - 1) === true`);
+                    append(`nQueens(${n - 1})`, id)
+                    if (nQueens(n - 1, id) === true) {
+                        logBoard(id);
+                        append("return true", id);
                         return true;
                     } else {
-                        console.log(`removing ${row} ${col}`);
+                        append(`unsetting board[${row}][${col}]`, id);
                         board[row][col] = 0;
                     }
                 }
             }
         }
 
+        logBoard(id);
+        append("return false", id);
         return false;
     }
 
-    nQueens(boardSize);
+    nQueens(boardSize, null);
 
     printBoard(board);
 }
