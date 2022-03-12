@@ -195,34 +195,6 @@ class Ui {
         );
 
         this.eventTable.addEvent(
-            "keyboardScroll",
-            e => {
-                return !this.model.anyBoxesSelected()
-                    && (
-                        e.key_ === "w"
-                        || e.key_ === "a"
-                        || e.key_ === "s"
-                        || e.key_ === "d"
-                    );
-            },
-            e => {
-                const k = e.key_;
-                const scrollAmount = 50;
-                const oldXOffset = window.pageXOffset;
-                const oldYOffset = window.pageYOffset;
-                if (k === "w") {
-                    window.scroll(oldXOffset, oldYOffset - scrollAmount);
-                } else if (k === "a") {
-                    window.scroll(oldXOffset - scrollAmount, oldYOffset);
-                } else if (k === "s") {
-                    window.scroll(oldXOffset, oldYOffset + scrollAmount);
-                } else if (k === "d") {
-                    window.scroll(oldXOffset + scrollAmount, oldYOffset);
-                }
-            }
-        );
-
-        this.eventTable.addEvent(
             "horizontalAlign",
             e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
@@ -431,8 +403,34 @@ class Ui {
         }
     }
 
+    handleScrolling() {
+        const kb = this.state.cur.keyboard;
+        if (!this.model.anyBoxesSelected() && (kb.w || kb.a || kb.s || kb.d)) {
+            const scrollAmount = 10;
+            const oldXOffset = window.pageXOffset;
+            const oldYOffset = window.pageYOffset;
+
+            if (kb.w) {
+                window.scroll(oldXOffset, oldYOffset - scrollAmount);
+            } 
+            
+            if (kb.a) {
+                window.scroll(oldXOffset - scrollAmount, oldYOffset);
+            }
+            
+            if (kb.s) {
+                window.scroll(oldXOffset, oldYOffset + scrollAmount);
+            }
+            
+            if (kb.d) {
+                window.scroll(oldXOffset + scrollAmount, oldYOffset);
+            }
+        }
+    }
+
     run() {
         this.handleDragging();
+        this.handleScrolling();
     }
 }
 
