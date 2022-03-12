@@ -206,13 +206,10 @@ class Ui {
                     );
             },
             e => {
+                const k = e.key_;
+                const scrollAmount = 50;
                 const oldXOffset = window.pageXOffset;
                 const oldYOffset = window.pageYOffset;
-
-                const scrollAmount = 50;
-
-                const k = e.key_;
-
                 if (k === "w") {
                     window.scroll(oldXOffset, oldYOffset - scrollAmount);
                 } else if (k === "a") {
@@ -222,26 +219,6 @@ class Ui {
                 } else if (k === "d") {
                     window.scroll(oldXOffset + scrollAmount, oldYOffset);
                 }
-
-
-
-                // const scaling = 1.0;
-
-                // let xDelta = 0;
-                // let yDelta = 0;
-
-                // this.dragDeltaCoord.x = Math.floor(
-                //     this.state.getMouseXDelta() / scaling
-                // );
-
-                // this.dragDeltaCoord.y = Math.floor(
-                //     this.state.getMouseYDelta() / scaling
-                // );
-
-                // window.scroll(
-                //     oldXOffset + this.state.getMouseXDelta(),
-                //     oldYOffset + this.state.getMouseYDelta()
-                // );
             }
         );
 
@@ -250,7 +227,7 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
                 e.preventDefault();
-                let minY = 10000000;
+                let minY = Number.MAX_SAFE_INTEGER;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minY = Math.min(minY, box.coord.y);
@@ -268,7 +245,7 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.v,
             e => {
                 e.preventDefault();
-                let minXMid = 10000000;
+                let minXMid = Number.MAX_SAFE_INTEGER;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minXMid = Math.min(
@@ -428,107 +405,29 @@ class Ui {
         );
     }
 
-    // handleDragging() {
-    //     if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
-    //         // drag boxes
-    //         for (const id of this.model.selectedBoxIds) {
-    //             const box = this.model.boxes.getBox(id);
-
-    //             const newCoord = {
-    //                 x: box.coord.x + this.state.getMouseXDelta(),
-    //                 y: box.coord.y + this.state.getMouseYDelta()
-    //             };
-
-    //             box.setCoord(newCoord);
-    //         }
-    //     } else if (this.model.draggingSelectedRegion) {
-    //         // drag selected region
-    //         this.model.selectedRegion.w += this.state.getMouseXDelta();
-    //         this.model.selectedRegion.h += this.state.getMouseYDelta();
-
-    //         this.model.boxes.forEach(box => {
-    //             if (rectsOverlap(box.rect, this.model.selectedRegion)) {
-    //                 this.model.addSelectedBoxId(box.id);
-    //             }
-    //         });
-    //     }
-    // }
-
     handleDragging() {
-        if (this.state.cur.keyboard.alt && this.model.draggingSelectedRegion) {
-            // if (this.drag === false) {
-            //     this.drag = true;
-            //     this.dragCoord = { ...this.state.cur.mouse.coord };
-            // }
+        if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
+            // drag boxes
+            for (const id of this.model.selectedBoxIds) {
+                const box = this.model.boxes.getBox(id);
 
-            // const oldXOffset = window.pageXOffset;
-            // const oldYOffset = window.pageYOffset;
-            // const scaling = 2.0;
+                const newCoord = {
+                    x: box.coord.x + this.state.getMouseXDelta(),
+                    y: box.coord.y + this.state.getMouseYDelta()
+                };
 
-            // const xDelta = Math.floor(
-            //     (this.state.cur.mouse.coord.x - this.dragCoord.x) / scaling
-            // );
-
-            // const yDelta = Math.floor(
-            //     (this.state.cur.mouse.coord.y - this.dragCoord.y) / scaling
-            // );
-
-            // window.scroll(
-            //     oldXOffset + xDelta,
-            //     oldYOffset + yDelta
-            // );
-
-            if (this.drag === false) {
-                this.drag = true;
-                // this.dragDeltaCoord = { ...this.state.cur.mouse.coord };
-                this.dragDeltaCoord = { x: 0, y: 0 };
+                box.setCoord(newCoord);
             }
+        } else if (this.model.draggingSelectedRegion) {
+            // drag selected region
+            this.model.selectedRegion.w += this.state.getMouseXDelta();
+            this.model.selectedRegion.h += this.state.getMouseYDelta();
 
-            const oldXOffset = window.pageXOffset;
-            const oldYOffset = window.pageYOffset;
-            const scaling = 1.0;
-
-            let xDelta = 0;
-            let yDelta = 0;
-
-            this.dragDeltaCoord.x = Math.floor(
-                this.state.getMouseXDelta() / scaling
-            );
-
-            this.dragDeltaCoord.y = Math.floor(
-                this.state.getMouseYDelta() / scaling
-            );
-
-            window.scroll(
-                oldXOffset + this.state.getMouseXDelta(),
-                oldYOffset + this.state.getMouseYDelta()
-            );
-        } else {
-            this.drag = false;
-
-            if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
-                // drag boxes
-                for (const id of this.model.selectedBoxIds) {
-                    const box = this.model.boxes.getBox(id);
-
-                    const newCoord = {
-                        x: box.coord.x + this.state.getMouseXDelta(),
-                        y: box.coord.y + this.state.getMouseYDelta()
-                    };
-
-                    box.setCoord(newCoord);
+            this.model.boxes.forEach(box => {
+                if (rectsOverlap(box.rect, this.model.selectedRegion)) {
+                    this.model.addSelectedBoxId(box.id);
                 }
-            } else if (this.model.draggingSelectedRegion) {
-                // drag selected region
-                this.model.selectedRegion.w += this.state.getMouseXDelta();
-                this.model.selectedRegion.h += this.state.getMouseYDelta();
-
-                this.model.boxes.forEach(box => {
-                    if (rectsOverlap(box.rect, this.model.selectedRegion)) {
-                        this.model.addSelectedBoxId(box.id);
-                    }
-                });
-            }
+            });
         }
     }
 
