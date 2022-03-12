@@ -21,6 +21,9 @@ class Ui {
         this.scripter = scripter;
         this.treeFormatter = treeFormatter;
         this.prevFileHandle = null;
+        this.drag = false;
+        this.dragCoord = { x: 0, y: 0 };
+        this.dragDeltaCoord = { x: 0, y: 0 };
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -188,6 +191,57 @@ class Ui {
                     let box = this.model.boxes.getBox(id);
                     box.deleteChar();
                 }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "keyboardScroll",
+            e => {
+                return !this.model.anyBoxesSelected()
+                    && (
+                        e.key_ === "w"
+                        || e.key_ === "a"
+                        || e.key_ === "s"
+                        || e.key_ === "d"
+                    );
+            },
+            e => {
+                const oldXOffset = window.pageXOffset;
+                const oldYOffset = window.pageYOffset;
+
+                const scrollAmount = 50;
+
+                const k = e.key_;
+
+                if (k === "w") {
+                    window.scroll(oldXOffset, oldYOffset - scrollAmount);
+                } else if (k === "a") {
+                    window.scroll(oldXOffset - scrollAmount, oldYOffset);
+                } else if (k === "s") {
+                    window.scroll(oldXOffset, oldYOffset + scrollAmount);
+                } else if (k === "d") {
+                    window.scroll(oldXOffset + scrollAmount, oldYOffset);
+                }
+
+
+
+                // const scaling = 1.0;
+
+                // let xDelta = 0;
+                // let yDelta = 0;
+
+                // this.dragDeltaCoord.x = Math.floor(
+                //     this.state.getMouseXDelta() / scaling
+                // );
+
+                // this.dragDeltaCoord.y = Math.floor(
+                //     this.state.getMouseYDelta() / scaling
+                // );
+
+                // window.scroll(
+                //     oldXOffset + this.state.getMouseXDelta(),
+                //     oldYOffset + this.state.getMouseYDelta()
+                // );
             }
         );
 
@@ -366,33 +420,115 @@ class Ui {
         this.eventTable.addEvent(
             "printAllBoxes",
             e => e.keydown && e.keyboard.control && e.keyboard.space,
-            e => console.log(this.model.boxes)
+            e => {
+                console.log(this.model.boxes);
+                console.log(window.pageXOffset);
+                console.log(window.pageYOffset);
+            }
         );
     }
 
+    // handleDragging() {
+    //     if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
+    //         // drag boxes
+    //         for (const id of this.model.selectedBoxIds) {
+    //             const box = this.model.boxes.getBox(id);
+
+    //             const newCoord = {
+    //                 x: box.coord.x + this.state.getMouseXDelta(),
+    //                 y: box.coord.y + this.state.getMouseYDelta()
+    //             };
+
+    //             box.setCoord(newCoord);
+    //         }
+    //     } else if (this.model.draggingSelectedRegion) {
+    //         // drag selected region
+    //         this.model.selectedRegion.w += this.state.getMouseXDelta();
+    //         this.model.selectedRegion.h += this.state.getMouseYDelta();
+
+    //         this.model.boxes.forEach(box => {
+    //             if (rectsOverlap(box.rect, this.model.selectedRegion)) {
+    //                 this.model.addSelectedBoxId(box.id);
+    //             }
+    //         });
+    //     }
+    // }
+
     handleDragging() {
-        if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
-            // drag boxes
-            for (const id of this.model.selectedBoxIds) {
-                const box = this.model.boxes.getBox(id);
+        if (this.state.cur.keyboard.alt && this.model.draggingSelectedRegion) {
+            // if (this.drag === false) {
+            //     this.drag = true;
+            //     this.dragCoord = { ...this.state.cur.mouse.coord };
+            // }
 
-                const newCoord = {
-                    x: box.coord.x + this.state.getMouseXDelta(),
-                    y: box.coord.y + this.state.getMouseYDelta()
-                };
+            // const oldXOffset = window.pageXOffset;
+            // const oldYOffset = window.pageYOffset;
+            // const scaling = 2.0;
 
-                box.setCoord(newCoord);
+            // const xDelta = Math.floor(
+            //     (this.state.cur.mouse.coord.x - this.dragCoord.x) / scaling
+            // );
+
+            // const yDelta = Math.floor(
+            //     (this.state.cur.mouse.coord.y - this.dragCoord.y) / scaling
+            // );
+
+            // window.scroll(
+            //     oldXOffset + xDelta,
+            //     oldYOffset + yDelta
+            // );
+
+            if (this.drag === false) {
+                this.drag = true;
+                // this.dragDeltaCoord = { ...this.state.cur.mouse.coord };
+                this.dragDeltaCoord = { x: 0, y: 0 };
             }
-        } else if (this.model.draggingSelectedRegion) {
-            // drag selected region
-            this.model.selectedRegion.w += this.state.getMouseXDelta();
-            this.model.selectedRegion.h += this.state.getMouseYDelta();
 
-            this.model.boxes.forEach(box => {
-                if (rectsOverlap(box.rect, this.model.selectedRegion)) {
-                    this.model.addSelectedBoxId(box.id);
+            const oldXOffset = window.pageXOffset;
+            const oldYOffset = window.pageYOffset;
+            const scaling = 1.0;
+
+            let xDelta = 0;
+            let yDelta = 0;
+
+            this.dragDeltaCoord.x = Math.floor(
+                this.state.getMouseXDelta() / scaling
+            );
+
+            this.dragDeltaCoord.y = Math.floor(
+                this.state.getMouseYDelta() / scaling
+            );
+
+            window.scroll(
+                oldXOffset + this.state.getMouseXDelta(),
+                oldYOffset + this.state.getMouseYDelta()
+            );
+        } else {
+            this.drag = false;
+
+            if (this.model.draggingBoxes && this.model.anyBoxesSelected()) {
+                // drag boxes
+                for (const id of this.model.selectedBoxIds) {
+                    const box = this.model.boxes.getBox(id);
+
+                    const newCoord = {
+                        x: box.coord.x + this.state.getMouseXDelta(),
+                        y: box.coord.y + this.state.getMouseYDelta()
+                    };
+
+                    box.setCoord(newCoord);
                 }
-            });
+            } else if (this.model.draggingSelectedRegion) {
+                // drag selected region
+                this.model.selectedRegion.w += this.state.getMouseXDelta();
+                this.model.selectedRegion.h += this.state.getMouseYDelta();
+
+                this.model.boxes.forEach(box => {
+                    if (rectsOverlap(box.rect, this.model.selectedRegion)) {
+                        this.model.addSelectedBoxId(box.id);
+                    }
+                });
+            }
         }
     }
 
