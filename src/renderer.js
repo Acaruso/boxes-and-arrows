@@ -17,48 +17,6 @@ class Renderer {
         this.drawHelpDialog();
     }
 
-    drawHelpDialog() {
-        const helpDialog = this.model.helpDialog;
-
-        if (helpDialog.visible == false) {
-            return;
-        }
-
-        this.gfx.drawRect(helpDialog.rect, 11);
-
-        for (let i = 0; i < helpDialog.text.length; i++) {
-            this.gfx.drawText(
-                helpDialog.text[i],
-                textConstants.charHeight,
-                {
-                    x: helpDialog.rect.x + textConstants.xPadding,
-                    y: helpDialog.rect.y + (textConstants.charHeight * (i + 1))
-                },
-                12
-            );
-        }
-
-        this.drawCloseButton();
-    }
-
-    drawCloseButton() {
-        const cbRect = this.model.helpDialog.closeButtonRect;
-
-        this.gfx.strokeRect(cbRect, 20);
-
-        this.gfx.drawLine(
-            { x: cbRect.x, y: cbRect.y },
-            { x: cbRect.x + cbRect.w, y: cbRect.y + cbRect.h },
-            20
-        );
-
-        this.gfx.drawLine(
-            { x: cbRect.x + cbRect.w, y: cbRect.y },
-            { x: cbRect.x, y: cbRect.y + cbRect.h },
-            20
-        );
-    }
-
     drawBoxes() {
         this.model.boxes.forEach(box => this.drawBox(box));
     }
@@ -79,12 +37,7 @@ class Renderer {
     }
 
     drawBoxText(box) {
-        this.gfx.drawText(
-            box.text,
-            textConstants.charHeight,
-            { x: box.coord.x + textConstants.xPadding, y: box.coord.y + textConstants.charHeight },
-            2
-        );
+        this.drawMultiLineText(box.text, box.coord, 2);
     }
 
     drawSelectedBoxes() {
@@ -121,6 +74,56 @@ class Renderer {
     drawSelectedRegion() {
         if (this.model.draggingSelectedRegion) {
             this.gfx.drawRect(this.model.selectedRegion, 10);
+        }
+    }
+
+    drawHelpDialog() {
+        const helpDialog = this.model.helpDialog;
+
+        if (helpDialog.visible == false) {
+            return;
+        }
+
+        this.gfx.drawRect(helpDialog.rect, 11);
+
+        this.drawMultiLineText(
+            helpDialog.text,
+            { x: helpDialog.rect.x, y: helpDialog.rect.y },
+            12
+        );
+
+        this.drawCloseButton();
+    }
+
+    drawCloseButton() {
+        const cbRect = this.model.helpDialog.closeButtonRect;
+
+        this.gfx.strokeRect(cbRect, 20);
+
+        this.gfx.drawLine(
+            { x: cbRect.x, y: cbRect.y },
+            { x: cbRect.x + cbRect.w, y: cbRect.y + cbRect.h },
+            20
+        );
+
+        this.gfx.drawLine(
+            { x: cbRect.x + cbRect.w, y: cbRect.y },
+            { x: cbRect.x, y: cbRect.y + cbRect.h },
+            20
+        );
+    }
+
+    drawMultiLineText(text, coord, z=0) {
+        for (let i = 0; i < text.length; i++) {
+            this.gfx.drawText(
+                text[i],
+                textConstants.charHeight,
+                {
+                    x: coord.x + textConstants.xPadding,
+                    y: coord.y + (textConstants.charHeight * (i + 1))
+                },
+                z
+            );
         }
     }
 }

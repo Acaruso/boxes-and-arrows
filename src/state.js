@@ -2,10 +2,7 @@ import { makeState } from "./state_util";
 
 class State {
     constructor() {
-        this.cur = makeState();
-        this.prev = makeState();
-
-        this.initialMouseClick = true;
+        this.initialize();
 
         const eventListener = (e) => {
             // handle keyboard events
@@ -13,6 +10,8 @@ class State {
                 let key = e.key.toLowerCase();
                 if (key === " ") {
                     key = "space";
+                } else if (key === "enter") {
+                    key = "\n";
                 }
 
                 if (e.type === "keydown") {
@@ -48,12 +47,24 @@ class State {
         document.addEventListener("mouseup", eventListener, false);
         document.addEventListener("mousemove", eventListener, false);
 
+        // when alt-tabbing out of window, re-initialize state
+        // otherwise keys will stay "stuck" down
+        window.addEventListener('blur', () => {
+            this.initialize();
+        });
+
         // prevent spacebar from scrolling
         window.addEventListener('keydown', (e) => {
             if (e.keyCode === 32 && e.target === document.body) {
                 e.preventDefault();
             }
         });
+    }
+
+    initialize() {
+        this.cur = makeState();
+        this.prev = makeState();
+        this.initialMouseClick = true;
     }
 
     isKeydown(key) {

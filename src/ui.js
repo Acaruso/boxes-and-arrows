@@ -4,6 +4,7 @@ import {
     isPrintableKeycode,
     saveFile,
     loadFile,
+    loadFileFromHandle,
 } from "./util"
 
 import {
@@ -12,6 +13,10 @@ import {
     isTree,
  } from "./tree_util";
 
+const addEventListener = (type, callback) => {
+    document.addEventListener(type, callback, false);
+}
+
 class Ui {
     constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;
@@ -19,6 +24,10 @@ class Ui {
         this.eventTable = eventTable;
         this.scripter = scripter;
         this.treeFormatter = treeFormatter;
+        this.prevFileHandle = null;
+        this.drag = false;
+        this.dragCoord = { x: 0, y: 0 };
+        this.dragDeltaCoord = { x: 0, y: 0 };
 
         addEventListener("mousedown", e => this.eventTable.onEvent(e));
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
@@ -66,7 +75,8 @@ class Ui {
             "duplicateBox",
             e => e.mousedown && e.keyboard.alt && e.insideBox,
             e => {
-                const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
+                // const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
+                const newBoxId = this.model.boxes.cloneBox(e.mouseBox, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }
@@ -193,7 +203,7 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.h,
             e => {
                 e.preventDefault();
-                let minY = 10000000;
+                let minY = Number.MAX_SAFE_INTEGER;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minY = Math.min(minY, box.coord.y);
@@ -211,7 +221,7 @@ class Ui {
             e => e.keydown && e.keyboard.control && e.keyboard.v,
             e => {
                 e.preventDefault();
-                let minXMid = 10000000;
+                let minXMid = Number.MAX_SAFE_INTEGER;
                 for (const id of this.model.selectedBoxIds) {
                     let box = this.model.boxes.getBox(id);
                     minXMid = Math.min(
@@ -284,7 +294,7 @@ class Ui {
             async e => {
                 e.preventDefault();
                 try {
-                    const content = await loadFile();
+                    const [_, content] = await loadFile();
                     this.model.init();
                     const [boxesStr, connStr] = content.split(/\n/);
                     this.model.boxes.loadBoxes(boxesStr);
@@ -299,12 +309,13 @@ class Ui {
 
         this.eventTable.addEvent(
             "loadScript",
-            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.l,
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && !e.keyboard.alt && e.keyboard.l,
             async e => {
                 e.preventDefault();
                 try {
                     const scriptElt = document.createElement("script");
-                    const content = await loadFile();
+                    const [fileHandle, content] = await loadFile();
+                    this.prevFileHandle = fileHandle;
                     const textNode = document.createTextNode(content);
                     scriptElt.appendChild(textNode);
                     const targetElt = document.getElementById("userScripts");
@@ -322,6 +333,34 @@ class Ui {
         );
 
         this.eventTable.addEvent(
+            "reloadScript",
+            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.alt && e.keyboard.l,
+            async e => {
+                e.preventDefault();
+                try {
+                    if (this.prevFileHandle === null) {
+                        return;
+                    }
+                    const scriptElt = document.createElement("script");
+                    const content = await loadFileFromHandle(this.prevFileHandle);
+                    const textNode = document.createTextNode(content);
+                    scriptElt.appendChild(textNode);
+                    const targetElt = document.getElementById("userScripts");
+                    targetElt.append(scriptElt);
+                    this.model.init();
+                    setTimeout(() => {}, 0);    // wait for one event-cycle
+                    this.scripter.runUserFunction(userFunction);
+                } catch (e) {
+                    console.log(e);
+                }
+                this.state.cur.keyboard.control = false;
+                this.state.cur.keyboard.shift = false;
+                this.state.cur.keyboard.alt = false;
+                this.state.cur.keyboard.l = false;
+            }
+        );
+
+        this.eventTable.addEvent(
             "closeHelpDialog",
             e => (
                 e.mousedown
@@ -334,7 +373,11 @@ class Ui {
         this.eventTable.addEvent(
             "printAllBoxes",
             e => e.keydown && e.keyboard.control && e.keyboard.space,
-            e => console.log(this.model.boxes)
+            e => {
+                console.log(this.model.boxes);
+                console.log(window.pageXOffset);
+                console.log(window.pageYOffset);
+            }
         );
     }
 
@@ -364,13 +407,35 @@ class Ui {
         }
     }
 
+    handleScrolling() {
+        const kb = this.state.cur.keyboard;
+        if (!this.model.anyBoxesSelected() && (kb.w || kb.a || kb.s || kb.d)) {
+            const scrollAmount = 10;
+            const oldXOffset = window.pageXOffset;
+            const oldYOffset = window.pageYOffset;
+
+            if (kb.w) {
+                window.scroll(oldXOffset, oldYOffset - scrollAmount);
+            }
+
+            if (kb.a) {
+                window.scroll(oldXOffset - scrollAmount, oldYOffset);
+            }
+
+            if (kb.s) {
+                window.scroll(oldXOffset, oldYOffset + scrollAmount);
+            }
+
+            if (kb.d) {
+                window.scroll(oldXOffset + scrollAmount, oldYOffset);
+            }
+        }
+    }
+
     run() {
         this.handleDragging();
+        this.handleScrolling();
     }
-}
-
-const addEventListener = (type, callback) => {
-    document.addEventListener(type, callback, false);
 }
 
 export { Ui };

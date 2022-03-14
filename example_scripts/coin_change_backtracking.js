@@ -1,21 +1,57 @@
+// https://leetcode.com/problems/coin-change/
+
+// You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+
+// Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+// You may assume that you have an infinite number of each kind of coin.
+
 function userFunction(logger) {
-    var MAX_INT = Number.MAX_SAFE_INTEGER;
+    function logEntrypoint(i, coins, amount, parentId) {
+        let curCoinStr = "";
+
+        if (i < coins.length) {
+            curCoinStr = coins[i];
+        } else {
+            curCoinStr = "no coin";
+        }
+
+        let str = "";
+        str += "\ni: " + i;
+        str += "\ncurCoin: " + curCoinStr;
+        str += "\namount: " + amount;
+        const id = logger.newNode(str, parentId);
+
+        return id;
+    }
+
+    function logReturn(val, id) {
+        logger.appendToNode("\n-> " + val, id);
+    }
+
+    const MAX_INT = Number.MAX_SAFE_INTEGER;
 
     function helper(i, coins, amount, parentId) {
-        // var id = logger.newNode("i: " + i + ", coins: " + coins + ", amount: " + amount, parentId);
-        var id = logger.newNode("i: " + i, parentId);
+        const id = logEntrypoint(i, coins, amount, parentId);
+
         if (amount === 0) {
+            logReturn(0, id);
             return 0;
         }
 
         if (i < coins.length && amount > 0) {
-            var curCoin = coins[i];
-            var maxNumCoins = Math.floor(amount / curCoin);
-            var minCost = MAX_INT
+            const curCoin = coins[i];
+            const maxNumCoins = Math.floor(amount / curCoin);
+            let minCost = MAX_INT
 
-            for (var numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
+            for (let numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
                 if (numCoins * curCoin <= amount) {
-                    res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
+                    const res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
+
+                    let s = `\nres:${res} = helper(...)`;
+                    logger.appendToNode(s, id);
+
+                    // minCost = Math.min(minCost, res + numCoins);
 
                     if (res !== -1) {
                         minCost = Math.min(minCost, res + numCoins);
@@ -23,13 +59,19 @@ function userFunction(logger) {
                 }
             }
 
+            logger.appendToNode(`\nminCost:${minCost}`, id);
+
             if (minCost === MAX_INT) {
+                logger.appendToNode("\nminCost === MAX_INT", id);
+                logReturn(-1, id);
                 return -1;
             } else {
+                logReturn(minCost, id);
                 return minCost
             }
         }
 
+        logReturn(-1, id);
         return -1;
     }
 
@@ -37,12 +79,12 @@ function userFunction(logger) {
         return helper(0, coins, amount, null)
     }
 
-    var coins = [5, 1, 2];
-    var amount = 11;
+    const coins = [1, 2];
+    const amount = 10;
 
-    // var coins = [186,419,83,408];
-    // var amount = 6249;
+    // const coins = [1, 2, 3];
+    // const amount = 5;
 
-    var res = coinChange(coins, amount);
+    const res = coinChange(coins, amount);
     console.log('res: ' + res);
 }

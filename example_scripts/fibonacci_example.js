@@ -1,8 +1,8 @@
 function userFunction(logger) {
 
     function fib(n, parentId) {
-        var id = logger.newNode("fib(" + n + ")", parentId);
-        var res = 0;
+        const id = logger.newNode("fib(" + n + ")", parentId);
+        let res = 0;
         if (n === 0) {
             res = 0;
         } else if (n === 1) {
@@ -10,7 +10,7 @@ function userFunction(logger) {
         } else {
             res = fib(n - 1, id) + fib(n - 2, id);
         }
-        logger.appendToNode(" -> " + res, id);
+        logger.appendToNode("\n-> " + res, id);
         return res;
     }
 

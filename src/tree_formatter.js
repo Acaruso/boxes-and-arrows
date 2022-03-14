@@ -1,18 +1,44 @@
+// tree drawing algorithm adapted from:
+// https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/
+
 import { firstElt } from "./util";
 
 class TreeFormatter {
     constructor(model) {
         this.boxes = model.boxes;
+        this.defaultYPadding = 70;
         this.xPadding = 50;
-        this.yPadding = 70;
+        this.yPadding = this.defaultYPadding;
     }
 
     treeFormat(rootId) {
+        const maxHeight = this.getMaxHeight(rootId);
+
+        this.yPadding = maxHeight + this.defaultYPadding;
+
         let box = this.boxes.getBox(rootId);
         box.parentId = null;
         this.initializeNodes(rootId, 0);
         this.calculateInitialX(rootId);
         this.calculateFinalPositions(rootId, 0);
+    }
+
+    getMaxHeight(rootId) {
+        const s = [];
+        s.push(rootId);
+        let maxHeight = -1;
+
+        while (s.length !== 0) {
+            let curId = s.pop();
+            let curBox = this.boxes.getBox(curId);
+            maxHeight = Math.max(maxHeight, curBox.rect.h);
+            const childIds = this.boxes.getConnections(curId);
+            for (const elt of childIds) {
+                s.push(elt);
+            }
+        }
+
+        return maxHeight;
     }
 
     initializeNodes(id, level) {

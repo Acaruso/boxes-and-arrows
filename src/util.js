@@ -1,3 +1,5 @@
+import { textConstants } from "./text_constants";
+
 const getMidpoint = (rect) => {
     return {
         x: rect.x + (rect.w / 2),
@@ -41,8 +43,9 @@ const rectsOverlap = (rect1, rect2) => {
 
 const isPrintableKeycode = (kc) => {
     return (
-        (kc > 47 && kc < 58)        // number keys
-        || (kc == 32)               // spacebar
+        (kc === 13)                 // enter
+        || (kc === 32)              // spacebar
+        || (kc > 47 && kc < 58)     // number keys
         || (kc > 64 && kc < 91)     // letter keys
         || (kc > 95 && kc < 112)    // numpad keys
         || (kc > 185 && kc < 193)   // ;=,-./`
@@ -69,11 +72,42 @@ const loadFile = async () => {
     const [fileHandle] = await window.showOpenFilePicker();
     const file = await fileHandle.getFile();
     const content = await file.text();
+    return [fileHandle, content];
+};
+
+const loadFileFromHandle = async (fileHandle) => {
+    const file = await fileHandle.getFile();
+    const content = await file.text();
     return content;
 };
 
+const getTextRect = (text, coord) => {
+    let maxWidth = -1;
+
+    for (const str of text) {
+        const curWidth = getWidthOfText(
+            str,
+            textConstants.charWidth,
+            textConstants.xPadding
+        );
+
+        maxWidth = Math.max(maxWidth, curWidth);
+    }
+
+    let rect = {
+        x: coord.x,
+        y: coord.y,
+        w: maxWidth,
+    };
+
+    rect.h = (textConstants.charHeight * text.length) + textConstants.yPadding;
+
+    return rect;
+}
+
 const getWidthOfText = (text, charWidth, xPadding) => {
-    return Math.floor(text.length * charWidth) + (xPadding * 2);
+    let len = text.length > 0 ? text.length : 1;
+    return Math.floor(len * charWidth) + (xPadding * 2);
 };
 
 const firstElt = (arr) => {
@@ -105,6 +139,8 @@ export {
     isPrintableKeycode,
     saveFile,
     loadFile,
+    loadFileFromHandle,
+    getTextRect,
     getWidthOfText,
     firstElt,
     lastElt,
