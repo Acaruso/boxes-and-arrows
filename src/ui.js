@@ -379,14 +379,6 @@ class Ui {
                 console.log(window.pageYOffset);
             }
         );
-
-        this.eventTable.addEvent(
-            "altTab",
-            e => e.keydown && e.keyboard.alt && e.keyboard.tab,
-            e => {
-                console.log("alt tab!");
-            }
-        );
     }
 
     handleDragging() {
