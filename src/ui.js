@@ -13,6 +13,10 @@ import {
     isTree,
  } from "./tree_util";
 
+const addEventListener = (type, callback) => {
+    document.addEventListener(type, callback, false);
+}
+
 class Ui {
     constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;
@@ -375,6 +379,14 @@ class Ui {
                 console.log(window.pageYOffset);
             }
         );
+
+        this.eventTable.addEvent(
+            "altTab",
+            e => e.keydown && e.keyboard.alt && e.keyboard.tab,
+            e => {
+                console.log("alt tab!");
+            }
+        );
     }
 
     handleDragging() {
@@ -412,16 +424,16 @@ class Ui {
 
             if (kb.w) {
                 window.scroll(oldXOffset, oldYOffset - scrollAmount);
-            } 
-            
+            }
+
             if (kb.a) {
                 window.scroll(oldXOffset - scrollAmount, oldYOffset);
             }
-            
+
             if (kb.s) {
                 window.scroll(oldXOffset, oldYOffset + scrollAmount);
             }
-            
+
             if (kb.d) {
                 window.scroll(oldXOffset + scrollAmount, oldYOffset);
             }
@@ -432,10 +444,6 @@ class Ui {
         this.handleDragging();
         this.handleScrolling();
     }
-}
-
-const addEventListener = (type, callback) => {
-    document.addEventListener(type, callback, false);
 }
 
 export { Ui };
