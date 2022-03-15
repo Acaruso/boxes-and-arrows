@@ -409,7 +409,11 @@ class Ui {
 
     handleScrolling() {
         const kb = this.state.cur.keyboard;
-        if (!this.model.anyBoxesSelected() && (kb.w || kb.a || kb.s || kb.d)) {
+        if (
+            !kb.control
+            && !this.model.anyBoxesSelected()
+            && (kb.w || kb.a || kb.s || kb.d)
+        ) {
             const scrollAmount = 10;
             const oldXOffset = window.pageXOffset;
             const oldYOffset = window.pageYOffset;
