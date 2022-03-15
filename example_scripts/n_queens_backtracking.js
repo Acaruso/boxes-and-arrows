@@ -32,18 +32,17 @@ function printBoard(board) {
     console.log(s);
 }
 
-
 function userFunction(logger) {
     function logEntrypoint(n, parentId) {
         let str = `nQueens(${n})\n`;
-        str += "\n \nboard: \n" + boardToString(board);
+        str += "\nboard: \n" + boardToString(board);
         const id = logger.newNode(str, parentId);
         return id;
     }
 
     function logBoard(id) {
         let str = "\n \nboard: \n" + boardToString(board);
-        logger.appendToNode("\n" + str, id);
+        logger.appendToNode("\n" + str + " \n", id);
     }
 
     function append(val, id) {
@@ -52,7 +51,6 @@ function userFunction(logger) {
 
     const boardSize = 4;
     let board = makeBoard(boardSize);
-    printBoard(board);
 
     function isAttacked(row, col) {
         // check if there is a queen in row or col
@@ -65,9 +63,7 @@ function userFunction(logger) {
         // check diagonals
         for (let i = 0; i < boardSize; i++) {
             for (let k = 0; k < boardSize; k++) {
-                if (
-                    (i + k === row + col) || (i - k === row - col)
-                ) {
+                if ((i + k === row + col) || (i - k === row - col)) {
                     if (board[i][k] === 1) {
                         return true;
                     }

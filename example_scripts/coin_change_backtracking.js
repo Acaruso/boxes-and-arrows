@@ -7,84 +7,100 @@
 // You may assume that you have an infinite number of each kind of coin.
 
 function userFunction(logger) {
-    function logEntrypoint(i, coins, amount, parentId) {
-        let curCoinStr = "";
-
-        if (i < coins.length) {
-            curCoinStr = coins[i];
-        } else {
-            curCoinStr = "no coin";
-        }
-
-        let str = "";
-        str += "\ni: " + i;
-        str += "\ncurCoin: " + curCoinStr;
-        str += "\namount: " + amount;
+    function logEntrypoint(i, amount, parentId) {
+        let str = `helper(${i}, ${amount})\n`
         const id = logger.newNode(str, parentId);
-
         return id;
     }
 
     function logReturn(val, id) {
-        logger.appendToNode("\n-> " + val, id);
+        logger.appendToNode("\n \n-> " + val, id);
+    }
+
+    function append(val, id) {
+        logger.appendToNode("\n" + val, id);
     }
 
     const MAX_INT = Number.MAX_SAFE_INTEGER;
 
-    function helper(i, coins, amount, parentId) {
-        const id = logEntrypoint(i, coins, amount, parentId);
+    function coinChange(coins, amount) {
 
-        if (amount === 0) {
-            logReturn(0, id);
-            return 0;
-        }
+        function helper({ i, amount, parentId }) {
+            const id = logEntrypoint(i, amount, parentId);
 
-        if (i < coins.length && amount > 0) {
-            const curCoin = coins[i];
-            const maxNumCoins = Math.floor(amount / curCoin);
-            let minCost = MAX_INT
+            let res = { found: false, numCoins: 0, coinsUsed: {} };
 
-            for (let numCoins = 0; numCoins <= maxNumCoins; numCoins++) {
-                if (numCoins * curCoin <= amount) {
-                    const res = helper(i + 1, coins, amount - (numCoins * curCoin), id);
+            if (amount === 0) {
+                res.found = true;
+                logReturn(JSON.stringify(res), id);
+                return res;
+            } else if (i >= coins.length) {
+                logReturn(JSON.stringify(res), id);
+                return res;
+            } else {
+                const curCoin = coins[i];
+                let curMin = MAX_INT;
+                let curCoinsUsed = {};
 
-                    let s = `\nres:${res} = helper(...)`;
-                    logger.appendToNode(s, id);
+                const maxNumCurCoins = Math.floor(amount / curCoin);
 
-                    // minCost = Math.min(minCost, res + numCoins);
+                for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
+                    const recurRes = helper({
+                        i: i + 1,
+                        amount: amount - (numCurCoins * curCoin),
+                        parentId: id,
+                    });
 
-                    if (res !== -1) {
-                        minCost = Math.min(minCost, res + numCoins);
+                    append(
+                        `helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`,
+                        id
+                    );
+                    append("-> " + JSON.stringify(recurRes) + " \n ", id);
+
+                    if (recurRes.found === true) {
+                        res.found = true;
+                        if (curMin > recurRes.numCoins + numCurCoins) {
+                            curMin = recurRes.numCoins + numCurCoins;
+
+                            curCoinsUsed = { ...recurRes.coinsUsed };
+
+                            if (numCurCoins > 0) {
+                                curCoinsUsed[curCoin] = numCurCoins;
+                            }
+                        }
                     }
                 }
-            }
 
-            logger.appendToNode(`\nminCost:${minCost}`, id);
-
-            if (minCost === MAX_INT) {
-                logger.appendToNode("\nminCost === MAX_INT", id);
-                logReturn(-1, id);
-                return -1;
-            } else {
-                logReturn(minCost, id);
-                return minCost
+                res.numCoins = curMin;
+                res.coinsUsed = { ...curCoinsUsed };
+                logReturn(JSON.stringify(res), id);
+                return res;
             }
         }
 
-        logReturn(-1, id);
-        return -1;
+        return helper({
+            i: 0,
+            amount: amount,
+            parentId: null,
+        });
     }
 
-    function coinChange(coins, amount) {
-        return helper(0, coins, amount, null)
-    }
+    // const coins = [1, 2];
+    // const amount = 10;
 
-    const coins = [1, 2];
+    // const coins = [1, 2, 10];
+    // const amount = 10;
+
+    const coins = [1, 2, 3];
     const amount = 10;
+
+    // const coins = [1, 2, 3];
+    // const amount = 6;
 
     // const coins = [1, 2, 3];
     // const amount = 5;
 
     const res = coinChange(coins, amount);
-    console.log('res: ' + res);
+    console.log('res: ' + res.numCoins);
+    console.log(res.coinsUsed);
 }
