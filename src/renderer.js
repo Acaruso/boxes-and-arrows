@@ -1,11 +1,12 @@
 import { textConstants } from "./text_constants";
-import { getMidpoint } from "./util"
+import { getMidpoint, getWidthOfText } from "./util"
 
 class Renderer {
     constructor(gfx, state, model) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
+        this.firstDraw = true;
     }
 
     render() {
@@ -129,14 +130,50 @@ class Renderer {
     }
 
     drawArrays() {
-        const rect = {
-            x: 50,
-            y: 50,
-            w: 50,
-            h: 50,
+        const text = (str, rect) => {
+            const yPadding = 4;
+
+            const textWidth = getWidthOfText(
+                str,
+                textConstants.charWidth,
+                0
+            );
+
+            const rectMidpoint = Math.floor((rect.x + (rect.w / 2)));
+            const textLeftX = rectMidpoint - Math.floor(textWidth / 2);
+
+            if (this.firstDraw === true) {
+                console.log(`rect: ${JSON.stringify(rect)}`);
+                console.log(`textWidth: ${textWidth}`);
+                console.log(`rectMidpoint: ${rectMidpoint}`);
+                console.log(`textLeftX: ${textLeftX}`);
+            }
+            this.gfx.drawText(
+                str,
+                textConstants.charHeight,
+                { x: textLeftX, y: rect.y - yPadding },
+                // { x: rect.x + 10, y: rect.y - yPadding },
+                1
+            );
         };
 
-        this.gfx.strokeRectHeavy(rect);
+        const length = 200;
+
+        let rect = {
+            x: 30,
+            y: 30,
+            w: 30,
+            h: 30,
+        };
+
+        const xIncrement = rect.w;
+
+        for (let i = 0; i < length; i++) {
+            this.gfx.strokeRectHeavy(rect);
+            text(String(i), rect);
+            rect.x += xIncrement;
+        }
+        this.firstDraw = false;
     }
 }
 

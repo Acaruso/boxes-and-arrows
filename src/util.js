@@ -106,7 +106,8 @@ const getTextRect = (text, coord) => {
 }
 
 const getWidthOfText = (text, charWidth, xPadding) => {
-    let len = text.length > 0 ? text.length : 1;
+    const len = text.length > 0 ? text.length : 1;
+    // console.log(`getWidthOfText() len: ${len}`);
     return Math.floor(len * charWidth) + (xPadding * 2);
 };
 
