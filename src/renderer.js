@@ -6,7 +6,6 @@ class Renderer {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
-        this.firstDraw = true;
     }
 
     render() {
@@ -142,22 +141,15 @@ class Renderer {
             const rectMidpoint = Math.floor((rect.x + (rect.w / 2)));
             const textLeftX = rectMidpoint - Math.floor(textWidth / 2);
 
-            if (this.firstDraw === true) {
-                console.log(`rect: ${JSON.stringify(rect)}`);
-                console.log(`textWidth: ${textWidth}`);
-                console.log(`rectMidpoint: ${rectMidpoint}`);
-                console.log(`textLeftX: ${textLeftX}`);
-            }
             this.gfx.drawText(
                 str,
                 textConstants.charHeight,
                 { x: textLeftX, y: rect.y - yPadding },
-                // { x: rect.x + 10, y: rect.y - yPadding },
                 1
             );
         };
 
-        const length = 200;
+        const length = 20;
 
         let rect = {
             x: 30,
@@ -173,7 +165,6 @@ class Renderer {
             text(String(i), rect);
             rect.x += xIncrement;
         }
-        this.firstDraw = false;
     }
 }
 
