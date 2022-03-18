@@ -4,9 +4,22 @@ class Logger {
     constructor(boxes) {
         this.boxes = boxes;
         this.rootNodeId = null;
+        this.enabled = true;
+    }
+
+    enable() {
+        this.enabled = true;
+    }
+
+    disable() {
+        this.enabled = false;
     }
 
     newNode(s, parentId) {
+        if (this.enabled === false) {
+            return;
+        }
+
         const id = this.boxes.addBox(s, { x: 0, y: 0 });
 
         if (this.rootNodeId === null) {
@@ -21,6 +34,10 @@ class Logger {
     }
 
     appendToNode(s, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
             box.appendString(s);
@@ -39,6 +56,7 @@ class Scripter {
 
     runUserFunction(fn) {
         this.logger.rootNodeId = null;
+        this.logger.enable();
         fn(this.logger);
         this.treeFormatter.treeFormat(this.logger.rootNodeId);
         const treeIds = getAllIdsInTree(this.logger.rootNodeId, this.boxes);
