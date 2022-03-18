@@ -168,6 +168,12 @@ class Renderer {
             this.gfx.strokeRectHeavy(rect);
             drawText(String(i), rect);
             drawCircle({ x: rect.x, y: rect.y + rect.h });
+
+            // draw final point
+            if (i === length - 1) {
+                drawCircle({ x: rect.x + rect.w, y: rect.y + rect.h });
+            }
+
             rect.x += xIncrement;
         }
     }
