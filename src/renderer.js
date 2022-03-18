@@ -129,6 +129,11 @@ class Renderer {
     }
 
     drawArrays() {
+        const arr = [1, 2, 3];
+        this.drawArray(arr);
+    }
+
+    drawArray() {
         const drawText = (str, rect) => {
             const yPadding = 4;
             const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
