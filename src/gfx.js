@@ -58,6 +58,53 @@ class Gfx {
     drawLine(beginCoord, endCoord, z=0, color="#000000") {
         const command = (ctx) => {
             ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(beginCoord.x, beginCoord.y);
+            ctx.lineTo(endCoord.x, endCoord.y);
+            ctx.stroke();
+        };
+
+        this.queue.push({
+            command,
+            z: z
+        });
+    }
+
+    strokeRectHeavy(rect, z=0, color="#000000") {
+        this.drawLineHeavy(
+            { x: rect.x, y: rect.y },
+            { x: rect.x + rect.w + 1, y: rect.y },
+            z,
+            color
+        );
+
+        this.drawLineHeavy(
+            { x: rect.x + rect.w, y: rect.y },
+            { x: rect.x + rect.w, y: rect.y + rect.h + 1},
+            z,
+            color
+        );
+
+        this.drawLineHeavy(
+            { x: rect.x + rect.w, y: rect.y + rect.h },
+            { x: rect.x - 1, y: rect.y + rect.h },
+            z,
+            color
+        );
+
+        this.drawLineHeavy(
+            { x: rect.x, y: rect.y + rect.h },
+            { x: rect.x, y: rect.y - 1},
+            z,
+            color
+        );
+    }
+
+    drawLineHeavy(beginCoord, endCoord, z=0, color="#000000") {
+        const command = (ctx) => {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(beginCoord.x, beginCoord.y);
             ctx.lineTo(endCoord.x, endCoord.y);

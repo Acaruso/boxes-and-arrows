@@ -15,6 +15,7 @@ class Renderer {
         this.drawConnections();
         this.drawSelectedRegion();
         this.drawHelpDialog();
+        this.drawArrays();
     }
 
     drawBoxes() {
@@ -125,6 +126,17 @@ class Renderer {
                 z
             );
         }
+    }
+
+    drawArrays() {
+        const rect = {
+            x: 50,
+            y: 50,
+            w: 50,
+            h: 50,
+        };
+
+        this.gfx.strokeRectHeavy(rect);
     }
 }
 
