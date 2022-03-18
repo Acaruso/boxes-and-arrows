@@ -129,7 +129,7 @@ class Renderer {
     }
 
     drawArrays() {
-        const text = (str, rect) => {
+        const drawText = (str, rect) => {
             const yPadding = 4;
 
             const textWidth = getWidthOfText(
@@ -138,7 +138,7 @@ class Renderer {
                 0
             );
 
-            const rectMidpoint = Math.floor((rect.x + (rect.w / 2)));
+            const rectMidpoint = rect.x + (rect.w / 2);
             const textLeftX = rectMidpoint - Math.floor(textWidth / 2);
 
             this.gfx.drawText(
@@ -148,6 +148,10 @@ class Renderer {
                 1
             );
         };
+
+        const drawCircle = (coord) => {
+            this.gfx.drawFilledCircle(coord, 4, 2);
+        }
 
         const length = 20;
 
@@ -162,7 +166,8 @@ class Renderer {
 
         for (let i = 0; i < length; i++) {
             this.gfx.strokeRectHeavy(rect);
-            text(String(i), rect);
+            drawText(String(i), rect);
+            drawCircle({ x: rect.x, y: rect.y + rect.h });
             rect.x += xIncrement;
         }
     }

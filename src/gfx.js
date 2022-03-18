@@ -117,6 +117,28 @@ class Gfx {
         });
     }
 
+    drawFilledCircle(coord, radius, z=0, color="#000000") {
+        const command = (ctx) => {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(
+                coord.x,
+                coord.y,
+                radius,
+                0,
+                2 * Math.PI
+            );
+            ctx.fill();
+        };
+
+        this.queue.push({
+            command,
+            z: z
+        });
+    }
+
     draw() {
         this.queue.sort((first, second) => {
             return second.z - first.z;
