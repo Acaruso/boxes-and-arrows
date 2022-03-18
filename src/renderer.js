@@ -131,29 +131,35 @@ class Renderer {
     drawArrays() {
         const drawText = (str, rect) => {
             const yPadding = 4;
-
-            const textWidth = getWidthOfText(
-                str,
-                textConstants.charWidth,
-                0
-            );
+            const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
 
             const rectMidpoint = rect.x + (rect.w / 2);
-            const textLeftX = rectMidpoint - Math.floor(textWidth / 2);
+            const textX = rectMidpoint - Math.floor(textWidth / 2);
 
             this.gfx.drawText(
                 str,
                 textConstants.charHeight,
-                { x: textLeftX, y: rect.y - yPadding },
+                { x: textX, y: rect.y - yPadding },
                 1
             );
         };
 
-        const drawCircle = (coord) => {
-            this.gfx.drawFilledCircle(coord, 4, 2);
+        const drawPoint = (str, coord) => {
+            this.gfx.drawFilledCircle(coord, 3, 2);
+
+            const yPadding = 2;
+            const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
+            const textX = Math.floor(coord.x - (textWidth / 2));
+
+            this.gfx.drawText(
+                str,
+                textConstants.charHeight,
+                { x: textX, y: coord.y + textConstants.charHeight + yPadding},
+                1
+            );
         }
 
-        const length = 20;
+        const length = 200;
 
         let rect = {
             x: 30,
@@ -165,13 +171,18 @@ class Renderer {
         const xIncrement = rect.w;
 
         for (let i = 0; i < length; i++) {
+            // draw rect
             this.gfx.strokeRectHeavy(rect);
+
+            // draw numbers above rect
             drawText(String(i), rect);
-            drawCircle({ x: rect.x, y: rect.y + rect.h });
+
+            // draw points
+            drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
 
             // draw final point
             if (i === length - 1) {
-                drawCircle({ x: rect.x + rect.w, y: rect.y + rect.h });
+                drawPoint(String(i), { x: rect.x + rect.w, y: rect.y + rect.h });
             }
 
             rect.x += xIncrement;
