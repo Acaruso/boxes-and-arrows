@@ -13,17 +13,6 @@ class Renderer {
 
         this.basicRenderer = new BasicRenderer(gfx, state, model);
 
-        // this.arrayRenderer = new ArrayRenderer(gfx, state, model);
-        // this.boxRenderer = new BoxRenderer(gfx, state, model, this.basicRenderer);
-        // this.helpDialogRenderer = new HelpDialogRenderer(
-        //     gfx,
-        //     state,
-        //     model,
-        //     this.basicRenderer
-        // );
-        // this.lineRenderer = new LineRenderer(gfx, state, model);
-        // this.selectedRegionRenderer = new SelectedRegionRenderer(gfx, state, model);
-        
         this.renderers = [
             new ArrayRenderer(gfx, state, model),
             new BoxRenderer(gfx, state, model, this.basicRenderer),

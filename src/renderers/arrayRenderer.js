@@ -6,6 +6,16 @@ class ArrayRenderer {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
+
+        this.startX = 50;
+        this.startY = 50;
+
+        this.refRect = {
+            x: this.startX,
+            y: this.startY,
+            w: 30,
+            h: 30,
+        };
     }
 
     render() {
@@ -30,16 +40,6 @@ class ArrayRenderer {
         if (arr.length === 0) {
             return;
         }
-
-        const startX = 50;
-        const startY = 50;
-
-        let refRect = {
-            x: startX,
-            y: startY,
-            w: 30,
-            h: 30,
-        };
 
         const drawBox = (str, rect) => {
             this.gfx.strokeRectHeavy(rect);
@@ -92,23 +92,23 @@ class ArrayRenderer {
         };
 
         const drawIndexLabel = (str, index) => {
-            let rect_ = { ...refRect };
-            rect_.x += rect_.w * index;
+            let rect = { ...this.refRect };
+            rect.x += rect.w * index;
 
             // draw arrow /////////////////////////////////
 
             const lineLength = 9;
             const yPadding = 2;
-            const rectXMidpoint = rect_.x + (rect_.w / 2);
+            const rectXMidpoint = rect.x + (rect.w / 2);
 
             const start = {
                 x: rectXMidpoint,
-                y: startY - textConstants.charHeight - yPadding - lineLength
+                y: this.startY - textConstants.charHeight - yPadding - lineLength
             };
 
             const end = {
                 x: rectXMidpoint,
-                y: startY - textConstants.charHeight - yPadding
+                y: this.startY - textConstants.charHeight - yPadding
             };
             
             this.gfx.drawLine(start, end, 1);
@@ -142,17 +142,17 @@ class ArrayRenderer {
             );
         };
 
-        let rect = { ...refRect };
+        let curRect = { ...this.refRect };
 
         for (let i = 0; i < arr.length; i++) {
-            drawBox(String(arr[i]), rect);
-            drawTopLabel(String(i), rect);
-            drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
-            rect.x += rect.w;
+            drawBox(String(arr[i]), curRect);
+            drawTopLabel(String(i), curRect);
+            drawPoint(String(i), { x: curRect.x, y: curRect.y + curRect.h });
+            curRect.x += curRect.w;
         }
 
         // draw final point
-        drawPoint(String(arr.length), { x: rect.x, y: rect.y + rect.h });
+        drawPoint(String(arr.length), { x: curRect.x, y: curRect.y + curRect.h });
 
         // draw labels
         for (const label of arrWrapper.labels) {
