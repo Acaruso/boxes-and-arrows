@@ -59,15 +59,6 @@ class Box {
 
     updateRect() {
         this.rect = getTextRect(this.text, this.coord);
-
-        // const length = this.text.length > 0 ? this.text.length : 1;
-
-        // this.rect = {
-        //     x: this.coord.x,
-        //     y: this.coord.y,
-        //     w: Math.floor(length * textConstants.charWidth) + (textConstants.xPadding * 2),
-        //     h: textConstants.charHeight + textConstants.yPadding
-        // };
     }
 }
 
