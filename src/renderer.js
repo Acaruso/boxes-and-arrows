@@ -129,15 +129,15 @@ class Renderer {
     }
 
     drawArrays() {
-        const arrWrapper = {
-            data: [1, 22, 3, 4, "AA"],
-            labels: [
-                { str: "i", index: 1 },
-                { str: "j", index: 3 },
-                { str: "q", index: 4 },
-            ],
-        };
-        this.drawArray(arrWrapper);
+        // const arrWrapper = {
+        //     data: [1, 22, 3, 4, "AA"],
+        //     labels: [
+        //         { str: "i", index: 1 },
+        //         { str: "j", index: 3 },
+        //         { str: "q", index: 4 },
+        //     ],
+        // };
+        // this.drawArray(arrWrapper);
     }
 
     drawArray(arrWrapper) {
