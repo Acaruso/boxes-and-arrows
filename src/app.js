@@ -1,7 +1,7 @@
 import { EventTable } from "./event_table"
 import { Gfx } from "./gfx"
 import { Model } from "./model"
-import { Renderer } from "./renderer"
+import { Renderer } from "./renderers/renderer"
 import { Scripter } from "./scripter"
 import { State } from "./state"
 import { TreeFormatter } from "./tree_formatter"
