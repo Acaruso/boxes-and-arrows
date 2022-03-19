@@ -1,10 +1,10 @@
 class HelpDialogRenderer {
-    constructor(gfx, state, model, basicRenderer) {
+    constructor(gfx, state, model, rendererHelper) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
 
-        this.basicRenderer = basicRenderer;
+        this.rendererHelper = rendererHelper;
     }
 
     render() {
@@ -20,7 +20,7 @@ class HelpDialogRenderer {
 
         this.gfx.drawRect(helpDialog.rect, 11);
 
-        this.basicRenderer.drawMultiLineText(
+        this.rendererHelper.drawMultiLineText(
             helpDialog.text,
             { x: helpDialog.rect.x, y: helpDialog.rect.y },
             12

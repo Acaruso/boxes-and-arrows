@@ -1,8 +1,8 @@
 import { ArrayRenderer } from "./arrayRenderer";
-import { BasicRenderer } from "./basicRenderer";
 import { BoxRenderer } from "./boxRenderer";
 import { HelpDialogRenderer } from "./helpDialogRenderer";
 import { LineRenderer } from "./lineRenderer";
+import { RendererHelper } from "./rendererHelper";
 import { SelectedRegionRenderer } from "./selectedRegionRenderer";
 
 class Renderer {
@@ -11,16 +11,16 @@ class Renderer {
         this.state = state;
         this.model = model;
 
-        this.basicRenderer = new BasicRenderer(gfx, state, model);
+        this.rendererHelper = new RendererHelper(gfx, state, model);
 
         this.renderers = [
             new ArrayRenderer(gfx, state, model),
-            new BoxRenderer(gfx, state, model, this.basicRenderer),
+            new BoxRenderer(gfx, state, model, this.rendererHelper),
             this.helpDialogRenderer = new HelpDialogRenderer(
                 gfx,
                 state,
                 model,
-                this.basicRenderer
+                this.rendererHelper
             ),
             this.lineRenderer = new LineRenderer(gfx, state, model),
             this.selectedRegionRenderer = new SelectedRegionRenderer(gfx, state, model),

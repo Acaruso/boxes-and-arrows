@@ -1,12 +1,12 @@
 import { getMidpoint } from "../util"
 
 class BoxRenderer {
-    constructor(gfx, state, model, basicRenderer) {
+    constructor(gfx, state, model, rendererHelper) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
 
-        this.basicRenderer = basicRenderer;
+        this.rendererHelper = rendererHelper;
     }
 
     render() {
@@ -35,7 +35,7 @@ class BoxRenderer {
     }
 
     drawBoxText(box) {
-        this.basicRenderer.drawMultiLineText(box.text, box.coord, 2);
+        this.rendererHelper.drawMultiLineText(box.text, box.coord, 2);
     }
 
     drawSelectedBoxes() {

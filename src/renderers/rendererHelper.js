@@ -1,6 +1,6 @@
 import { textConstants } from "../text_constants";
 
-class BasicRenderer {
+class RendererHelper {
     constructor(gfx, state, model) {
         this.gfx = gfx;
         this.state = state;
@@ -22,4 +22,4 @@ class BasicRenderer {
     }
 }
 
-export { BasicRenderer };
+export { RendererHelper };
