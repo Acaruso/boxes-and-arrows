@@ -129,17 +129,37 @@ class Renderer {
     }
 
     drawArrays() {
-        const arr = [1, 2, 3];
+        const arr = [1, 22, 3, 4, "AA"];
         this.drawArray(arr);
     }
 
-    drawArray() {
+    drawArray(arr) {
+        const drawBox = (str, rect) => {
+            this.gfx.strokeRectHeavy(rect);
+
+            const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
+            const textHeight = textConstants.charHeightNoPadding;
+
+            const rectXMidpoint = rect.x + (rect.w / 2);
+            const rectYMidpoint = rect.y + (rect.h / 2);
+
+            const textX = rectXMidpoint - Math.floor(textWidth / 2);
+            const textY = rectYMidpoint + Math.floor(textHeight / 2);
+
+            this.gfx.drawText(
+                str,
+                textConstants.charHeight,
+                { x: textX, y: textY },
+                1
+            );
+        }
+
         const drawText = (str, rect) => {
             const yPadding = 4;
             const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
 
-            const rectMidpoint = rect.x + (rect.w / 2);
-            const textX = rectMidpoint - Math.floor(textWidth / 2);
+            const rectXMidpoint = rect.x + (rect.w / 2);
+            const textX = rectXMidpoint - Math.floor(textWidth / 2);
 
             this.gfx.drawText(
                 str,
@@ -164,7 +184,7 @@ class Renderer {
             );
         }
 
-        const length = 200;
+        const length = arr.length;
 
         let rect = {
             x: 30,
@@ -177,7 +197,7 @@ class Renderer {
 
         for (let i = 0; i < length; i++) {
             // draw rect
-            this.gfx.strokeRectHeavy(rect);
+            drawBox(String(arr[i]), rect);
 
             // draw numbers above rect
             drawText(String(i), rect);
