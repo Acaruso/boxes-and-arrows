@@ -27,7 +27,6 @@ class App {
     }
 
     startMainLoop() {
-        // this.scripter.run();
         this.interval = setInterval(() => this.loop(), 10);
     }
 
