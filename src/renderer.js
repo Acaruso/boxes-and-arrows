@@ -251,7 +251,7 @@ class Renderer {
             drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
             if (i === 1) {
-                drawIndexLabel("", rect);
+                drawIndexLabel(String(i), rect);
             }
             rect.x += rect.w;
         }
