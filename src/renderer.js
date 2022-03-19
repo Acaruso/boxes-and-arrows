@@ -129,11 +129,16 @@ class Renderer {
     }
 
     drawArrays() {
-        const arr = [1, 22, 3, 4, "AA"];
-        this.drawArray(arr);
+        const arrWrapper = {
+            data: [1, 22, 3, 4, "AA"],
+            labels: { str: "i", index: 1 },
+        };
+        this.drawArray(arrWrapper);
     }
 
-    drawArray(arr) {
+    drawArray(arrWrapper) {
+        let arr = arrWrapper.data;
+
         if (arr.length === 0) {
             return;
         }
@@ -255,10 +260,9 @@ class Renderer {
             drawBox(String(arr[i]), rect);
             drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
-            drawIndexLabel("i", i);
-            // if (i === 1) {
-            //     drawIndexLabel("i", i);
-            // }
+            if (i === 1) {
+                drawIndexLabel("i", i);
+            }
             rect.x += rect.w;
         }
 
