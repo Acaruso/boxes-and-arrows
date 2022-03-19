@@ -131,7 +131,11 @@ class Renderer {
     drawArrays() {
         const arrWrapper = {
             data: [1, 22, 3, 4, "AA"],
-            labels: { str: "i", index: 1 },
+            labels: [
+                { str: "i", index: 1 },
+                { str: "j", index: 3 },
+                { str: "q", index: 4 },
+            ],
         };
         this.drawArray(arrWrapper);
     }
@@ -241,7 +245,7 @@ class Renderer {
 
             // draw label /////////////////////////////////
 
-            const labelYPadding = 2;
+            const labelYPadding = 4;
             const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
             const textX = Math.floor(rectXMidpoint - (textWidth / 2));
             const textY = start.y - labelYPadding;
@@ -260,14 +264,16 @@ class Renderer {
             drawBox(String(arr[i]), rect);
             drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
-            if (i === 1) {
-                drawIndexLabel("i", i);
-            }
             rect.x += rect.w;
         }
 
         // draw final point
         drawPoint(String(arr.length), { x: rect.x, y: rect.y + rect.h });
+
+        // draw labels
+        for (const label of arrWrapper.labels) {
+            drawIndexLabel(label.str, label.index);
+        }
     }
 }
 
