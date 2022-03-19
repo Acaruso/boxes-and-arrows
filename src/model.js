@@ -1,13 +1,11 @@
 import { Boxes } from "./boxes";
 import { HelpDialog } from "./help_dialog"
-import { Arrays } from "./arrays";
 import { clearArray } from "./util";
 
 class Model {
     constructor() {
         this.boxes = new Boxes();
         this.helpDialog = new HelpDialog();
-        this.arrays = new Arrays();
 
         this.selectedBoxIds = [];
 
