@@ -138,6 +138,16 @@ class Renderer {
             return;
         }
 
+        const startX = 50;
+        const startY = 50;
+
+        let rect = {
+            x: startX,
+            y: startY,
+            w: 30,
+            h: 30,
+        };
+
         const drawBox = (str, rect) => {
             this.gfx.strokeRectHeavy(rect);
 
@@ -156,7 +166,7 @@ class Renderer {
                 { x: textX, y: textY },
                 1
             );
-        }
+        };
 
         const drawTopLabel = (str, rect) => {
             const yPadding = 4;
@@ -183,22 +193,66 @@ class Renderer {
             this.gfx.drawText(
                 str,
                 textConstants.charHeight,
-                { x: textX, y: coord.y + textConstants.charHeight + yPadding},
+                { x: textX, y: coord.y + textConstants.charHeight + yPadding },
                 1
             );
-        }
+        };
 
-        let rect = {
-            x: 30,
-            y: 30,
-            w: 30,
-            h: 30,
+        const drawIndexLabel = (str, rect) => {
+            // draw arrow /////////////////////////////////
+
+            const lineLength = 9;
+            const yPadding = 2;
+            const rectXMidpoint = rect.x + (rect.w / 2);
+
+            const start = {
+                x: rectXMidpoint,
+                y: startY - textConstants.charHeight - yPadding - lineLength
+            };
+
+            const end = {
+                x: rectXMidpoint,
+                y: startY - textConstants.charHeight - yPadding
+            };
+            
+            this.gfx.drawLine(start, end, 1);
+
+            const left = {
+                x: end.x - 4,
+                y: end.y - 4,
+            };
+
+            this.gfx.drawLine(left, end, 1);
+
+            const right = {
+                x: end.x + 4,
+                y: end.y - 4,
+            };
+
+            this.gfx.drawLine(right, end, 1);
+
+            // draw label /////////////////////////////////
+
+            const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
+
+            const textX = Math.floor(rectXMidpoint - (textWidth / 2));
+            const textY = start.y - 2;
+
+            this.gfx.drawText(
+                str,
+                textConstants.charHeight,
+                { x: textX, y: textY },
+                1
+            );
         };
 
         for (let i = 0; i < arr.length; i++) {
             drawBox(String(arr[i]), rect);
             drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
+            if (i === 1) {
+                drawIndexLabel("", rect);
+            }
             rect.x += rect.w;
         }
 
