@@ -141,7 +141,7 @@ class Renderer {
         const startX = 50;
         const startY = 50;
 
-        let rect = {
+        let refRect = {
             x: startX,
             y: startY,
             w: 30,
@@ -198,12 +198,15 @@ class Renderer {
             );
         };
 
-        const drawIndexLabel = (str, rect) => {
+        const drawIndexLabel = (str, index) => {
+            let rect_ = { ...refRect };
+            rect_.x += rect_.w * index;
+
             // draw arrow /////////////////////////////////
 
             const lineLength = 9;
             const yPadding = 2;
-            const rectXMidpoint = rect.x + (rect.w / 2);
+            const rectXMidpoint = rect_.x + (rect_.w / 2);
 
             const start = {
                 x: rectXMidpoint,
@@ -233,10 +236,10 @@ class Renderer {
 
             // draw label /////////////////////////////////
 
+            const labelYPadding = 2;
             const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
-
             const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-            const textY = start.y - 2;
+            const textY = start.y - labelYPadding;
 
             this.gfx.drawText(
                 str,
@@ -246,13 +249,16 @@ class Renderer {
             );
         };
 
+        let rect = { ...refRect };
+
         for (let i = 0; i < arr.length; i++) {
             drawBox(String(arr[i]), rect);
             drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
-            if (i === 1) {
-                drawIndexLabel(String(i), rect);
-            }
+            drawIndexLabel("i", i);
+            // if (i === 1) {
+            //     drawIndexLabel("i", i);
+            // }
             rect.x += rect.w;
         }
 
