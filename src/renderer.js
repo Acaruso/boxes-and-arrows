@@ -134,6 +134,10 @@ class Renderer {
     }
 
     drawArray(arr) {
+        if (arr.length === 0) {
+            return;
+        }
+
         const drawBox = (str, rect) => {
             this.gfx.strokeRectHeavy(rect);
 
@@ -154,7 +158,7 @@ class Renderer {
             );
         }
 
-        const drawText = (str, rect) => {
+        const drawTopLabel = (str, rect) => {
             const yPadding = 4;
             const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
 
@@ -184,8 +188,6 @@ class Renderer {
             );
         }
 
-        const length = arr.length;
-
         let rect = {
             x: 30,
             y: 30,
@@ -193,25 +195,15 @@ class Renderer {
             h: 30,
         };
 
-        const xIncrement = rect.w;
-
-        for (let i = 0; i < length; i++) {
-            // draw rect
+        for (let i = 0; i < arr.length; i++) {
             drawBox(String(arr[i]), rect);
-
-            // draw numbers above rect
-            drawText(String(i), rect);
-
-            // draw points
+            drawTopLabel(String(i), rect);
             drawPoint(String(i), { x: rect.x, y: rect.y + rect.h });
-
-            // draw final point
-            if (i === length - 1) {
-                drawPoint(String(i), { x: rect.x + rect.w, y: rect.y + rect.h });
-            }
-
-            rect.x += xIncrement;
+            rect.x += rect.w;
         }
+
+        // draw final point
+        drawPoint(String(arr.length), { x: rect.x, y: rect.y + rect.h });
     }
 }
 
