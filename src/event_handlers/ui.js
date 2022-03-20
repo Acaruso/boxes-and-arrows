@@ -2,6 +2,7 @@ import { ConnectionEvents } from "./connection_events";
 import { BoxEvents } from "./box_events";
 import { SelectedRegionEvents } from "./selected_region_events";
 import { FormattingEvents } from "./formatting_events";
+import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
 import {
     getMidpoint,
@@ -43,6 +44,7 @@ class Ui {
             new BoxEvents(state, model, eventTable, scripter, treeFormatter),
             new SelectedRegionEvents(state, model, eventTable),
             new FormattingEvents(state, model, eventTable, scripter, treeFormatter),
+            new DialogEvents(state, model, eventTable, scripter, treeFormatter),
             new FileEvents(state, model, eventTable, scripter),
         ];
 
@@ -54,34 +56,6 @@ class Ui {
     }
 
     addEventListeners() {
-
-        this.eventTable.addEvent(
-            "endDrawingLine",
-            e => e.mouseup,
-            e => this.model.drawingLine = false
-        );
-
-        this.eventTable.addEvent(
-            "selectAll",
-            e => e.keydown && e.keyboard.control && e.keyboard.a,
-            e => {
-                this.model.clearSelectedBoxIds();
-                this.model.boxes.forEach(elt => {
-                    this.model.addSelectedBoxId(elt.id);
-                });
-            }
-        );
-
-        this.eventTable.addEvent(
-            "closeHelpDialog",
-            e => (
-                e.mousedown
-                && this.state.isMouseInside(this.model.helpDialog.closeButtonRect)
-                && this.model.helpDialog.visible
-            ),
-            e => this.model.helpDialog.visible = false
-        );
-
         this.eventTable.addEvent(
             "printAllBoxes",
             e => e.keydown && e.keyboard.control && e.keyboard.space,

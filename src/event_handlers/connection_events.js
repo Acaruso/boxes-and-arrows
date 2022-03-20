@@ -31,6 +31,12 @@ class ConnectionEvents {
                 this.model.drawingLine = false;
             }
         );
+
+        this.eventTable.addEvent(
+            "endDrawingLine",
+            e => e.mouseup,
+            e => this.model.drawingLine = false
+        );
     }
 }
 

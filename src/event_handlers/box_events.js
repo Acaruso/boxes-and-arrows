@@ -82,6 +82,17 @@ class BoxEvents {
         );
 
         this.eventTable.addEvent(
+            "selectAll",
+            e => e.keydown && e.keyboard.control && e.keyboard.a,
+            e => {
+                this.model.clearSelectedBoxIds();
+                this.model.boxes.forEach(elt => {
+                    this.model.addSelectedBoxId(elt.id);
+                });
+            }
+        );
+
+        this.eventTable.addEvent(
             "beginDraggingBoxes",
             e => e.mousedown && !e.keyboard.control && e.insideBox,
             e => this.model.draggingBoxes = true
