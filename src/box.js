@@ -1,10 +1,28 @@
 import { getTextRect } from "./util";
 
+const stringType = "string";
+const arrayType = "array";
+
+function makeStringData(str) {
+    return {
+        type: stringType,
+        data: str
+    };
+}
+
+function makeArrayData(arr) {
+    return {
+        type: arrayType,
+        data: arr
+    };
+}
+
 class Box {
     constructor(str, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        this.data = str.split('\n');
+        this.data = [""];
+        this.appendString(str);
         this.rect = {};
         this.parentId = null;
 
