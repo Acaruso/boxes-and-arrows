@@ -35,24 +35,6 @@ class Logger {
         return id;
     }
 
-    // newNode(s, parentId) {
-    //     if (this.enabled === false) {
-    //         return;
-    //     }
-
-    //     const id = this.boxes.addBox(s, { x: 0, y: 0 });
-
-    //     if (this.rootNodeId === null) {
-    //         this.rootNodeId = id;
-    //     }
-
-    //     if (parentId !== null) {
-    //         this.boxes.addConnection(parentId, id);
-    //     }
-
-    //     return id;
-    // }
-
     appendToNode(s, id) {
         if (this.enabled === false) {
             return;
