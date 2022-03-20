@@ -45,6 +45,10 @@ function userFunction(logger) {
     }
 
     function append(val, id) {
+        logger.appendToNode(`${val}`, id);
+    }
+
+    function appendLine(val, id) {
         logger.appendToNode(`${val}\n`, id);
     }
 
@@ -84,24 +88,24 @@ function userFunction(logger) {
         for (let row = 0; row < boardSize; row++) {
             for (let col = 0; col < boardSize; col++) {
                 if (!isAttacked(row, col) && board[row][col] !== 1) {
-                    append(`setting board[${row}][${col}]`, id);
+                    appendLine(`setting board[${row}][${col}]`, id);
                     board[row][col] = 1;
 
-                    append(`nQueens(${n - 1})`, id)
+                    appendLine(`nQueens(${n - 1})`, id)
                     if (nQueens(n - 1, id) === true) {
-                        append("", id)
+                        appendLine("", id)
                         logBoard(id);
                         append("return true", id);
                         return true;
                     } else {
-                        append(`unsetting board[${row}][${col}]`, id);
+                        appendLine(`unsetting board[${row}][${col}]`, id);
                         board[row][col] = 0;
                     }
                 }
             }
         }
 
-        append("", id);
+        appendLine("", id);
         logBoard(id);
         append("return false", id);
         return false;
