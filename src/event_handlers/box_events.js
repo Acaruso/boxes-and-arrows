@@ -12,8 +12,7 @@ class BoxEvents {
             "addBox",
             e => e.dblclick && !e.insideBox,
             e => {
-                const text = "";
-                const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
+                const newBoxId = this.model.boxes.addBox("", e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
             }
@@ -57,9 +56,20 @@ class BoxEvents {
         );
 
         this.eventTable.addEvent(
-            "shiftClickAndAddSelectBox",
-            e => e.mousedown && e.insideBox && !e.keyboard.control && e.keyboard.shift,
-            e => this.model.addSelectedBoxId(e.mouseBox.id)
+            "shiftClickAndAddOrDeleteSelectBox",
+            e => (
+                e.mousedown
+                && e.insideBox 
+                && !e.keyboard.control 
+                && e.keyboard.shift
+            ),
+            e => {
+                if (!this.model.isBoxSelected(e.mouseBox.id)) {
+                    this.model.addSelectedBoxId(e.mouseBox.id);
+                } else {
+                    this.model.deleteSelectedBoxId(e.mouseBox.id);
+                }
+            }
         );
 
         this.eventTable.addEvent(

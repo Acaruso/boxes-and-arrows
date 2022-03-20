@@ -44,6 +44,12 @@ class Model {
         }
     }
 
+    deleteSelectedBoxId(id) {
+        if (this.selectedBoxIds.includes(id)) {
+            this.selectedBoxIds = this.selectedBoxIds.filter(x => x !== id);
+        }
+    }
+
     clearSelectedBoxIds() {
         while (this.selectedBoxIds.length > 0) {
             this.selectedBoxIds.pop();
