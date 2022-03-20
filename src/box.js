@@ -21,43 +21,9 @@ class Box {
                 this.data[this.data.length - 1] += c;
             }
         }
-        
+
         this.updateRect();
-
-        // const arr = str.split('\n');
-
-        // if (str === "\n") {
-        //     this.data.push("");
-        // } else if (arr.length > 1) {
-        //     for (const elt of arr) {
-        //         if (elt !== "") {
-        //             this.data.push(elt);
-        //         }
-        //     }
-        // } else {
-        //     this.data[this.data.length - 1] += str;
-        // }
-
-        // this.updateRect();
     }
-
-    // appendString(str) {
-    //     const arr = str.split('\n');
-
-    //     if (str === "\n") {
-    //         this.data.push("");
-    //     } else if (arr.length > 1) {
-    //         for (const elt of arr) {
-    //             if (elt !== "") {
-    //                 this.data.push(elt);
-    //             }
-    //         }
-    //     } else {
-    //         this.data[this.data.length - 1] += str;
-    //     }
-
-    //     this.updateRect();
-    // }
 
     appendChar(c) {
         if (c === "\n") {
