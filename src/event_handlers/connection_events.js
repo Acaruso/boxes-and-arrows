@@ -1,3 +1,7 @@
+import {
+    getMidpoint,
+} from "../util"
+
 class ConnectionEvents {
     constructor(state, model, eventTable) {
         this.state = state;

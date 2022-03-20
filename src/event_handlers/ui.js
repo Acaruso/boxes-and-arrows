@@ -1,5 +1,6 @@
-import { FileEvents } from "./file_events";
 import { ConnectionEvents } from "./connection_events";
+import { BoxEvents } from "./box_events";
+import { FileEvents } from "./file_events";
 import {
     getMidpoint,
     rectsOverlap,
@@ -35,10 +36,9 @@ class Ui {
         addEventListener("dblclick", e => this.eventTable.onEvent(e));
         addEventListener("keydown", e => this.eventTable.onEvent(e));
 
-        this.addEventListeners();
-
         this.eventAdders = [
             new ConnectionEvents(state, model, eventTable),
+            new BoxEvents(state, model, eventTable, scripter, treeFormatter),
             new FileEvents(state, model, eventTable, scripter),
         ];
 
@@ -46,104 +46,10 @@ class Ui {
             eventAdder.addEvents();
         }
 
-        this.fileEvents.addEvents();
+        this.addEventListeners();
     }
 
     addEventListeners() {
-        // this.eventTable.addEvent(
-        //     "beginConnection",
-        //     e => e.mousedown && e.insideBox && e.keyboard.control,
-        //     e => {
-        //         this.model.lineBegin = getMidpoint(e.mouseBox.rect);
-        //         this.model.outBox = e.mouseBox;
-        //         this.model.drawingLine = true;
-        //     }
-        // );
-
-        // this.eventTable.addEvent(
-        //     "addConnection",
-        //     e => e.mouseup && e.insideBox && this.model.drawingLine,
-        //     e => {
-        //         this.model.boxes.addConnection(
-        //             this.model.outBox.id,
-        //             e.mouseBox.id
-        //         );
-        //         this.model.drawingLine = false;
-        //     }
-        // );
-
-        this.eventTable.addEvent(
-            "addBox",
-            e => e.dblclick && !e.insideBox,
-            e => {
-                const text = "";
-                const newBoxId = this.model.boxes.addBox(text, e.mouse.coord);
-                this.model.clearSelectedBoxIds();
-                this.model.addSelectedBoxId(newBoxId);
-            }
-        );
-
-        this.eventTable.addEvent(
-            "duplicateBox",
-            e => e.mousedown && e.keyboard.alt && e.insideBox,
-            e => {
-                const newBoxId = this.model.boxes.cloneBox(e.mouseBox, e.mouse.coord);
-                this.model.clearSelectedBoxIds();
-                this.model.addSelectedBoxId(newBoxId);
-            }
-        );
-
-        this.eventTable.addEvent(
-            "deleteBox",
-            e => e.keydown && e.key_ === "delete" && this.model.anyBoxesSelected(),
-            e => {
-                for (const id of this.model.selectedBoxIds) {
-                    this.model.boxes.deleteBox(id);
-                }
-                this.model.clearSelectedBoxIds();
-            }
-        );
-
-        this.eventTable.addEvent(
-            "clickAndSelectBox",
-            e => {
-                return e.mousedown
-                    && e.insideBox
-                    && !e.keyboard.control
-                    && !e.keyboard.shift
-                    && !e.keyboard.alt
-                    && !this.model.isBoxSelected(e.mouseBox.id);
-            },
-            e => {
-                this.model.clearSelectedBoxIds();
-                this.model.addSelectedBoxId(e.mouseBox.id);
-            }
-        );
-
-        this.eventTable.addEvent(
-            "shiftClickAndAddSelectBox",
-            e => e.mousedown && e.insideBox && !e.keyboard.control && e.keyboard.shift,
-            e => this.model.addSelectedBoxId(e.mouseBox.id)
-        );
-
-        this.eventTable.addEvent(
-            "clickAndUnselectBox",
-            e => e.mousedown && !e.insideBox && !e.keyboard.control && !e.keyboard.alt,
-            e => this.model.clearSelectedBoxIds()
-        );
-
-        this.eventTable.addEvent(
-            "beginDraggingBoxes",
-            e => e.mousedown && !e.keyboard.control && e.insideBox,
-            e => this.model.draggingBoxes = true
-        );
-
-        this.eventTable.addEvent(
-            "endDraggingBoxes",
-            e => e.mouseup,
-            e => this.model.draggingBoxes = false
-        );
-
         this.eventTable.addEvent(
             "beginDraggingSelectedRegion",
             e => e.mousedown && !e.keyboard.control && !e.insideBox,
