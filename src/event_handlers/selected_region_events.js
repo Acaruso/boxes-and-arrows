@@ -1,12 +1,3 @@
-import {
-    getMidpoint,
-    rectsOverlap,
-    isPrintableKeycode,
-    saveFile,
-    loadFile,
-    loadFileFromHandle,
-} from "../util"
-
 class SelectedRegionEvents {
     constructor(state, model, eventTable) {
         this.state = state;

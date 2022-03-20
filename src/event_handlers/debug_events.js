@@ -1,12 +1,3 @@
-import {
-    getMidpoint,
-    rectsOverlap,
-    isPrintableKeycode,
-    saveFile,
-    loadFile,
-    loadFileFromHandle,
-} from "../util"
-
 class DebugEvents {
     constructor(state, model, eventTable, scripter, treeFormatter) {
         this.state = state;

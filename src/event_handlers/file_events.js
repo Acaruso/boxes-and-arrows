@@ -2,7 +2,7 @@ import {
     saveFile,
     loadFile,
     loadFileFromHandle,
-} from "../util"
+} from "../util";
 
 class FileEvents {
     constructor(state, model, eventTable, scripter) {

@@ -1,23 +1,11 @@
-import { ConnectionEvents } from "./connection_events";
 import { BoxEvents } from "./box_events";
-import { SelectedRegionEvents } from "./selected_region_events";
-import { FormattingEvents } from "./formatting_events";
+import { ConnectionEvents } from "./connection_events";
+import { DebugEvents } from "./debug_events";
 import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
-import { DebugEvents } from "./debug_events";
-import {
-    getMidpoint,
-    rectsOverlap,
-    isPrintableKeycode,
-    saveFile,
-    loadFile,
-    loadFileFromHandle,
-} from "../util"
-import {
-    getAllIdsInTree,
-    moveBoxes,
-    isTree,
-} from "../tree_util";
+import { FormattingEvents } from "./formatting_events";
+import { rectsOverlap } from "../util";
+import { SelectedRegionEvents } from "./selected_region_events";
 
 const addEventListener = (type, callback) => {
     document.addEventListener(type, callback, false);
@@ -30,7 +18,6 @@ class Ui {
         this.eventTable = eventTable;
         this.scripter = scripter;
         this.treeFormatter = treeFormatter;
-        this.prevFileHandle = null;
         this.drag = false;
         this.dragCoord = { x: 0, y: 0 };
         this.dragDeltaCoord = { x: 0, y: 0 };
@@ -53,11 +40,6 @@ class Ui {
         for (const eventAdder of this.eventAdders) {
             eventAdder.addEvents();
         }
-
-        this.addEventListeners();
-    }
-
-    addEventListeners() {
     }
 
     handleDragging() {

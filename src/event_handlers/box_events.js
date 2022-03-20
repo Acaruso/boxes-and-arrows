@@ -1,11 +1,4 @@
-import {
-    getMidpoint,
-    rectsOverlap,
-    isPrintableKeycode,
-    saveFile,
-    loadFile,
-    loadFileFromHandle,
-} from "../util"
+import { isPrintableKeycode } from "../util";
 
 class BoxEvents {
     constructor(state, model, eventTable, scripter, treeFormatter) {

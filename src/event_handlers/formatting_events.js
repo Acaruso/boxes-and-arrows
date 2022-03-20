@@ -1,12 +1,4 @@
 import {
-    getMidpoint,
-    rectsOverlap,
-    isPrintableKeycode,
-    saveFile,
-    loadFile,
-    loadFileFromHandle,
-} from "../util"
-import {
     getAllIdsInTree,
     moveBoxes,
     isTree,
