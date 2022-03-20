@@ -5,11 +5,10 @@ import {
 } from "../tree_util";
 
 class FormattingEvents {
-    constructor(state, model, eventTable, scripter, treeFormatter) {
+    constructor(state, model, eventTable, treeFormatter) {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
-        this.scripter = scripter;
         this.treeFormatter = treeFormatter;
     }
 

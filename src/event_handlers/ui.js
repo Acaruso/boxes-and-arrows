@@ -29,12 +29,12 @@ class Ui {
 
         this.eventAdders = [
             new ConnectionEvents(state, model, eventTable),
-            new BoxEvents(state, model, eventTable, scripter, treeFormatter),
+            new BoxEvents(state, model, eventTable),
             new SelectedRegionEvents(state, model, eventTable),
-            new FormattingEvents(state, model, eventTable, scripter, treeFormatter),
-            new DialogEvents(state, model, eventTable, scripter, treeFormatter),
+            new FormattingEvents(state, model, eventTable, treeFormatter),
+            new DialogEvents(state, model, eventTable),
             new FileEvents(state, model, eventTable, scripter),
-            new DebugEvents(state, model, eventTable, scripter, treeFormatter),
+            new DebugEvents(state, model, eventTable),
         ];
 
         for (const eventAdder of this.eventAdders) {

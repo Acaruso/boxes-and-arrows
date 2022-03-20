@@ -1,10 +1,8 @@
 class DialogEvents {
-    constructor(state, model, eventTable, scripter, treeFormatter) {
+    constructor(state, model, eventTable) {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
-        this.scripter = scripter;
-        this.treeFormatter = treeFormatter;
     }
 
     addEvents() {

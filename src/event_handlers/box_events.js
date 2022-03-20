@@ -1,12 +1,11 @@
 import { isPrintableKeycode } from "../util";
 
 class BoxEvents {
-    constructor(state, model, eventTable, scripter, treeFormatter) {
+    constructor(state, model, eventTable) {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
-        this.scripter = scripter;
-        this.treeFormatter = treeFormatter;
+        
         this.prevFileHandle = null;
         this.drag = false;
         this.dragCoord = { x: 0, y: 0 };
