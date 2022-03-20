@@ -1,20 +1,20 @@
 import { getTextRect } from "./util";
 
 class Box {
-    constructor(text, coord, id=0) {
+    constructor(str, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
-        this.text = text.split('\n');
+        this.text = str.split('\n');
         this.rect = {};
         this.parentId = null;
 
         this.updateRect();
     }
 
-    appendString(s) {
-        const arr = s.split('\n');
+    appendString(str) {
+        const arr = str.split('\n');
 
-        if (s === "\n") {
+        if (str === "\n") {
             this.text.push("");
         } else if (arr.length > 1) {
             for (const elt of arr) {
@@ -23,7 +23,7 @@ class Box {
                 }
             }
         } else {
-            this.text[this.text.length - 1] += s;
+            this.text[this.text.length - 1] += str;
         }
 
         this.updateRect();
