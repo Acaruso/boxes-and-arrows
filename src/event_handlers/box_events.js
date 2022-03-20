@@ -5,11 +5,6 @@ class BoxEvents {
         this.state = state;
         this.model = model;
         this.eventTable = eventTable;
-        
-        this.prevFileHandle = null;
-        this.drag = false;
-        this.dragCoord = { x: 0, y: 0 };
-        this.dragDeltaCoord = { x: 0, y: 0 };
     }
 
     addEvents() {
