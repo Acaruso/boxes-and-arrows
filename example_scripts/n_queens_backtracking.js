@@ -34,19 +34,18 @@ function printBoard(board) {
 
 function userFunction(logger) {
     function logEntrypoint(n, parentId) {
-        let str = `nQueens(${n})\n`;
-        str += "\nboard: \n" + boardToString(board);
+        let str = `nQueens(${n})\n\n`;
         const id = logger.newNode(str, parentId);
         return id;
     }
 
     function logBoard(id) {
-        let str = "\n \nboard: \n" + boardToString(board);
-        logger.appendToNode("\n" + str + " \n", id);
+        let str = `board:\n${boardToString(board)}\n`;
+        logger.appendToNode(str, id);
     }
 
     function append(val, id) {
-        logger.appendToNode("\n" + val, id);
+        logger.appendToNode(`${val}\n`, id);
     }
 
     const boardSize = 4;
@@ -76,6 +75,8 @@ function userFunction(logger) {
 
     function nQueens(n, parentId) {
         const id = logEntrypoint(n, parentId);
+        logBoard(id);
+
         if (n === 0) {
             return true;
         }
@@ -88,6 +89,7 @@ function userFunction(logger) {
 
                     append(`nQueens(${n - 1})`, id)
                     if (nQueens(n - 1, id) === true) {
+                        append("", id)
                         logBoard(id);
                         append("return true", id);
                         return true;
@@ -99,6 +101,7 @@ function userFunction(logger) {
             }
         }
 
+        append("", id);
         logBoard(id);
         append("return false", id);
         return false;

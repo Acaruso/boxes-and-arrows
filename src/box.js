@@ -12,22 +12,52 @@ class Box {
     }
 
     appendString(str) {
-        const arr = str.split('\n');
+        for (let i = 0; i < str.length; i++) {
+            let c = str[i];
 
-        if (str === "\n") {
-            this.data.push("");
-        } else if (arr.length > 1) {
-            for (const elt of arr) {
-                if (elt !== "") {
-                    this.data.push(elt);
-                }
+            if (c === "\n") {
+                this.data.push("");
+            } else {
+                this.data[this.data.length - 1] += c;
             }
-        } else {
-            this.data[this.data.length - 1] += str;
         }
-
+        
         this.updateRect();
+
+        // const arr = str.split('\n');
+
+        // if (str === "\n") {
+        //     this.data.push("");
+        // } else if (arr.length > 1) {
+        //     for (const elt of arr) {
+        //         if (elt !== "") {
+        //             this.data.push(elt);
+        //         }
+        //     }
+        // } else {
+        //     this.data[this.data.length - 1] += str;
+        // }
+
+        // this.updateRect();
     }
+
+    // appendString(str) {
+    //     const arr = str.split('\n');
+
+    //     if (str === "\n") {
+    //         this.data.push("");
+    //     } else if (arr.length > 1) {
+    //         for (const elt of arr) {
+    //             if (elt !== "") {
+    //                 this.data.push(elt);
+    //             }
+    //         }
+    //     } else {
+    //         this.data[this.data.length - 1] += str;
+    //     }
+
+    //     this.updateRect();
+    // }
 
     appendChar(c) {
         if (c === "\n") {
