@@ -34,19 +34,22 @@ function printBoard(board) {
 
 function userFunction(logger) {
     function logEntrypoint(n, parentId) {
-        let str = `nQueens(${n})\n`;
-        str += "\nboard: \n" + boardToString(board);
+        let str = `nQueens(${n})\n\n`;
         const id = logger.newNode(str, parentId);
         return id;
     }
 
     function logBoard(id) {
-        let str = "\n \nboard: \n" + boardToString(board);
-        logger.appendToNode("\n" + str + " \n", id);
+        let str = `board:\n${boardToString(board)}\n`;
+        logger.appendToNode(str, id);
     }
 
     function append(val, id) {
-        logger.appendToNode("\n" + val, id);
+        logger.appendToNode(`${val}`, id);
+    }
+
+    function appendLine(val, id) {
+        logger.appendToNode(`${val}\n`, id);
     }
 
     const boardSize = 4;
@@ -76,6 +79,8 @@ function userFunction(logger) {
 
     function nQueens(n, parentId) {
         const id = logEntrypoint(n, parentId);
+        logBoard(id);
+
         if (n === 0) {
             return true;
         }
@@ -83,22 +88,24 @@ function userFunction(logger) {
         for (let row = 0; row < boardSize; row++) {
             for (let col = 0; col < boardSize; col++) {
                 if (!isAttacked(row, col) && board[row][col] !== 1) {
-                    append(`setting board[${row}][${col}]`, id);
+                    appendLine(`setting board[${row}][${col}]`, id);
                     board[row][col] = 1;
 
-                    append(`nQueens(${n - 1})`, id)
+                    appendLine(`nQueens(${n - 1})`, id)
                     if (nQueens(n - 1, id) === true) {
+                        appendLine("", id)
                         logBoard(id);
                         append("return true", id);
                         return true;
                     } else {
-                        append(`unsetting board[${row}][${col}]`, id);
+                        appendLine(`unsetting board[${row}][${col}]`, id);
                         board[row][col] = 0;
                     }
                 }
             }
         }
 
+        appendLine("", id);
         logBoard(id);
         append("return false", id);
         return false;

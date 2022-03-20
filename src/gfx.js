@@ -41,20 +41,6 @@ class Gfx {
         this.drawLine(lowerLeft, upperLeft, z, color);
     }
 
-    // note that y-coord is *bottom* left side of text
-    drawText(text, size, coord, z=0) {
-        const command = (ctx) => {
-            ctx.font = `${size}px ${textConstants.textStyle}`;
-            ctx.fillStyle = "#000000";
-            ctx.fillText(text, coord.x, coord.y);
-        };
-
-        this.queue.push({
-            command,
-            z: z
-        });
-    }
-
     drawLine(beginCoord, endCoord, z=0, color="#000000") {
         const command = (ctx) => {
             ctx.strokeStyle = color;
@@ -131,6 +117,20 @@ class Gfx {
                 2 * Math.PI
             );
             ctx.fill();
+        };
+
+        this.queue.push({
+            command,
+            z: z
+        });
+    }
+
+    // note that y-coord is *bottom* left side of text
+    drawText(text, size, coord, z=0) {
+        const command = (ctx) => {
+            ctx.font = `${size}px ${textConstants.textStyle}`;
+            ctx.fillStyle = "#000000";
+            ctx.fillText(text, coord.x, coord.y);
         };
 
         this.queue.push({

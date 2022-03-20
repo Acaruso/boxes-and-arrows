@@ -37,15 +37,6 @@ class EventTable {
             }
         });
 
-        // if (e.mousedown || e.mouseup) {
-        //     boxes.forEach((box) => {
-        //         if (this.state.isMouseInside(box.rect)) {
-        //             e.insideBox = true;
-        //             e.mouseBox = box;
-        //         }
-        //     });
-        // }
-
         return e;
     }
 

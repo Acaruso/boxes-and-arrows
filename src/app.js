@@ -1,11 +1,11 @@
 import { EventTable } from "./event_table"
 import { Gfx } from "./gfx"
 import { Model } from "./model"
-import { Renderer } from "./renderer"
+import { Renderer } from "./renderers/renderer"
 import { Scripter } from "./scripter"
 import { State } from "./state"
 import { TreeFormatter } from "./tree_formatter"
-import { Ui } from "./ui"
+import { Ui } from "./event_handlers/ui"
 
 class App {
     constructor() {
@@ -27,7 +27,6 @@ class App {
     }
 
     startMainLoop() {
-        // this.scripter.run();
         this.interval = setInterval(() => this.loop(), 10);
     }
 
