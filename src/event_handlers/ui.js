@@ -1,5 +1,7 @@
 import { ConnectionEvents } from "./connection_events";
 import { BoxEvents } from "./box_events";
+import { SelectedRegionEvents } from "./selected_region_events";
+import { FormattingEvents } from "./formatting_events";
 import { FileEvents } from "./file_events";
 import {
     getMidpoint,
@@ -13,7 +15,7 @@ import {
     getAllIdsInTree,
     moveBoxes,
     isTree,
- } from "../tree_util";
+} from "../tree_util";
 
 const addEventListener = (type, callback) => {
     document.addEventListener(type, callback, false);
@@ -39,6 +41,8 @@ class Ui {
         this.eventAdders = [
             new ConnectionEvents(state, model, eventTable),
             new BoxEvents(state, model, eventTable, scripter, treeFormatter),
+            new SelectedRegionEvents(state, model, eventTable),
+            new FormattingEvents(state, model, eventTable, scripter, treeFormatter),
             new FileEvents(state, model, eventTable, scripter),
         ];
 
@@ -50,131 +54,11 @@ class Ui {
     }
 
     addEventListeners() {
-        this.eventTable.addEvent(
-            "beginDraggingSelectedRegion",
-            e => e.mousedown && !e.keyboard.control && !e.insideBox,
-            e => {
-                this.model.draggingSelectedRegion = true;
-            }
-        );
-
-        this.eventTable.addEvent(
-            "endDraggingSelectedRegion",
-            e => e.mouseup,
-            e => this.model.draggingSelectedRegion = false
-        );
-
-        this.eventTable.addEvent(
-            "setSelectedRegionCoords",
-            e => e.mousedown && !e.keyboard.control,
-            e => {
-                this.model.selectedRegion = {
-                    x: e.mouse.coord.x,
-                    y: e.mouse.coord.y,
-                    w: 0,
-                    h: 0,
-                    alpha: 0.3,
-                };
-            }
-        );
 
         this.eventTable.addEvent(
             "endDrawingLine",
             e => e.mouseup,
             e => this.model.drawingLine = false
-        );
-
-        this.eventTable.addEvent(
-            "appendString",
-            e => {
-                return e.keydown
-                    && this.model.anyBoxesSelected()
-                    && isPrintableKeycode(e.which)
-                    && !e.keyboard.control
-            },
-            e => {
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.appendString(e.key_);
-                }
-            }
-        );
-
-        this.eventTable.addEvent(
-            "deleteChar",
-            e => {
-                return e.keydown
-                    && this.model.anyBoxesSelected()
-                    && e.key_ === "backspace";
-            },
-            e => {
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.deleteChar();
-                }
-            }
-        );
-
-        this.eventTable.addEvent(
-            "horizontalAlign",
-            e => e.keydown && e.keyboard.control && e.keyboard.h,
-            e => {
-                e.preventDefault();
-                let minY = Number.MAX_SAFE_INTEGER;
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    minY = Math.min(minY, box.coord.y);
-                }
-
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.setCoord({ x: box.coord.x, y: minY });
-                }
-            }
-        );
-
-        this.eventTable.addEvent(
-            "verticalAlign",
-            e => e.keydown && e.keyboard.control && e.keyboard.v,
-            e => {
-                e.preventDefault();
-                let minXMid = Number.MAX_SAFE_INTEGER;
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    minXMid = Math.min(
-                        minXMid,
-                        Math.floor(box.rect.x + (box.rect.w / 2))
-                    );
-                }
-
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.setCoord({
-                        x: minXMid - Math.floor(box.rect.w / 2),
-                        y: box.coord.y
-                    });
-                }
-            }
-        );
-
-        this.eventTable.addEvent(
-            "treeFormat",
-            e => (
-                e.keydown
-                && e.keyboard.control
-                && e.keyboard.q
-                && this.model.selectedBoxIds.length === 1
-            ),
-            e => {
-                const selectedBox = this.model.selectedBoxIds[0]
-                if (!isTree(selectedBox, this.model.boxes)) {
-                    console.log("not a tree!");
-                    return;
-                }
-                this.treeFormatter.treeFormat(selectedBox);
-                const treeIds = getAllIdsInTree(selectedBox, this.model.boxes);
-                moveBoxes(treeIds, this.state.cur.mouse.coord, this.model.boxes);
-            }
         );
 
         this.eventTable.addEvent(

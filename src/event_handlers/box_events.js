@@ -93,6 +93,36 @@ class BoxEvents {
             e => this.model.draggingBoxes = false
         );
 
+        this.eventTable.addEvent(
+            "appendString",
+            e => {
+                return e.keydown
+                    && this.model.anyBoxesSelected()
+                    && isPrintableKeycode(e.which)
+                    && !e.keyboard.control
+            },
+            e => {
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.appendString(e.key_);
+                }
+            }
+        );
+
+        this.eventTable.addEvent(
+            "deleteChar",
+            e => {
+                return e.keydown
+                    && this.model.anyBoxesSelected()
+                    && e.key_ === "backspace";
+            },
+            e => {
+                for (const id of this.model.selectedBoxIds) {
+                    let box = this.model.boxes.getBox(id);
+                    box.deleteChar();
+                }
+            }
+        );
     }
 }
 
