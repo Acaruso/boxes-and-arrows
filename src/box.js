@@ -29,6 +29,16 @@ class Box {
         this.updateRect();
     }
 
+    appendChar(c) {
+        if (c === "\n") {
+            this.data.push("");
+        } else {
+            this.data[this.data.length - 1] += c;
+        }
+
+        this.updateRect();
+    }
+
     deleteChar() {
         if (this.data[this.data.length - 1].length > 0) {
             this.data[this.data.length - 1] = this.data[this.data.length - 1].slice(0, -1);
