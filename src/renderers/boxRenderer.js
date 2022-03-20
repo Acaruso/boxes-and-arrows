@@ -35,7 +35,7 @@ class BoxRenderer {
     }
 
     drawBoxText(box) {
-        this.rendererHelper.drawMultiLineText(box.text, box.coord, 2);
+        this.rendererHelper.drawMultiLineText(box.data, box.coord, 2);
     }
 
     drawSelectedBoxes() {

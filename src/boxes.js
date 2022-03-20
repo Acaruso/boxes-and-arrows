@@ -15,8 +15,8 @@ class Boxes {
         this.connections = new Map();
     }
 
-    addBox(text, coord) {
-        const box = new Box(text, coord, this.nextId);
+    addBox(str, coord) {
+        const box = new Box(str, coord, this.nextId);
         this.nextId++;
         this.boxes.push(box);
         this.connections.set(box.id, []);
@@ -26,7 +26,7 @@ class Boxes {
     cloneBox(box, coord) {
         let newBox = new Box("", coord, this.nextId);
         this.nextId++;
-        newBox.text = [...box.text];
+        newBox.data = [...box.data];
         newBox.updateRect();
         this.boxes.push(newBox);
         this.connections.set(newBox.id, []);
@@ -42,7 +42,7 @@ class Boxes {
         let maxId = -1;
 
         for (const x of boxData) {
-            const joinedStr = x.text.join("\n");
+            const joinedStr = x.data.join("\n");
             const box = new Box(joinedStr, x.coord, x.id);
             this.boxes.push(box);
             maxId = Math.max(maxId, x.id);
