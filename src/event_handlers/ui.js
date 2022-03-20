@@ -4,6 +4,7 @@ import { SelectedRegionEvents } from "./selected_region_events";
 import { FormattingEvents } from "./formatting_events";
 import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
+import { DebugEvents } from "./debug_events";
 import {
     getMidpoint,
     rectsOverlap,
@@ -46,6 +47,7 @@ class Ui {
             new FormattingEvents(state, model, eventTable, scripter, treeFormatter),
             new DialogEvents(state, model, eventTable, scripter, treeFormatter),
             new FileEvents(state, model, eventTable, scripter),
+            new DebugEvents(state, model, eventTable, scripter, treeFormatter),
         ];
 
         for (const eventAdder of this.eventAdders) {
@@ -56,15 +58,6 @@ class Ui {
     }
 
     addEventListeners() {
-        this.eventTable.addEvent(
-            "printAllBoxes",
-            e => e.keydown && e.keyboard.control && e.keyboard.space,
-            e => {
-                console.log(this.model.boxes);
-                console.log(window.pageXOffset);
-                console.log(window.pageYOffset);
-            }
-        );
     }
 
     handleDragging() {
