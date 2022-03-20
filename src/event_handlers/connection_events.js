@@ -9,7 +9,7 @@ class ConnectionEvents {
 
     addEvents() {
         this.eventTable.addEvent(
-            "beginConnection",
+            "beginMakingConnection",
             e => e.mousedown && e.insideBox && e.keyboard.control,
             e => {
                 this.model.lineBegin = getMidpoint(e.mouseBox.rect);
@@ -19,7 +19,7 @@ class ConnectionEvents {
         );
 
         this.eventTable.addEvent(
-            "addConnection",
+            "endMakingConnection_add",
             e => e.mouseup && e.insideBox && this.model.drawingLine,
             e => {
                 this.model.boxes.addConnection(
@@ -31,8 +31,8 @@ class ConnectionEvents {
         );
 
         this.eventTable.addEvent(
-            "endDrawingLine",
-            e => e.mouseup,
+            "endMakingConnection_dontAdd",
+            e => e.mouseup && !e.insideBox && this.model.drawingLine,
             e => this.model.drawingLine = false
         );
     }
