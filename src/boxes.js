@@ -26,8 +26,7 @@ class Boxes {
     cloneBox(box, coord) {
         let newBox = new Box("", coord, this.nextId);
         this.nextId++;
-        newBox.data = [...box.data];
-        newBox.updateRect();
+        newBox.setData(box.data);
         this.boxes.push(newBox);
         this.connections.set(newBox.id, []);
         return newBox.id;
@@ -42,8 +41,8 @@ class Boxes {
         let maxId = -1;
 
         for (const x of boxData) {
-            const joinedStr = x.data.join("\n");
-            const box = new Box(joinedStr, x.coord, x.id);
+            const box = new Box("", x.coord, x.id);
+            box.setData(x.data);
             this.boxes.push(box);
             maxId = Math.max(maxId, x.id);
         }

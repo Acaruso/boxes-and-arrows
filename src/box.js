@@ -39,6 +39,11 @@ class Box {
         this.updateRect();
     }
 
+    setData(data) {
+        this.data = [...data];
+        this.updateRect();
+    }
+
     setCoord(newCoord) {
         this.coord = {
             x: Math.floor(newCoord.x),
