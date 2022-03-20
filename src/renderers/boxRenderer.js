@@ -1,4 +1,6 @@
 import { getMidpoint } from "../util"
+import { stringType, arrayType } from "../constants";
+import { textConstants } from "../text_constants";
 
 class BoxRenderer {
     constructor(gfx, state, model, rendererHelper) {
@@ -35,7 +37,7 @@ class BoxRenderer {
     }
 
     drawBoxText(box) {
-        this.rendererHelper.drawMultiLineText(box.data, box.coord, 2);
+        this.drawMultiLineText(box.data, box.coord, 2);
     }
 
     drawSelectedBoxes() {
@@ -49,6 +51,23 @@ class BoxRenderer {
             rect.w += 4;
             rect.h += 4;
             this.gfx.strokeRect(rect);
+        }
+    }
+
+    drawMultiLineText(data, coord, z=0) {
+        for (let i = 0; i < data.length; i++) {
+            const elt = data[i];
+            if (elt.type === stringType) {
+                this.gfx.drawText(
+                    elt.data,
+                    textConstants.charHeight,
+                    {
+                        x: coord.x + textConstants.xPadding,
+                        y: coord.y + (textConstants.charHeight * (i + 1))
+                    },
+                    z
+                );
+            }
         }
     }
 
