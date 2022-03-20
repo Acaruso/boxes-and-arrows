@@ -5,7 +5,7 @@ import { Renderer } from "./renderers/renderer"
 import { Scripter } from "./scripter"
 import { State } from "./state"
 import { TreeFormatter } from "./tree_formatter"
-import { Ui } from "./ui"
+import { Ui } from "./event_handlers/ui"
 
 class App {
     constructor() {

@@ -1,3 +1,5 @@
+import { FileEvents } from "./file_events";
+import { ConnectionEvents } from "./connection_events";
 import {
     getMidpoint,
     rectsOverlap,
@@ -5,13 +7,12 @@ import {
     saveFile,
     loadFile,
     loadFileFromHandle,
-} from "./util"
-
+} from "../util"
 import {
     getAllIdsInTree,
     moveBoxes,
     isTree,
- } from "./tree_util";
+ } from "../tree_util";
 
 const addEventListener = (type, callback) => {
     document.addEventListener(type, callback, false);
@@ -35,30 +36,41 @@ class Ui {
         addEventListener("keydown", e => this.eventTable.onEvent(e));
 
         this.addEventListeners();
+
+        this.eventAdders = [
+            new ConnectionEvents(state, model, eventTable),
+            new FileEvents(state, model, eventTable, scripter),
+        ];
+
+        for (const eventAdder of this.eventAdders) {
+            eventAdder.addEvents();
+        }
+
+        this.fileEvents.addEvents();
     }
 
     addEventListeners() {
-        this.eventTable.addEvent(
-            "beginConnection",
-            e => e.mousedown && e.insideBox && e.keyboard.control,
-            e => {
-                this.model.lineBegin = getMidpoint(e.mouseBox.rect);
-                this.model.outBox = e.mouseBox;
-                this.model.drawingLine = true;
-            }
-        );
+        // this.eventTable.addEvent(
+        //     "beginConnection",
+        //     e => e.mousedown && e.insideBox && e.keyboard.control,
+        //     e => {
+        //         this.model.lineBegin = getMidpoint(e.mouseBox.rect);
+        //         this.model.outBox = e.mouseBox;
+        //         this.model.drawingLine = true;
+        //     }
+        // );
 
-        this.eventTable.addEvent(
-            "addConnection",
-            e => e.mouseup && e.insideBox && this.model.drawingLine,
-            e => {
-                this.model.boxes.addConnection(
-                    this.model.outBox.id,
-                    e.mouseBox.id
-                );
-                this.model.drawingLine = false;
-            }
-        );
+        // this.eventTable.addEvent(
+        //     "addConnection",
+        //     e => e.mouseup && e.insideBox && this.model.drawingLine,
+        //     e => {
+        //         this.model.boxes.addConnection(
+        //             this.model.outBox.id,
+        //             e.mouseBox.id
+        //         );
+        //         this.model.drawingLine = false;
+        //     }
+        // );
 
         this.eventTable.addEvent(
             "addBox",
@@ -75,7 +87,6 @@ class Ui {
             "duplicateBox",
             e => e.mousedown && e.keyboard.alt && e.insideBox,
             e => {
-                // const newBoxId = this.model.boxes.addBox(e.mouseBox.text, e.mouse.coord);
                 const newBoxId = this.model.boxes.cloneBox(e.mouseBox, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
@@ -268,95 +279,6 @@ class Ui {
                 this.model.boxes.forEach(elt => {
                     this.model.addSelectedBoxId(elt.id);
                 });
-            }
-        );
-
-        this.eventTable.addEvent(
-            "saveFile",
-            e => e.keydown && e.keyboard.control && e.keyboard.s,
-            async e => {
-                e.preventDefault();
-                try {
-                    const boxesStr = JSON.stringify(this.model.boxes.boxes);
-                    const connStr = JSON.stringify([...this.model.boxes.connections]);
-                    await saveFile(boxesStr + "\n" + connStr);
-                } catch (e) {
-                    console.log(e);
-                }
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.s = false;
-            }
-        );
-
-        this.eventTable.addEvent(
-            "loadFile",
-            e => e.keydown && e.keyboard.control && !e.keyboard.shift && e.keyboard.l,
-            async e => {
-                e.preventDefault();
-                try {
-                    const [_, content] = await loadFile();
-                    this.model.init();
-                    const [boxesStr, connStr] = content.split(/\n/);
-                    this.model.boxes.loadBoxes(boxesStr);
-                    this.model.boxes.loadConnections(connStr);
-                } catch (e) {
-                    console.log(e);
-                }
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.l = false;
-            }
-        );
-
-        this.eventTable.addEvent(
-            "loadScript",
-            e => e.keydown && e.keyboard.control && e.keyboard.shift && !e.keyboard.alt && e.keyboard.l,
-            async e => {
-                e.preventDefault();
-                try {
-                    const scriptElt = document.createElement("script");
-                    const [fileHandle, content] = await loadFile();
-                    this.prevFileHandle = fileHandle;
-                    const textNode = document.createTextNode(content);
-                    scriptElt.appendChild(textNode);
-                    const targetElt = document.getElementById("userScripts");
-                    targetElt.append(scriptElt);
-                    this.model.init();
-                    setTimeout(() => {}, 0);    // wait for one event-cycle
-                    this.scripter.runUserFunction(userFunction);
-                } catch (e) {
-                    console.log(e);
-                }
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.shift = false;
-                this.state.cur.keyboard.l = false;
-            }
-        );
-
-        this.eventTable.addEvent(
-            "reloadScript",
-            e => e.keydown && e.keyboard.control && e.keyboard.shift && e.keyboard.alt && e.keyboard.l,
-            async e => {
-                e.preventDefault();
-                try {
-                    if (this.prevFileHandle === null) {
-                        return;
-                    }
-                    const scriptElt = document.createElement("script");
-                    const content = await loadFileFromHandle(this.prevFileHandle);
-                    const textNode = document.createTextNode(content);
-                    scriptElt.appendChild(textNode);
-                    const targetElt = document.getElementById("userScripts");
-                    targetElt.append(scriptElt);
-                    this.model.init();
-                    setTimeout(() => {}, 0);    // wait for one event-cycle
-                    this.scripter.runUserFunction(userFunction);
-                } catch (e) {
-                    console.log(e);
-                }
-                this.state.cur.keyboard.control = false;
-                this.state.cur.keyboard.shift = false;
-                this.state.cur.keyboard.alt = false;
-                this.state.cur.keyboard.l = false;
             }
         );
 
