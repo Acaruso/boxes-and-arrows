@@ -7,20 +7,13 @@ class ArrayRenderer {
         this.state = state;
         this.model = model;
 
-        this.startX = 70;
-        this.startY = 70;
-
-        this.refRect = {
-            x: this.startX,
-            y: this.startY,
-            w: 26,
-            h: 26,
-        };
-
+        this.refRect = { x: 0, y: 0, w: 26, h: 26 };
         this.topLabelYPadding = 4;
         this.pointRadius = 3;
         this.pointYPadding = 4;
-        this.indexLabelYPadding = 4;
+        this.indexLabelTopYPadding = 4;
+        this.indexLabelBottomYPadding = 2;
+        this.indexLabelLineLength = 9;
     }
 
     render() {
@@ -32,17 +25,24 @@ class ArrayRenderer {
                 { str: "q", index: 4 },
             ],
         };
-        this.drawArray(arrWrapper);
+
+        const coord = { x: 170, y: 70 };
+
+        this.drawArray(arrWrapper, coord);
     }
 
-    drawArray(arrWrapper) {
-        let arr = arrWrapper.data;
+    drawArray(arrWrapper, coord) {
+        const arr = arrWrapper.data;
 
         if (arr.length === 0) {
             return;
         }
 
-        let curRect = { ...this.refRect };
+        let curRect = {
+            ...this.refRect,
+            x: coord.x,
+            y: coord.y + this.topLabelYPadding + textConstants.charHeight
+        };
 
         for (let i = 0; i < arr.length; i++) {
             this.drawBox(String(arr[i]), curRect);
@@ -55,9 +55,25 @@ class ArrayRenderer {
         this.drawPoint(String(arr.length), { x: curRect.x, y: curRect.y + curRect.h });
 
         // draw labels
-        for (const label of arrWrapper.labels) {
-            this.drawIndexLabel(label.str, label.index);
-        }
+        // for (const label of arrWrapper.labels) {
+        //     this.drawIndexLabel(label.str, label.index);
+        // }
+
+        this.drawOutline(arrWrapper, coord);
+    }
+
+    drawOutline(arrWrapper, coord) {
+        const arr = arrWrapper.data;
+        const xPadding = 8;
+
+        const rect = {
+            x: coord.x - xPadding,
+            y: coord.y,
+            w: 200,
+            h: 200
+        };
+
+        this.gfx.strokeRect(rect, 1);
     }
 
     drawBox(str, rect) {
@@ -114,18 +130,17 @@ class ArrayRenderer {
 
         // draw arrow /////////////////////////////////
 
-        const lineLength = 9;
-        const yPadding = 2;
+        const lineLength = this.indexLabelLineLength;
         const rectXMidpoint = rect.x + (rect.w / 2);
 
         const start = {
             x: rectXMidpoint,
-            y: this.startY - textConstants.charHeight - yPadding - lineLength
+            y: this.startY - textConstants.charHeight - this.indexLabelBottomYPadding - lineLength
         };
 
         const end = {
             x: rectXMidpoint,
-            y: this.startY - textConstants.charHeight - yPadding
+            y: this.startY - textConstants.charHeight - this.indexLabelBottomYPadding
         };
 
         this.gfx.drawLine(start, end, 1);
@@ -148,7 +163,7 @@ class ArrayRenderer {
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-        const textY = start.y - this.indexLabelYPadding;
+        const textY = start.y - this.indexLabelTopYPadding;
 
         this.gfx.drawText(
             str,
