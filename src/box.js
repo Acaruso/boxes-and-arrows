@@ -1,4 +1,4 @@
-import { getTextRect, getWidthOfText } from "./util";
+import { getTextRect, getWidthOfText, lastElt } from "./util";
 import { stringType, arrayType } from "./constants";
 import { textConstants } from "./text_constants";
 
@@ -56,8 +56,12 @@ class Box {
             if (c === "\n") {
                 this.pushStringData("");
             } else {
-                let lastStringData = this.getLastStringData();
+                let lastStringData = lastElt(this.data);
                 lastStringData.data += c;
+
+                // let lastStringData = this.getLastStringData();
+                // lastStringData.data += c;
+
                 // this.data[this.data.length - 1].data += c;
             }
         }
@@ -79,14 +83,19 @@ class Box {
 
     // TODO: update this
     deleteChar() {
-        if (this.data[this.data.length - 1].length > 0) {
-            this.data[this.data.length - 1] = this.data[this.data.length - 1].slice(0, -1);
-        } else if (this.data.length > 1) { // don't allow to delete last string from arr
-            this.data = this.data.slice(0, -1);
-        }
 
         this.updateRect();
     }
+
+    // deleteChar() {
+    //     if (this.data[this.data.length - 1].length > 0) {
+    //         this.data[this.data.length - 1] = this.data[this.data.length - 1].slice(0, -1);
+    //     } else if (this.data.length > 1) { // don't allow to delete last string from arr
+    //         this.data = this.data.slice(0, -1);
+    //     }
+
+    //     this.updateRect();
+    // }
 
     setData(data) {
         // this.data = [...data];
