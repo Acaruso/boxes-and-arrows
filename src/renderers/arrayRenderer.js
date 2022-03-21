@@ -14,6 +14,16 @@ class ArrayRenderer {
         this.indexLabelTopYPadding = 4;
         this.indexLabelBottomYPadding = 2;
         this.indexLabelLineLength = 9;
+        this.bottomMargin = 4;
+        this.xPadding = 8;
+        this.totalHeight = (
+            this.topLabelYPadding
+            + textConstants.charHeight
+            + this.refRect.h
+            + this.pointYPadding
+            + textConstants.charHeight
+            + this.bottomMargin
+        );
     }
 
     render() {
@@ -55,22 +65,21 @@ class ArrayRenderer {
         this.drawPoint(String(arr.length), { x: curRect.x, y: curRect.y + curRect.h });
 
         // draw labels
-        // for (const label of arrWrapper.labels) {
-        //     this.drawIndexLabel(label.str, label.index);
-        // }
+        for (const label of arrWrapper.labels) {
+            this.drawIndexLabel(label.str, label.index, coord);
+        }
 
-        this.drawOutline(arrWrapper, coord);
+        // this.drawOutline(arrWrapper, coord);
     }
 
     drawOutline(arrWrapper, coord) {
         const arr = arrWrapper.data;
-        const xPadding = 8;
 
         const rect = {
-            x: coord.x - xPadding,
+            x: coord.x - this.xPadding,
             y: coord.y,
-            w: (arr.length * this.refRect.w) + (xPadding * 2),
-            h: 200
+            w: (arr.length * this.refRect.w) + (this.xPadding * 2),
+            h: this.totalHeight
         };
 
         this.gfx.strokeRect(rect, 1);
@@ -124,8 +133,13 @@ class ArrayRenderer {
         );
     }
 
-    drawIndexLabel(str, index) {
-        let rect = { ...this.refRect };
+    drawIndexLabel(str, index, coord) {
+        let rect = {
+            ...this.refRect,
+            x: coord.x,
+            y: coord.y + this.topLabelYPadding + textConstants.charHeight
+        };
+
         rect.x += rect.w * index;
 
         // draw arrow /////////////////////////////////
@@ -135,12 +149,12 @@ class ArrayRenderer {
 
         const start = {
             x: rectXMidpoint,
-            y: this.startY - textConstants.charHeight - this.indexLabelBottomYPadding - lineLength
+            y: coord.y - lineLength
         };
 
         const end = {
             x: rectXMidpoint,
-            y: this.startY - textConstants.charHeight - this.indexLabelBottomYPadding
+            y: coord.y
         };
 
         this.gfx.drawLine(start, end, 1);
