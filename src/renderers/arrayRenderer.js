@@ -7,22 +7,23 @@ class ArrayRenderer {
         this.state = state;
         this.model = model;
 
-        this.startX = 50;
-        this.startY = 50;
+        this.startX = 70;
+        this.startY = 70;
 
         this.refRect = {
             x: this.startX,
             y: this.startY,
-            w: 30,
-            h: 30,
+            w: 26,
+            h: 26,
         };
+
+        this.topLabelYPadding = 4;
+        this.pointRadius = 3;
+        this.pointYPadding = 4;
+        this.indexLabelYPadding = 4;
     }
 
     render() {
-        this.drawArrays();
-    }
-
-    drawArrays() {
         const arrWrapper = {
             data: [1, 22, 3, 4, "AA"],
             labels: [
@@ -80,7 +81,6 @@ class ArrayRenderer {
     }
 
     drawTopLabel(str, rect) {
-        const yPadding = 4;
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
 
         const rectXMidpoint = rect.x + (rect.w / 2);
@@ -89,22 +89,21 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: rect.y - yPadding },
+            { x: textX, y: rect.y - this.topLabelYPadding },
             1
         );
     }
 
     drawPoint(str, coord) {
-        this.gfx.drawFilledCircle(coord, 3, 2);
+        this.gfx.drawFilledCircle(coord, this.pointRadius, 2);
 
-        const yPadding = 2;
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(coord.x - (textWidth / 2));
 
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: coord.y + textConstants.charHeight + yPadding },
+            { x: textX, y: coord.y + textConstants.charHeight + this.pointYPadding },
             1
         );
     }
@@ -128,7 +127,7 @@ class ArrayRenderer {
             x: rectXMidpoint,
             y: this.startY - textConstants.charHeight - yPadding
         };
-        
+
         this.gfx.drawLine(start, end, 1);
 
         const left = {
@@ -147,10 +146,9 @@ class ArrayRenderer {
 
         // draw label /////////////////////////////////
 
-        const labelYPadding = 4;
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-        const textY = start.y - labelYPadding;
+        const textY = start.y - this.indexLabelYPadding;
 
         this.gfx.drawText(
             str,
