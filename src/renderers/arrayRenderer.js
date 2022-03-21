@@ -69,7 +69,7 @@ class ArrayRenderer {
         const rect = {
             x: coord.x - xPadding,
             y: coord.y,
-            w: 200,
+            w: (arr.length * this.refRect.w) + (xPadding * 2),
             h: 200
         };
 
