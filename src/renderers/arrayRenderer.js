@@ -49,10 +49,26 @@ class ArrayRenderer {
             return;
         }
 
+        // let curRect = {
+        //     ...this.refRect,
+        //     x: coord.x,
+        //     y: coord.y + textConstants.charHeight + this.topLabelYPadding
+        // };
+
+        const curRectY = (
+            coord.y
+            + textConstants.charHeight
+            + this.indexLabelTopYPadding
+            + this.indexLabelArrowLength
+            + this.indexLabelBottomYPadding
+            + textConstants.charHeight
+            + this.topLabelYPadding
+        );
+
         let curRect = {
             ...this.refRect,
             x: coord.x,
-            y: coord.y + textConstants.charHeight + this.topLabelYPadding
+            y: curRectY
         };
 
         for (let i = 0; i < arr.length; i++) {
@@ -134,11 +150,80 @@ class ArrayRenderer {
         );
     }
 
+    // drawIndexLabel(str, index, coord) {
+    //     let rect = {
+    //         ...this.refRect,
+    //         x: coord.x,
+    //         y: coord.y + this.topLabelYPadding + textConstants.charHeight
+    //     };
+
+    //     rect.x += rect.w * index;
+
+    //     // draw arrow /////////////////////////////////
+
+    //     const rectXMidpoint = rect.x + (rect.w / 2);
+
+    //     const start = {
+    //         x: rectXMidpoint,
+    //         y: coord.y - this.indexLabelArrowLength
+    //     };
+
+    //     const end = {
+    //         x: rectXMidpoint,
+    //         y: coord.y
+    //     };
+
+    //     this.gfx.drawLine(start, end, 1);
+
+    //     const left = {
+    //         x: end.x - 4,
+    //         y: end.y - 4,
+    //     };
+
+    //     this.gfx.drawLine(left, end, 1);
+
+    //     const right = {
+    //         x: end.x + 4,
+    //         y: end.y - 4,
+    //     };
+
+    //     this.gfx.drawLine(right, end, 1);
+
+    //     // draw label /////////////////////////////////
+
+    //     const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
+    //     const textX = Math.floor(rectXMidpoint - (textWidth / 2));
+    //     const textY = start.y - this.indexLabelTopYPadding;
+
+    //     this.gfx.drawText(
+    //         str,
+    //         textConstants.charHeight,
+    //         { x: textX, y: textY },
+    //         1
+    //     );
+    // }
+
     drawIndexLabel(str, index, coord) {
+        // let rect = {
+        //     ...this.refRect,
+        //     x: coord.x,
+        //     y: coord.y + this.topLabelYPadding + textConstants.charHeight
+        // };
+
+        const rectY = (
+            coord.y
+            + textConstants.charHeight
+            + this.indexLabelTopYPadding
+            + this.indexLabelArrowLength
+            + this.indexLabelBottomYPadding
+            + textConstants.charHeight
+            + this.topLabelYPadding
+        );
+
         let rect = {
             ...this.refRect,
             x: coord.x,
-            y: coord.y + this.topLabelYPadding + textConstants.charHeight
+            y: rectY
         };
 
         rect.x += rect.w * index;
@@ -149,12 +234,12 @@ class ArrayRenderer {
 
         const start = {
             x: rectXMidpoint,
-            y: coord.y - this.indexLabelArrowLength
+            y: coord.y + textConstants.charHeight + this.indexLabelTopYPadding
         };
 
         const end = {
             x: rectXMidpoint,
-            y: coord.y
+            y: start.y + this.indexLabelArrowLength
         };
 
         this.gfx.drawLine(start, end, 1);
@@ -177,7 +262,8 @@ class ArrayRenderer {
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-        const textY = start.y - this.indexLabelTopYPadding;
+        // const textY = start.y - this.indexLabelTopYPadding;
+        const textY = coord.y + textConstants.charHeight;
 
         this.gfx.drawText(
             str,
