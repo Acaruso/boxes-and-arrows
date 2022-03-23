@@ -33,9 +33,9 @@ class ArrayRenderer {
 
     render() {
         const arrWrapper = {
-            data: [1, 22, 3, 4, "AA"],
+            data: [1, 22, 3, 4, "AA", 12, 9],
             labels: [
-                { str: "i", index: 1 },
+                { str: "i", index: 5 },
                 { str: "j", index: 3 },
                 { str: "q", index: 4 },
             ],
@@ -81,7 +81,8 @@ class ArrayRenderer {
 
         // draw index labels
         for (const label of arrWrapper.labels) {
-            this.drawIndexLabel(label.str, label.index, coord);
+            // this.drawIndexLabel(label.str, label.index, coord);
+            this.drawIndexLabel(label, coord);
         }
 
         this.drawOutline(arrWrapper, coord);
@@ -148,7 +149,7 @@ class ArrayRenderer {
         );
     }
 
-    drawIndexLabel(str, index, coord) {
+    drawIndexLabel(label, coord) {
         const rectY = (
             coord.y
             + textConstants.charHeight
@@ -165,7 +166,7 @@ class ArrayRenderer {
             y: rectY
         };
 
-        rect.x += rect.w * index;
+        rect.x += rect.w * label.index;
 
         // draw arrow /////////////////////////////////
 
@@ -199,12 +200,12 @@ class ArrayRenderer {
 
         // draw label /////////////////////////////////
 
-        const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
+        const textWidth = getWidthOfText(label.str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
         const textY = coord.y + textConstants.charHeight;
 
         this.gfx.drawText(
-            str,
+            label.str,
             textConstants.charHeight,
             { x: textX, y: textY },
             1
