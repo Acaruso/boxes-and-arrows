@@ -10,17 +10,18 @@ class ArrayRenderer {
         this.refRect = { x: 0, y: 0, w: 26, h: 26 };
         this.topLabelYPadding = 4;
         this.pointRadius = 3;
-        this.pointYPadding = 4;
+        this.bottomLabelYPadding = 4;
         this.indexLabelTopYPadding = 4;
         this.indexLabelBottomYPadding = 2;
-        this.indexLabelLineLength = 9;
+        this.indexLabelArrowLength = 9;
         this.bottomMargin = 4;
-        this.xPadding = 8;
+        this.sideMargin = 8;
+
         this.totalHeight = (
-            this.topLabelYPadding
-            + textConstants.charHeight
+            textConstants.charHeight
+            + this.topLabelYPadding
             + this.refRect.h
-            + this.pointYPadding
+            + this.bottomLabelYPadding
             + textConstants.charHeight
             + this.bottomMargin
         );
@@ -69,16 +70,16 @@ class ArrayRenderer {
             this.drawIndexLabel(label.str, label.index, coord);
         }
 
-        // this.drawOutline(arrWrapper, coord);
+        this.drawOutline(arrWrapper, coord);
     }
 
     drawOutline(arrWrapper, coord) {
         const arr = arrWrapper.data;
 
         const rect = {
-            x: coord.x - this.xPadding,
+            x: coord.x - this.sideMargin,
             y: coord.y,
-            w: (arr.length * this.refRect.w) + (this.xPadding * 2),
+            w: (arr.length * this.refRect.w) + (this.sideMargin * 2),
             h: this.totalHeight
         };
 
@@ -128,7 +129,7 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: coord.y + textConstants.charHeight + this.pointYPadding },
+            { x: textX, y: coord.y + textConstants.charHeight + this.bottomLabelYPadding },
             1
         );
     }
@@ -144,7 +145,7 @@ class ArrayRenderer {
 
         // draw arrow /////////////////////////////////
 
-        const lineLength = this.indexLabelLineLength;
+        const lineLength = this.indexLabelArrowLength;
         const rectXMidpoint = rect.x + (rect.w / 2);
 
         const start = {
