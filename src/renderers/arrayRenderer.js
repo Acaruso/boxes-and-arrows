@@ -17,8 +17,21 @@ class ArrayRenderer {
         this.bottomMargin = 4;
         this.sideMargin = 8;
 
+        // this.totalHeight = (
+        //     textConstants.charHeight
+        //     + this.topLabelYPadding
+        //     + this.refRect.h
+        //     + this.bottomLabelYPadding
+        //     + textConstants.charHeight
+        //     + this.bottomMargin
+        // );
+
         this.totalHeight = (
             textConstants.charHeight
+            + this.indexLabelTopYPadding
+            + this.indexLabelArrowLength
+            + this.indexLabelBottomYPadding
+            + textConstants.charHeight
             + this.topLabelYPadding
             + this.refRect.h
             + this.bottomLabelYPadding
@@ -204,12 +217,6 @@ class ArrayRenderer {
     // }
 
     drawIndexLabel(str, index, coord) {
-        // let rect = {
-        //     ...this.refRect,
-        //     x: coord.x,
-        //     y: coord.y + this.topLabelYPadding + textConstants.charHeight
-        // };
-
         const rectY = (
             coord.y
             + textConstants.charHeight
@@ -262,7 +269,6 @@ class ArrayRenderer {
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-        // const textY = start.y - this.indexLabelTopYPadding;
         const textY = coord.y + textConstants.charHeight;
 
         this.gfx.drawText(
