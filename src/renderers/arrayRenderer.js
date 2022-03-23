@@ -52,7 +52,7 @@ class ArrayRenderer {
         let curRect = {
             ...this.refRect,
             x: coord.x,
-            y: coord.y + this.topLabelYPadding + textConstants.charHeight
+            y: coord.y + textConstants.charHeight + this.topLabelYPadding
         };
 
         for (let i = 0; i < arr.length; i++) {
@@ -65,7 +65,7 @@ class ArrayRenderer {
         // draw final point
         this.drawPoint(String(arr.length), { x: curRect.x, y: curRect.y + curRect.h });
 
-        // draw labels
+        // draw index labels
         for (const label of arrWrapper.labels) {
             this.drawIndexLabel(label.str, label.index, coord);
         }
@@ -145,12 +145,11 @@ class ArrayRenderer {
 
         // draw arrow /////////////////////////////////
 
-        const lineLength = this.indexLabelArrowLength;
         const rectXMidpoint = rect.x + (rect.w / 2);
 
         const start = {
             x: rectXMidpoint,
-            y: coord.y - lineLength
+            y: coord.y - this.indexLabelArrowLength
         };
 
         const end = {
