@@ -9,23 +9,73 @@ function makeStringData(str) {
     };
 }
 
-function makeArrayData(arr) {
+function makeArrayData(arr, labels) {
     return {
         type: arrayType,
-        data: arr
+        data: arr,
+        labels,
     };
+}
+
+class StringData {
+    constructor(str) {
+        this.type = stringType;
+        this.data = str;
+    }
+
+    clone() {
+        return {
+            type: stringType,
+            data: this.data
+        };
+    }
+}
+
+class ArrayData {
+    constructor(arr, labels) {
+        this.type = arrayType;
+        this.data = arr;
+        this.labels = labels;
+    }
+
+    clone() {
+        let clone = {
+            type: arrayType,
+            data: [...this.data],
+            labels: []
+        };
+
+        for (const label of this.labels) {
+            clone.labels.push({ ...label });
+        }
+
+        return clone;
+    }
 }
 
 class Box {
     constructor(str, coord, id=0) {
         this.coord = { ...coord };
         this.id = id;
+
         this.data = [
-            makeStringData("")
+            new StringData(""),
         ];
+
         this.appendString(str);
         this.rect = {};
         this.parentId = null;
+
+        const arrData = new ArrayData(
+            [1, 22, 3, 4, "AA", 12, 9],
+            [
+                { str: "i", index: 5 },
+                { str: "j", index: 3 },
+                { str: "q", index: 4 },
+            ]
+        );
+
+        this.data.push(arrData);
 
         this.updateRect();
     }
@@ -98,10 +148,9 @@ class Box {
     // }
 
     setData(data) {
-        // this.data = [...data];
         this.data = [];
         for (const elt of data) {
-            this.data.push({ ...elt });
+            this.data.push(elt.clone());
         }
         this.updateRect();
     }
@@ -131,7 +180,7 @@ class Box {
     getTextRect(data, coord) {
         let maxWidth = -1;
         let length = 0;
-    
+
         for (const elt of data) {
             if (elt.type === stringType) {
                 const str = elt.data;
@@ -140,23 +189,23 @@ class Box {
                     textConstants.charWidth,
                     textConstants.xPadding
                 );
-        
+
                 maxWidth = Math.max(maxWidth, curWidth);
                 length++;
             }
         }
-    
+
         let rect = {
             x: coord.x,
             y: coord.y,
             w: maxWidth,
         };
-    
+
         rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
-    
+
         return rect;
     }
-    
+
 }
 
 export { Box };
