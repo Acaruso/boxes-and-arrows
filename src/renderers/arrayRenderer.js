@@ -19,18 +19,18 @@ class ArrayRenderer {
     }
 
     render() {
-        const arrWrapper = {
-            data: [1, 22, 3, 4, "AA", 12, 9],
-            labels: [
-                { str: "i", index: 5 },
-                { str: "j", index: 3 },
-                { str: "q", index: 4 },
-            ],
-        };
+        // const arrWrapper = {
+        //     data: [1, 22, 3, 4, "AA", 12, 9],
+        //     labels: [
+        //         { str: "i", index: 5 },
+        //         { str: "j", index: 3 },
+        //         { str: "q", index: 4 },
+        //     ],
+        // };
 
-        const coord = { x: 170, y: 70 };
+        // const coord = { x: 170, y: 70 };
 
-        this.drawArray(arrWrapper, coord);
+        // this.drawArray(arrWrapper, coord);
     }
 
     drawArray(arrWrapper, coord) {

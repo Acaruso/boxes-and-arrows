@@ -1,14 +1,16 @@
 import { getMidpoint } from "../util"
 import { stringType, arrayType } from "../constants";
 import { textConstants } from "../text_constants";
+import { ArrayRenderer } from "./arrayRenderer";
 
 class BoxRenderer {
     constructor(gfx, state, model, rendererHelper) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
-
         this.rendererHelper = rendererHelper;
+
+        this.arrayRenderer = new ArrayRenderer(gfx, state, model);
     }
 
     render() {
@@ -58,15 +60,22 @@ class BoxRenderer {
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];
             if (elt.type === stringType) {
+                const curCoord = {
+                    x: coord.x + textConstants.xPadding,
+                    y: coord.y + (textConstants.charHeight * (i + 1))
+                };
                 this.gfx.drawText(
                     elt.data,
                     textConstants.charHeight,
-                    {
-                        x: coord.x + textConstants.xPadding,
-                        y: coord.y + (textConstants.charHeight * (i + 1))
-                    },
+                    curCoord,
                     z
                 );
+            } else if (elt.type === arrayType) {
+                const curCoord = {
+                    x: coord.x + textConstants.xPadding,
+                    y: coord.y + (textConstants.charHeight * (i + 1))
+                };
+                this.arrayRenderer.drawArray(elt, curCoord);
             }
         }
     }
