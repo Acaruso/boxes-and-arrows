@@ -121,41 +121,6 @@ class Box {
         this.rect = this.getRect();
     }
 
-    // getRect() {
-    //     let data = this.data;
-    //     let coord = this.coord;
-
-    //     let maxWidth = -1;
-    //     let length = 0;
-
-    //     for (const elt of data) {
-    //         if (elt.type === stringType) {
-    //             const str = elt.data;
-    //             const curWidth = getWidthOfText(
-    //                 str,
-    //                 textConstants.charWidth,
-    //                 textConstants.xPadding
-    //             );
-
-    //             maxWidth = Math.max(maxWidth, curWidth);
-    //             length++;
-    //         } else if (elt.type === arrayType) {
-    //             const arrRect = elt.getRect();
-    //             maxWidth = Math.max(maxWidth, arrRect.w);
-    //         }
-    //     }
-
-    //     let rect = {
-    //         x: coord.x,
-    //         y: coord.y,
-    //         w: maxWidth,
-    //     };
-
-    //     rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
-
-    //     return rect;
-    // }
-
     getRect() {
         let data = this.data;
         let coord = this.coord;
@@ -176,7 +141,8 @@ class Box {
                 height += textConstants.charHeight + textConstants.yPadding;
             } else if (elt.type === arrayType) {
                 const arrRect = elt.getRect();
-                maxWidth = Math.max(maxWidth, arrRect.w);
+                const curWidth = arrRect.w + (textConstants.xPadding * 2);
+                maxWidth = Math.max(maxWidth, curWidth);
                 height += arrRect.h;
             }
         }
@@ -187,8 +153,6 @@ class Box {
             w: maxWidth,
             h: height
         };
-
-        // rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
 
         return rect;
     }
