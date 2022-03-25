@@ -1,6 +1,7 @@
 import { getMidpoint } from "../util"
 import { stringType, arrayType } from "../constants/constants";
 import { textConstants } from "../constants/text_constants";
+import { arrayDataConstants } from "../constants/array_data_constants";
 import { ArrayRenderer } from "./arrayRenderer";
 
 class BoxRenderer {
@@ -45,8 +46,6 @@ class BoxRenderer {
 
         let curY = coord.y;
 
-        const topOuterArrPadding = 4;
-
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];
             if (elt.type === stringType) {
@@ -62,7 +61,7 @@ class BoxRenderer {
                 );
                 curY += textConstants.charHeight;
             } else if (elt.type === arrayType) {
-                curY += topOuterArrPadding;
+                curY += arrayDataConstants.topMargin;
                 const curCoord = {
                     x: coord.x + textConstants.xPadding,
                     y: curY

@@ -1,15 +1,20 @@
 import { textConstants } from "./text_constants";
 
+// difference between padding and margin:
+// padding is space between elements, but still inside border
+// margin is space outside border
+
 let arrayDataConstants_ = {
     refRect: { x: 0, y: 0, w: 26, h: 26 },
     topLabelYPadding: 4,
     bottomLabelYPadding: 4,
     indexLabelTopYPadding: 4,
     indexLabelBottomYPadding: 2,
-    pointRadius: 3,
-    indexLabelArrowLength: 9,
     bottomPadding: 4,
     sidePadding: 8,
+    topMargin: 4,
+    pointRadius: 3,
+    indexLabelArrowLength: 9,
 };
 
 arrayDataConstants_.totalHeightWithIndexLabels = (
