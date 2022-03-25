@@ -74,7 +74,7 @@ class ArrayRenderer {
     }
 
     drawBox(str, rect) {
-        this.gfx.strokeRectHeavy(rect);
+        this.gfx.strokeRectHeavy(rect, 2);
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textHeight = textConstants.charHeightNoPadding;
@@ -89,7 +89,7 @@ class ArrayRenderer {
             str,
             textConstants.charHeight,
             { x: textX, y: textY },
-            1
+            2
         );
     }
 
@@ -103,7 +103,7 @@ class ArrayRenderer {
             str,
             textConstants.charHeight,
             { x: textX, y: rect.y - this.topLabelYPadding },
-            1
+            2
         );
     }
 
@@ -117,7 +117,7 @@ class ArrayRenderer {
             str,
             textConstants.charHeight,
             { x: textX, y: coord.y + textConstants.charHeight + this.bottomLabelYPadding },
-            1
+            2
         );
     }
 
@@ -154,21 +154,21 @@ class ArrayRenderer {
             y: start.y + this.indexLabelArrowLength
         };
 
-        this.gfx.drawLine(start, end, 1);
+        this.gfx.drawLine(start, end, 2);
 
         const left = {
             x: end.x - 4,
             y: end.y - 4,
         };
 
-        this.gfx.drawLine(left, end, 1);
+        this.gfx.drawLine(left, end, 2);
 
         const right = {
             x: end.x + 4,
             y: end.y - 4,
         };
 
-        this.gfx.drawLine(right, end, 1);
+        this.gfx.drawLine(right, end, 2);
 
         // draw label /////////////////////////////////
 
@@ -180,7 +180,7 @@ class ArrayRenderer {
             label.str,
             textConstants.charHeight,
             { x: textX, y: textY },
-            1
+            2
         );
     }
 
@@ -194,7 +194,7 @@ class ArrayRenderer {
             h: totalHeight
         };
 
-        this.gfx.strokeRect(rect, 1);
+        this.gfx.strokeRect(rect, 2);
     }
 
     getTotalHeightWithIndexLabels() {

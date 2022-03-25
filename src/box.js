@@ -121,12 +121,47 @@ class Box {
         this.rect = this.getRect();
     }
 
+    // getRect() {
+    //     let data = this.data;
+    //     let coord = this.coord;
+
+    //     let maxWidth = -1;
+    //     let length = 0;
+
+    //     for (const elt of data) {
+    //         if (elt.type === stringType) {
+    //             const str = elt.data;
+    //             const curWidth = getWidthOfText(
+    //                 str,
+    //                 textConstants.charWidth,
+    //                 textConstants.xPadding
+    //             );
+
+    //             maxWidth = Math.max(maxWidth, curWidth);
+    //             length++;
+    //         } else if (elt.type === arrayType) {
+    //             const arrRect = elt.getRect();
+    //             maxWidth = Math.max(maxWidth, arrRect.w);
+    //         }
+    //     }
+
+    //     let rect = {
+    //         x: coord.x,
+    //         y: coord.y,
+    //         w: maxWidth,
+    //     };
+
+    //     rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
+
+    //     return rect;
+    // }
+
     getRect() {
         let data = this.data;
         let coord = this.coord;
 
         let maxWidth = -1;
-        let length = 0;
+        let height = 0;
 
         for (const elt of data) {
             if (elt.type === stringType) {
@@ -138,7 +173,11 @@ class Box {
                 );
 
                 maxWidth = Math.max(maxWidth, curWidth);
-                length++;
+                height += textConstants.charHeight + textConstants.yPadding;
+            } else if (elt.type === arrayType) {
+                const arrRect = elt.getRect();
+                maxWidth = Math.max(maxWidth, arrRect.w);
+                height += arrRect.h;
             }
         }
 
@@ -146,9 +185,10 @@ class Box {
             x: coord.x,
             y: coord.y,
             w: maxWidth,
+            h: height
         };
 
-        rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
+        // rect.h = (textConstants.charHeight * length) + textConstants.yPadding;
 
         return rect;
     }
