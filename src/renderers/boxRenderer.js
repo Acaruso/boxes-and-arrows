@@ -25,7 +25,7 @@ class BoxRenderer {
 
     drawBox(box) {
         this.drawBoxRect(box);
-        this.drawBoxText(box);
+        this.drawBoxData(box);
     }
 
     drawBoxRect(box) {
@@ -38,25 +38,11 @@ class BoxRenderer {
         this.gfx.strokeRect(box.rect, 1);
     }
 
-    drawBoxText(box) {
-        this.drawMultiLineText(box.data, box.coord, 2);
+    drawBoxData(box) {
+        this.drawBoxData_(box.data, box.coord, 2);
     }
 
-    drawSelectedBoxes() {
-        const boxes = this.model.boxes;
-
-        for (const selectedBoxId of this.model.selectedBoxIds) {
-            const selectedBox = boxes.getBox(selectedBoxId);
-            const rect = { ...selectedBox.rect };
-            rect.x -= 2;
-            rect.y -= 2;
-            rect.w += 4;
-            rect.h += 4;
-            this.gfx.strokeRect(rect);
-        }
-    }
-
-    drawMultiLineText(data, coord, z=0) {
+    drawBoxData_(data, coord, z=0) {
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];
             if (elt.type === stringType) {
@@ -77,6 +63,20 @@ class BoxRenderer {
                 };
                 this.arrayRenderer.drawArray(elt, curCoord);
             }
+        }
+    }
+
+    drawSelectedBoxes() {
+        const boxes = this.model.boxes;
+
+        for (const selectedBoxId of this.model.selectedBoxIds) {
+            const selectedBox = boxes.getBox(selectedBoxId);
+            const rect = { ...selectedBox.rect };
+            rect.x -= 2;
+            rect.y -= 2;
+            rect.w += 4;
+            rect.h += 4;
+            this.gfx.strokeRect(rect);
         }
     }
 
