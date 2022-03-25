@@ -1,8 +1,8 @@
 import { ArrayData } from "./array_data";
 import { StringData } from "./string_data";
 import { getTextRect, getWidthOfText, lastElt } from "./util";
-import { stringType, arrayType } from "./constants";
-import { textConstants } from "./text_constants";
+import { stringType, arrayType } from "./constants/constants";
+import { textConstants } from "./constants/text_constants";
 
 class Box {
     constructor(str, coord, id=0) {

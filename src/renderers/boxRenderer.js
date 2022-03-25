@@ -1,6 +1,6 @@
 import { getMidpoint } from "../util"
-import { stringType, arrayType } from "../constants";
-import { textConstants } from "../text_constants";
+import { stringType, arrayType } from "../constants/constants";
+import { textConstants } from "../constants/text_constants";
 import { ArrayRenderer } from "./arrayRenderer";
 
 class BoxRenderer {

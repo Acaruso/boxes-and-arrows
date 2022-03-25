@@ -1,5 +1,5 @@
-import { arrayType } from "./constants";
-import { arrayDataConstants } from "./array_data_constants";
+import { arrayType } from "./constants/constants";
+import { arrayDataConstants } from "./constants/array_data_constants";
 
 class ArrayData {
     constructor(arr, labels) {

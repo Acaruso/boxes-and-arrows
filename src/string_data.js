@@ -1,4 +1,4 @@
-import { stringType } from "./constants";
+import { stringType } from "./constants/constants";
 
 class StringData {
     constructor(str) {
