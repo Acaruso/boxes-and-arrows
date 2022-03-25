@@ -18,22 +18,8 @@ class ArrayRenderer {
         this.sideMargin = 8;
     }
 
-    render() {
-        // const arrWrapper = {
-        //     data: [1, 22, 3, 4, "AA", 12, 9],
-        //     labels: [
-        //         { str: "i", index: 5 },
-        //         { str: "j", index: 3 },
-        //         { str: "q", index: 4 },
-        //     ],
-        // };
-
-        // const coord = { x: 170, y: 70 };
-
-        // this.drawArray(arrWrapper, coord);
-    }
-
     drawArray(arrWrapper, coord) {
+        const innerCoord = { x: coord.x + this.sideMargin, y: coord.y };
         const arr = arrWrapper.data;
 
         if (arr.length === 0) {
@@ -46,7 +32,7 @@ class ArrayRenderer {
         if (arrWrapper.labels.length > 0) {
             totalHeight = this.getTotalHeightWithIndexLabels();
             curRectY = (
-                coord.y
+                innerCoord.y
                 + textConstants.charHeight
                 + this.indexLabelTopYPadding
                 + this.indexLabelArrowLength
@@ -57,7 +43,7 @@ class ArrayRenderer {
         } else {
             totalHeight = this.getTotalHeightWithoutIndexLabels();
             curRectY = (
-                coord.y
+                innerCoord.y
                 + textConstants.charHeight
                 + this.topLabelYPadding
             );
@@ -65,7 +51,7 @@ class ArrayRenderer {
 
         let curRect = {
             ...this.refRect,
-            x: coord.x,
+            x: innerCoord.x,
             y: curRectY
         };
 
@@ -81,24 +67,10 @@ class ArrayRenderer {
 
         // draw index labels
         for (const label of arrWrapper.labels) {
-            // this.drawIndexLabel(label.str, label.index, coord);
-            this.drawIndexLabel(label, coord);
+            this.drawIndexLabel(label, innerCoord);
         }
 
         this.drawOutline(arrWrapper, coord, totalHeight);
-    }
-
-    drawOutline(arrWrapper, coord, totalHeight) {
-        const arr = arrWrapper.data;
-
-        const rect = {
-            x: coord.x - this.sideMargin,
-            y: coord.y,
-            w: (arr.length * this.refRect.w) + (this.sideMargin * 2),
-            h: totalHeight
-        };
-
-        this.gfx.strokeRect(rect, 1);
     }
 
     drawBox(str, rect) {
@@ -210,6 +182,19 @@ class ArrayRenderer {
             { x: textX, y: textY },
             1
         );
+    }
+
+    drawOutline(arrWrapper, coord, totalHeight) {
+        const arr = arrWrapper.data;
+
+        const rect = {
+            x: coord.x,
+            y: coord.y,
+            w: (arr.length * this.refRect.w) + (this.sideMargin * 2),
+            h: totalHeight
+        };
+
+        this.gfx.strokeRect(rect, 1);
     }
 
     getTotalHeightWithIndexLabels() {

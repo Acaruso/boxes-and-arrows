@@ -1,57 +1,8 @@
+import { ArrayData } from "./array_data";
+import { StringData } from "./string_data";
 import { getTextRect, getWidthOfText, lastElt } from "./util";
 import { stringType, arrayType } from "./constants";
 import { textConstants } from "./text_constants";
-
-function makeStringData(str) {
-    return {
-        type: stringType,
-        data: str
-    };
-}
-
-function makeArrayData(arr, labels) {
-    return {
-        type: arrayType,
-        data: arr,
-        labels,
-    };
-}
-
-class StringData {
-    constructor(str) {
-        this.type = stringType;
-        this.data = str;
-    }
-
-    clone() {
-        return {
-            type: stringType,
-            data: this.data
-        };
-    }
-}
-
-class ArrayData {
-    constructor(arr, labels) {
-        this.type = arrayType;
-        this.data = arr;
-        this.labels = labels;
-    }
-
-    clone() {
-        let clone = {
-            type: arrayType,
-            data: [...this.data],
-            labels: []
-        };
-
-        for (const label of this.labels) {
-            clone.labels.push({ ...label });
-        }
-
-        return clone;
-    }
-}
 
 class Box {
     constructor(str, coord, id=0) {
@@ -81,7 +32,7 @@ class Box {
     }
 
     pushStringData(str) {
-        this.data.push(makeStringData(str));
+        this.data.push(new StringData(str));
     }
 
     getLastStringData() {
@@ -108,11 +59,6 @@ class Box {
             } else {
                 let lastStringData = lastElt(this.data);
                 lastStringData.data += c;
-
-                // let lastStringData = this.getLastStringData();
-                // lastStringData.data += c;
-
-                // this.data[this.data.length - 1].data += c;
             }
         }
 
@@ -125,7 +71,6 @@ class Box {
         } else {
             let lastStringData = this.getLastStringData();
             lastStringData.data += c;
-            // this.data[this.data.length - 1].data += c;
         }
 
         this.updateRect();
@@ -133,7 +78,6 @@ class Box {
 
     // TODO: update this
     deleteChar() {
-
         this.updateRect();
     }
 
@@ -205,7 +149,6 @@ class Box {
 
         return rect;
     }
-
 }
 
 export { Box };
