@@ -30,11 +30,11 @@ class ArrayData {
         this.labels.push({str, index});
     }
 
-    getRect(coord) {
+    getRect() {
         const arrConsts = arrayDataConstants;
         return {
-            x: coord.x,
-            y: coord.y,
+            x: 0,
+            y: 0,
             w: (this.data.length * arrConsts.refRect.w) + (arrConsts.sideMargin * 2),
             h: this.totalHeight
         };

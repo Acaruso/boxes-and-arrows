@@ -118,10 +118,13 @@ class Box {
     }
 
     updateRect() {
-        this.rect = this.getTextRect(this.data, this.coord);
+        this.rect = this.getRect();
     }
 
-    getTextRect(data, coord) {
+    getRect() {
+        let data = this.data;
+        let coord = this.coord;
+
         let maxWidth = -1;
         let length = 0;
 
