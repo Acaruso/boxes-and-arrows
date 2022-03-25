@@ -39,10 +39,10 @@ class BoxRenderer {
     }
 
     drawBoxData(box) {
-        this.drawBoxData_(box.data, box.coord, 2);
-    }
+        let data = box.data;
+        let coord = box.coord;
+        let z = 2;
 
-    drawBoxData_(data, coord, z=0) {
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];
             if (elt.type === stringType) {
