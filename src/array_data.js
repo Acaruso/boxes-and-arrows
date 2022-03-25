@@ -35,7 +35,7 @@ class ArrayData {
         return {
             x: 0,
             y: 0,
-            w: (this.data.length * arrConsts.refRect.w) + (arrConsts.sideMargin * 2),
+            w: (this.data.length * arrConsts.refRect.w) + (arrConsts.sidePadding * 2),
             h: this.totalHeight
         };
     }

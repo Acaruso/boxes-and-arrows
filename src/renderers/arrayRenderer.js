@@ -1,25 +1,16 @@
 import { textConstants } from "../constants/text_constants";
 import { getWidthOfText } from "../util"
+import { arrayDataConstants } from "../constants/array_data_constants";
 
 class ArrayRenderer {
     constructor(gfx, state, model) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
-
-        this.refRect = { x: 0, y: 0, w: 26, h: 26 };
-        this.topLabelYPadding = 4;
-        this.pointRadius = 3;
-        this.bottomLabelYPadding = 4;
-        this.indexLabelTopYPadding = 4;
-        this.indexLabelBottomYPadding = 2;
-        this.indexLabelArrowLength = 9;
-        this.bottomMargin = 4;
-        this.sideMargin = 8;
     }
 
     drawArray(arrWrapper, coord) {
-        const innerCoord = { x: coord.x + this.sideMargin, y: coord.y };
+        const innerCoord = { x: coord.x + arrayDataConstants.sidePadding, y: coord.y };
         const arr = arrWrapper.data;
 
         if (arr.length === 0) {
@@ -34,23 +25,23 @@ class ArrayRenderer {
             curRectY = (
                 innerCoord.y
                 + textConstants.charHeight
-                + this.indexLabelTopYPadding
-                + this.indexLabelArrowLength
-                + this.indexLabelBottomYPadding
+                + arrayDataConstants.indexLabelTopYPadding
+                + arrayDataConstants.indexLabelArrowLength
+                + arrayDataConstants.indexLabelBottomYPadding
                 + textConstants.charHeight
-                + this.topLabelYPadding
+                + arrayDataConstants.topLabelYPadding
             );
         } else {
             totalHeight = this.getTotalHeightWithoutIndexLabels();
             curRectY = (
                 innerCoord.y
                 + textConstants.charHeight
-                + this.topLabelYPadding
+                + arrayDataConstants.topLabelYPadding
             );
         }
 
         let curRect = {
-            ...this.refRect,
+            ...arrayDataConstants.refRect,
             x: innerCoord.x,
             y: curRectY
         };
@@ -102,13 +93,13 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: rect.y - this.topLabelYPadding - textConstants.charHeight },
+            { x: textX, y: rect.y - arrayDataConstants.topLabelYPadding - textConstants.charHeight },
             2
         );
     }
 
     drawPoint(str, coord) {
-        this.gfx.drawFilledCircle(coord, this.pointRadius, 2);
+        this.gfx.drawFilledCircle(coord, arrayDataConstants.pointRadius, 2);
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textX = Math.floor(coord.x - (textWidth / 2));
@@ -116,7 +107,7 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: coord.y + this.bottomLabelYPadding },
+            { x: textX, y: coord.y + arrayDataConstants.bottomLabelYPadding },
             2
         );
     }
@@ -125,15 +116,15 @@ class ArrayRenderer {
         const rectY = (
             coord.y
             + textConstants.charHeight
-            + this.indexLabelTopYPadding
-            + this.indexLabelArrowLength
-            + this.indexLabelBottomYPadding
+            + arrayDataConstants.indexLabelTopYPadding
+            + arrayDataConstants.indexLabelArrowLength
+            + arrayDataConstants.indexLabelBottomYPadding
             + textConstants.charHeight
-            + this.topLabelYPadding
+            + arrayDataConstants.topLabelYPadding
         );
 
         let rect = {
-            ...this.refRect,
+            ...arrayDataConstants.refRect,
             x: coord.x,
             y: rectY
         };
@@ -146,12 +137,12 @@ class ArrayRenderer {
 
         const start = {
             x: rectXMidpoint,
-            y: coord.y + textConstants.charHeight + this.indexLabelTopYPadding
+            y: coord.y + textConstants.charHeight + arrayDataConstants.indexLabelTopYPadding
         };
 
         const end = {
             x: rectXMidpoint,
-            y: start.y + this.indexLabelArrowLength
+            y: start.y + arrayDataConstants.indexLabelArrowLength
         };
 
         this.gfx.drawLine(start, end, 2);
@@ -190,7 +181,7 @@ class ArrayRenderer {
         const rect = {
             x: coord.x,
             y: coord.y,
-            w: (arr.length * this.refRect.w) + (this.sideMargin * 2),
+            w: (arr.length * arrayDataConstants.refRect.w) + (arrayDataConstants.sidePadding * 2),
             h: totalHeight
         };
 
@@ -200,26 +191,26 @@ class ArrayRenderer {
     getTotalHeightWithIndexLabels() {
         return (
             textConstants.charHeight
-            + this.indexLabelTopYPadding
-            + this.indexLabelArrowLength
-            + this.indexLabelBottomYPadding
+            + arrayDataConstants.indexLabelTopYPadding
+            + arrayDataConstants.indexLabelArrowLength
+            + arrayDataConstants.indexLabelBottomYPadding
             + textConstants.charHeight
-            + this.topLabelYPadding
-            + this.refRect.h
-            + this.bottomLabelYPadding
+            + arrayDataConstants.topLabelYPadding
+            + arrayDataConstants.refRect.h
+            + arrayDataConstants.bottomLabelYPadding
             + textConstants.charHeight
-            + this.bottomMargin
+            + arrayDataConstants.bottomPadding
         );
     }
 
     getTotalHeightWithoutIndexLabels() {
         return (
             textConstants.charHeight
-            + this.topLabelYPadding
-            + this.refRect.h
-            + this.bottomLabelYPadding
+            + arrayDataConstants.topLabelYPadding
+            + arrayDataConstants.refRect.h
+            + arrayDataConstants.bottomLabelYPadding
             + textConstants.charHeight
-            + this.bottomMargin
+            + arrayDataConstants.bottomPadding
         );
     }
 }

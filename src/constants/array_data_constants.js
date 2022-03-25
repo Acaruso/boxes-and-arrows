@@ -8,8 +8,8 @@ let arrayDataConstants_ = {
     indexLabelBottomYPadding: 2,
     pointRadius: 3,
     indexLabelArrowLength: 9,
-    bottomMargin: 4,
-    sideMargin: 8,
+    bottomPadding: 4,       // bottomMargin
+    sidePadding: 8,         // sideMargin
 };
 
 arrayDataConstants_.totalHeightWithIndexLabels = (
@@ -22,7 +22,7 @@ arrayDataConstants_.totalHeightWithIndexLabels = (
     + arrayDataConstants_.refRect.h
     + arrayDataConstants_.bottomLabelYPadding
     + textConstants.charHeight
-    + arrayDataConstants_.bottomMargin
+    + arrayDataConstants_.bottomPadding
 );
 
 arrayDataConstants_.totalHeightWithoutIndexLabels = (
@@ -31,7 +31,7 @@ arrayDataConstants_.totalHeightWithoutIndexLabels = (
     + arrayDataConstants_.refRect.h
     + arrayDataConstants_.bottomLabelYPadding
     + textConstants.charHeight
-    + arrayDataConstants_.bottomMargin
+    + arrayDataConstants_.bottomPadding
 );
 
 const arrayDataConstants = { ...arrayDataConstants_ };
