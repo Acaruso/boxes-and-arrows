@@ -43,12 +43,16 @@ class BoxRenderer {
         let coord = box.coord;
         let z = 2;
 
+        let curY = coord.y;
+
+        const topOuterArrPadding = 4;
+
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];
             if (elt.type === stringType) {
                 const curCoord = {
                     x: coord.x + textConstants.xPadding,
-                    y: coord.y + (textConstants.charHeight * i)
+                    y: curY
                 };
                 this.gfx.drawText(
                     elt.data,
@@ -56,12 +60,16 @@ class BoxRenderer {
                     curCoord,
                     z
                 );
+                curY += textConstants.charHeight;
             } else if (elt.type === arrayType) {
+                curY += topOuterArrPadding;
                 const curCoord = {
                     x: coord.x + textConstants.xPadding,
-                    y: coord.y + (textConstants.charHeight * (i + 1))
+                    y: curY
                 };
                 this.arrayRenderer.drawArray(elt, curCoord);
+                const arrRect = elt.getRect();
+                curY += arrRect.h;
             }
         }
     }
