@@ -14,7 +14,7 @@ class RendererHelper {
                 textConstants.charHeight,
                 {
                     x: coord.x + textConstants.xPadding,
-                    y: coord.y + (textConstants.charHeight * (i + 1))
+                    y: coord.y + (textConstants.charHeight * i)
                 },
                 z
             );

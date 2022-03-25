@@ -17,16 +17,16 @@ class Box {
         this.rect = {};
         this.parentId = null;
 
-        const arrData = new ArrayData(
-            [1, 22, 3, 4, "AA", 12, 9],
-            [
-                { str: "i", index: 5 },
-                { str: "j", index: 3 },
-                { str: "q", index: 4 },
-            ]
-        );
+        // const arrData = new ArrayData(
+        //     [1, 22, 3, 4, "AA", 12, 9],
+        //     [
+        //         { str: "i", index: 5 },
+        //         { str: "j", index: 3 },
+        //         { str: "q", index: 4 },
+        //     ]
+        // );
 
-        this.data.push(arrData);
+        // this.data.push(arrData);
 
         this.updateRect();
     }
@@ -138,7 +138,7 @@ class Box {
                 );
 
                 maxWidth = Math.max(maxWidth, curWidth);
-                height += textConstants.charHeight + textConstants.yPadding;
+                height += textConstants.charHeight;
             } else if (elt.type === arrayType) {
                 const arrRect = elt.getRect();
                 const curWidth = arrRect.w + (textConstants.xPadding * 2);
@@ -146,6 +146,8 @@ class Box {
                 height += arrRect.h;
             }
         }
+
+        height += textConstants.yPadding;
 
         let rect = {
             x: coord.x,

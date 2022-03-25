@@ -125,12 +125,15 @@ class Gfx {
         });
     }
 
-    // note that y-coord is *bottom* left side of text
     drawText(text, size, coord, z=0) {
         const command = (ctx) => {
             ctx.font = `${size}px ${textConstants.textStyle}`;
             ctx.fillStyle = "#000000";
-            ctx.fillText(text, coord.x, coord.y);
+
+            // coord for fillText(text, coord) is *bottom* left side of text
+            // however, our coord is for *top* left side of text
+            // thus, we need to do coord.y + textConstants.charHeight
+            ctx.fillText(text, coord.x, coord.y + textConstants.charHeight);
         };
 
         this.queue.push({

@@ -48,7 +48,7 @@ class BoxRenderer {
             if (elt.type === stringType) {
                 const curCoord = {
                     x: coord.x + textConstants.xPadding,
-                    y: coord.y + (textConstants.charHeight * (i + 1))
+                    y: coord.y + (textConstants.charHeight * i)
                 };
                 this.gfx.drawText(
                     elt.data,

@@ -83,7 +83,7 @@ class ArrayRenderer {
         const rectYMidpoint = rect.y + (rect.h / 2);
 
         const textX = rectXMidpoint - Math.floor(textWidth / 2);
-        const textY = rectYMidpoint + Math.floor(textHeight / 2);
+        const textY = rectYMidpoint - Math.floor(textHeight / 2);
 
         this.gfx.drawText(
             str,
@@ -102,7 +102,7 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: rect.y - this.topLabelYPadding },
+            { x: textX, y: rect.y - this.topLabelYPadding - textConstants.charHeight },
             2
         );
     }
@@ -116,7 +116,7 @@ class ArrayRenderer {
         this.gfx.drawText(
             str,
             textConstants.charHeight,
-            { x: textX, y: coord.y + textConstants.charHeight + this.bottomLabelYPadding },
+            { x: textX, y: coord.y + this.bottomLabelYPadding },
             2
         );
     }
@@ -174,7 +174,7 @@ class ArrayRenderer {
 
         const textWidth = getWidthOfText(label.str, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
-        const textY = coord.y + textConstants.charHeight;
+        const textY = coord.y;
 
         this.gfx.drawText(
             label.str,
