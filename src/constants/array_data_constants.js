@@ -8,8 +8,8 @@ let arrayDataConstants_ = {
     indexLabelBottomYPadding: 2,
     pointRadius: 3,
     indexLabelArrowLength: 9,
-    bottomPadding: 4,       // bottomMargin
-    sidePadding: 8,         // sideMargin
+    bottomPadding: 4,
+    sidePadding: 8,
 };
 
 arrayDataConstants_.totalHeightWithIndexLabels = (
