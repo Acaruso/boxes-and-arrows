@@ -36,6 +36,10 @@ class Box {
         this.data.push(new StringData(str));
     }
 
+    pushArrData(arr, labels) {
+        this.data.push
+    }
+
     getLastStringData() {
         if (this.data.length === 0) {
             return null;
