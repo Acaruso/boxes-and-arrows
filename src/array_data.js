@@ -4,8 +4,12 @@ import { arrayDataConstants } from "./constants/array_data_constants";
 class ArrayData {
     constructor(arr, labels) {
         this.type = arrayType;
-        this.data = arr;
-        this.labels = labels;
+        this.data = [...arr];
+        this.labels = [];
+
+        for (const label of labels) {
+            this.addLabel(label.str, label.index);
+        }
 
         this.totalHeight = 0;
         if (this.labels.length > 0) {
@@ -26,8 +30,17 @@ class ArrayData {
         return newArrayData;
     }
 
+    // addLabel(str, index) {
+    //     this.labels.push({str, index});
+    // }
+
     addLabel(str, index) {
-        this.labels.push({str, index});
+        const i = this.labels.findIndex(x => x.index === index);
+        if (i !== -1) {
+            this.labels[i].str += `,${str}`;
+        } else {
+            this.labels.push({str, index});
+        }
     }
 
     getRect() {
