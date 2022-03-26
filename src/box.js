@@ -1,6 +1,7 @@
 import { ArrayData } from "./array_data";
-import { StringData } from "./string_data";
+import { arrayDataConstants } from "./constants/array_data_constants";
 import { getTextRect, getWidthOfText, lastElt } from "./util";
+import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
 import { textConstants } from "./constants/text_constants";
 
@@ -140,6 +141,7 @@ class Box {
                 maxWidth = Math.max(maxWidth, curWidth);
                 height += textConstants.charHeight;
             } else if (elt.type === arrayType) {
+                height += arrayDataConstants.topMargin;
                 const arrRect = elt.getRect();
                 const curWidth = arrRect.w + (textConstants.xPadding * 2);
                 maxWidth = Math.max(maxWidth, curWidth);
