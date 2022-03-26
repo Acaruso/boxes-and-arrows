@@ -1,6 +1,6 @@
 // given an array where each element is a unique integer, and the array is
-// sorted in ascending (increasing) order,
-// create a binary search tree with minimal height
+// sorted in ascending order,
+// create a binary search tree of the data, with minimal height
 
 function drawTree(root, logger) {
 
