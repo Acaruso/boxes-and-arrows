@@ -18,41 +18,18 @@ class Box {
         this.rect = {};
         this.parentId = null;
 
-        const arrData = new ArrayData(
-            [1, 22, 3, 4, "AA", 12, 9],
-            [
-                { str: "i", index: 5 },
-                { str: "j", index: 3 },
-                { str: "q", index: 4 },
-            ]
-        );
+        // const arrData = new ArrayData(
+        //     [1, 22, 3, 4, "AA", 12, 9],
+        //     [
+        //         { str: "i", index: 5 },
+        //         { str: "j", index: 3 },
+        //         { str: "q", index: 4 },
+        //     ]
+        // );
 
-        this.data.push(arrData);
+        // this.data.push(arrData);
 
         this.updateRect();
-    }
-
-    pushStringData(str) {
-        this.data.push(new StringData(str));
-    }
-
-    pushArrData(arr, labels) {
-        this.data.push
-    }
-
-    getLastStringData() {
-        if (this.data.length === 0) {
-            return null;
-        }
-
-        for (let i = this.data.length - 1; i >= 0; i--) {
-            const elt = this.data[i];
-            if (elt.type === stringType) {
-                return elt;
-            }
-        }
-
-        return null;
     }
 
     appendString(str) {
@@ -68,6 +45,18 @@ class Box {
         }
 
         this.updateRect();
+    }
+
+    appendArray(arr, labels={}) {
+        this.pushArrData(arr, labels);
+    }
+
+    pushStringData(str) {
+        this.data.push(new StringData(str));
+    }
+
+    pushArrData(arr, labels) {
+        this.data.push(new ArrayData(arr, labels));
     }
 
     appendChar(c) {
@@ -97,6 +86,21 @@ class Box {
         }
 
         this.updateRect();
+    }
+
+    getLastStringData() {
+        if (this.data.length === 0) {
+            return null;
+        }
+
+        for (let i = this.data.length - 1; i >= 0; i--) {
+            const elt = this.data[i];
+            if (elt.type === stringType) {
+                return elt;
+            }
+        }
+
+        return null;
     }
 
     setData(data) {
