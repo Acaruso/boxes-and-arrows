@@ -26,10 +26,7 @@ function minimalTree(arr, logger) {
 
         logger.appendArrayToNode(
             arr,
-            [
-                { str: "s", index: start },
-                { str: "e", index: end }
-            ],
+            [{ str: "s", index: start }, { str: "e", index: end }],
             id
         );
 

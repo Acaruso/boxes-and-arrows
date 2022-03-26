@@ -51,7 +51,6 @@ class Logger {
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            console.log("1");
             box.appendArray(arr, labels);
         }
     }
