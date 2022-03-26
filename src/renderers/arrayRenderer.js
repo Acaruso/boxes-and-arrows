@@ -69,12 +69,17 @@ class ArrayRenderer {
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
         const textHeight = textConstants.charHeightNoPadding;
+        const charPadding = textConstants.charHeight - textConstants.charHeightNoPadding;
 
         const rectXMidpoint = rect.x + (rect.w / 2);
         const rectYMidpoint = rect.y + (rect.h / 2);
 
+        // note that to find the y-coord of the text, we need to find the y-coord of where
+        // we want the actual visible part of the text to be drawn, 
+        // and then subtract the top char padding to get the final y-coord
+
         const textX = rectXMidpoint - Math.floor(textWidth / 2);
-        const textY = rectYMidpoint - Math.floor(textHeight / 2);
+        const textY = rectYMidpoint - Math.floor(textHeight / 2) - charPadding;
 
         this.gfx.drawText(
             str,
