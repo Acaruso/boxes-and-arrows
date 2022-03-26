@@ -61,7 +61,7 @@ class ArrayRenderer {
             this.drawIndexLabel(label, innerCoord);
         }
 
-        this.drawOutline(arrWrapper, coord, totalHeight);
+        // this.drawOutline(arrWrapper, coord, totalHeight);
     }
 
     drawBox(str, rect) {

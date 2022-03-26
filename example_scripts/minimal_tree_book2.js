@@ -24,7 +24,14 @@ function minimalTree(arr, logger) {
     function inner(start, end, parentId) {
         const id = logger.newNode(`inner(start: ${start}, end: ${end})`, parentId);
 
-        logger.appendArrayToNode(arr, [{ str: "start", index: start }], id);
+        logger.appendArrayToNode(
+            arr,
+            [
+                { str: "s", index: start },
+                { str: "e", index: end }
+            ],
+            id
+        );
 
         if (start > end) {
             logger.appendToNode("\n-> null", id);
