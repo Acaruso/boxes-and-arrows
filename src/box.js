@@ -77,20 +77,23 @@ class Box {
         this.updateRect();
     }
 
-    // TODO: update this
     deleteChar() {
+        const last = lastElt(this.data);
+        if (last.type === stringType) {
+            // delete char from string
+            if (last.data.length > 0) {
+                last.data = last.data.slice(0, -1);
+            // delete entire string
+            // dont allow deleting the last string
+            } else if (this.data.length > 1) {
+                this.data = this.data.slice(0, -1);
+            }
+        } else if (last.type === arrayType) {
+            this.data = this.data.slice(0, -1);
+        }
+
         this.updateRect();
     }
-
-    // deleteChar() {
-    //     if (this.data[this.data.length - 1].length > 0) {
-    //         this.data[this.data.length - 1] = this.data[this.data.length - 1].slice(0, -1);
-    //     } else if (this.data.length > 1) { // don't allow to delete last string from arr
-    //         this.data = this.data.slice(0, -1);
-    //     }
-
-    //     this.updateRect();
-    // }
 
     setData(data) {
         this.data = [];
