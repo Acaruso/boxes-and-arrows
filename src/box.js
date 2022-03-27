@@ -36,8 +36,16 @@ class Box {
         this.updateRect();
     }
 
-    appendArray(arr, labels={}) {
-        this.pushArrData(arr, labels);
+    appendArray(arr, labels=[]) {
+        let newLabels = [];
+        for (const label of labels) {
+            const newLabel = {
+                str: label[0],
+                index: label[1]
+            };
+            newLabels.push(newLabel);
+        }
+        this.pushArrData(arr, newLabels);
     }
 
     pushStringData(str) {

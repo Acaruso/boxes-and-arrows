@@ -30,10 +30,6 @@ class ArrayData {
         return newArrayData;
     }
 
-    // addLabel(str, index) {
-    //     this.labels.push({str, index});
-    // }
-
     addLabel(str, index) {
         const i = this.labels.findIndex(x => x.index === index);
         if (i !== -1) {
