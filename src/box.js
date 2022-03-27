@@ -18,17 +18,6 @@ class Box {
         this.rect = {};
         this.parentId = null;
 
-        // const arrData = new ArrayData(
-        //     [1, 22, 3, 4, "AA", 12, 9],
-        //     [
-        //         { str: "i", index: 5 },
-        //         { str: "j", index: 3 },
-        //         { str: "q", index: 4 },
-        //     ]
-        // );
-
-        // this.data.push(arrData);
-
         this.updateRect();
     }
 
