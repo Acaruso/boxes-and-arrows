@@ -20,30 +20,37 @@ function drawTree(root, logger) {
 }
 
 function minimalTree(arr, logger) {
+    function newNode(str, parentId) {
+        return logger.newNode(str, parentId);
+    }
+
+    function pushStr(str, id) {
+        logger.appendToNode(str, id);
+    }
+
+    function pushArr(arr, labels, id) {
+        logger.appendArrayToNode(arr, labels, id);
+    }
 
     function inner(start, end, parentId) {
-        const id = logger.newNode(`inner(start: ${start}, end: ${end})`, parentId);
+        const id = newNode(`inner(start: ${start}, end: ${end})`, parentId)
 
         if (start > end) {
-            logger.appendToNode("\n-> null", id);
+            pushStr("\n-> null", id);
             return null;
         }
 
         let mid = Math.floor((start + end) / 2);
         let midNode = { value: arr[mid] };
 
-        logger.appendToNode(`\nmid: ${mid}`, id);
+        pushStr(`\nmid: ${mid}`, id);
 
-        logger.appendArrayToNode(
-            arr,
-            [ ["s", start], ["e", end], ["m", mid] ],
-            id
-        );
+        pushArr(arr, [["s", start], ["e", end], ["m", mid]], id);
 
         midNode.left = inner(start, mid - 1, id);
         midNode.right = inner(mid + 1, end, id);
 
-        logger.appendToNode(`\n-> ${midNode.value}`, id);
+        pushStr(`\n-> ${midNode.value}`, id);
         return midNode;
     }
 
