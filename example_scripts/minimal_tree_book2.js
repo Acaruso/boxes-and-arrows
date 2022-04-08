@@ -43,7 +43,7 @@ function minimalTree(arr, logger) {
         let mid = Math.floor((start + end) / 2);
         let midNode = { value: arr[mid] };
 
-        pushStr(`\nmid: ${mid}`, id);
+        // pushStr(`\nmid: ${mid}`, id);
 
         pushArr(arr, [["s", start], ["e", end], ["m", mid]], id);
 

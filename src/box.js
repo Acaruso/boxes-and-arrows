@@ -46,6 +46,7 @@ class Box {
             newLabels.push(newLabel);
         }
         this.pushArrData(arr, newLabels);
+        this.updateRect();
     }
 
     pushStringData(str) {
