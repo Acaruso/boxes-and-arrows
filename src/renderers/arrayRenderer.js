@@ -49,6 +49,7 @@ class ArrayRenderer {
         for (let i = 0; i < arr.length; i++) {
             this.drawBox(String(arr[i]), curRect);
             this.drawTopLabel(String(i), curRect);
+            // this.drawTopLabel(String(i + 1), curRect);
             this.drawPoint(String(i), { x: curRect.x, y: curRect.y + curRect.h });
             curRect.x += curRect.w;
         }
