@@ -56,7 +56,12 @@ class FileEvents {
             async e => {
                 e.preventDefault();
                 try {
-                    const scriptElt = document.createElement("script");
+                    let oldScriptElt = document.getElementById("userScriptElt");
+                    if (oldScriptElt !== null) {
+                        oldScriptElt.remove();
+                    }
+                    let scriptElt = document.createElement("script");
+                    scriptElt.id = "userScriptElt";
                     const [fileHandle, content] = await loadFile();
                     this.prevFileHandle = fileHandle;
                     const textNode = document.createTextNode(content);
@@ -84,7 +89,12 @@ class FileEvents {
                     if (this.prevFileHandle === null) {
                         return;
                     }
+                    let oldScriptElt = document.getElementById("userScriptElt");
+                    if (oldScriptElt !== null) {
+                        oldScriptElt.remove();
+                    }
                     const scriptElt = document.createElement("script");
+                    scriptElt.id = "userScriptElt";
                     const content = await loadFileFromHandle(this.prevFileHandle);
                     const textNode = document.createTextNode(content);
                     scriptElt.appendChild(textNode);
