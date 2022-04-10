@@ -1,5 +1,5 @@
 function userFunction(logger) {
-    
+
     class TreeNode {
         constructor(value, left, right) {
             this.value = value;
@@ -42,3 +42,4 @@ function userFunction(logger) {
     const res = getHeight(root);
     console.log(res);
 }
+
