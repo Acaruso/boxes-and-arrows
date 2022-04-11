@@ -7,19 +7,6 @@ function userFunction(logger) {
             this.right = right;
         }
     }
-    
-    function getHeight(node) {
-        if (node === null) {
-            return 0
-        }
-
-        const leftHeight = getHeight(node.left);
-        const rightHeight = getHeight(node.right);
-
-        const curHeight = Math.max(leftHeight, rightHeight);
-
-        return curHeight;
-    }
 
     const root = new TreeNode(
         1,
@@ -39,7 +26,29 @@ function userFunction(logger) {
         )
     );
 
-    const res = getHeight(root);
+    function getHeight(node, parentId) {
+        if (node === null) {
+            const id = logger.newNode(`getHeight(null)\n\n-> 0`, parentId);
+            return 0;
+        }
+
+        const id = logger.newNode(`getHeight(${node.value})\n\n`, parentId);
+
+        const leftHeight = getHeight(node.left, id);
+        logger.appendToNode(`getHeight(node.left) -> ${leftHeight}\n`, id);
+        
+        const rightHeight = getHeight(node.right, id);
+        logger.appendToNode(`getHeight(node.right) -> ${rightHeight}\n`, id);
+
+        const curHeight = Math.max(leftHeight, rightHeight) + 1;
+
+        logger.appendToNode(`\n-> ${curHeight}`, id);
+
+        return curHeight;
+    }
+
+    const res = getHeight(root, null);
+
     console.log(res);
 }
 
