@@ -1,5 +1,6 @@
 import { ArrayData } from "./array_data";
 import { arrayDataConstants } from "./constants/array_data_constants";
+import { DetailsData } from "./details_data";
 import { getTextRect, getWidthOfText, lastElt } from "./util";
 import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
@@ -14,6 +15,8 @@ class Box {
             new StringData(""),
         ];
 
+        this.detailsData = [];
+
         this.appendString(str);
         this.rect = {};
         this.parentId = null;
@@ -26,7 +29,8 @@ class Box {
             let c = str[i];
 
             if (c === "\n") {
-                this.pushStringData("");
+                // this.pushStringData("");
+                this.data.push(new StringData(""));
             } else {
                 let lastStringData = lastElt(this.data);
                 lastStringData.data += c;
@@ -45,21 +49,23 @@ class Box {
             };
             newLabels.push(newLabel);
         }
-        this.pushArrData(arr, newLabels);
+        // this.pushArrData(arr, newLabels);
+        this.data.push(new ArrayData(arr, labels));
         this.updateRect();
     }
 
-    pushStringData(str) {
-        this.data.push(new StringData(str));
-    }
+    // pushStringData(str) {
+    //     this.data.push(new StringData(str));
+    // }
 
-    pushArrData(arr, labels) {
-        this.data.push(new ArrayData(arr, labels));
-    }
+    // pushArrData(arr, labels) {
+    //     this.data.push(new ArrayData(arr, labels));
+    // }
 
     appendChar(c) {
         if (c === "\n") {
-            this.pushStringData("");
+            // this.pushStringData("");
+            this.data.push(new StringData(""));
         } else {
             let lastStringData = this.getLastStringData();
             lastStringData.data += c;
