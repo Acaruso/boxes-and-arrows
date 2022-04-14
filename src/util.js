@@ -1,4 +1,4 @@
-import { textConstants } from "./text_constants";
+import { textConstants } from "./constants/text_constants";
 
 const getMidpoint = (rect) => {
     return {

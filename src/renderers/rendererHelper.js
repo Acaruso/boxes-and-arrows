@@ -1,4 +1,4 @@
-import { textConstants } from "../text_constants";
+import { textConstants } from "../constants/text_constants";
 
 class RendererHelper {
     constructor(gfx, state, model) {
@@ -14,7 +14,7 @@ class RendererHelper {
                 textConstants.charHeight,
                 {
                     x: coord.x + textConstants.xPadding,
-                    y: coord.y + (textConstants.charHeight * (i + 1))
+                    y: coord.y + (textConstants.charHeight * i)
                 },
                 z
             );

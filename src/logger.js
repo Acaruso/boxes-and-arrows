@@ -43,6 +43,17 @@ class Logger {
             box.appendString(s);
         }
     }
+
+    appendArrayToNode(arr, labels, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendArray(arr, labels);
+        }
+    }
 }
 
 export { Logger };

@@ -8,7 +8,7 @@
 
 function userFunction(logger) {
     function logEntrypoint(i, amount, parentId) {
-        let str = `helper(${i}, ${amount})\n`
+        let str = `helper(i: ${i}, amount: ${amount})\n`
         const id = logger.newNode(str, parentId);
         return id;
     }
@@ -39,12 +39,15 @@ function userFunction(logger) {
                 return res;
             } else {
                 const curCoin = coins[i];
+                append(`curCoin: ${curCoin}\n`, id);
                 let curMin = MAX_INT;
                 let curCoinsUsed = {};
 
                 const maxNumCurCoins = Math.floor(amount / curCoin);
 
                 for (let numCurCoins = 0; numCurCoins <= maxNumCurCoins; numCurCoins++) {
+                    append(`used ${numCurCoins}x ${curCoin} coins`, id);
+                    append(`new amount: ${amount - (numCurCoins * curCoin)}`, id)
                     const recurRes = helper({
                         i: i + 1,
                         amount: amount - (numCurCoins * curCoin),
@@ -52,14 +55,14 @@ function userFunction(logger) {
                     });
 
                     append(
-                        `helper(${i + 1}, ${amount - (numCurCoins * curCoin)})`,
+                        `helper(i: ${i + 1}, amount: ${amount - (numCurCoins * curCoin)})`,
                         id
                     );
                     append("-> " + JSON.stringify(recurRes) + " \n ", id);
 
                     if (recurRes.found === true) {
                         res.found = true;
-                        if (curMin > recurRes.numCoins + numCurCoins) {
+                        if (recurRes.numCoins + numCurCoins < curMin) {
                             curMin = recurRes.numCoins + numCurCoins;
 
                             curCoinsUsed = { ...recurRes.coinsUsed };
@@ -91,14 +94,14 @@ function userFunction(logger) {
     // const coins = [1, 2, 10];
     // const amount = 10;
 
-    const coins = [1, 2, 3];
-    const amount = 10;
+    // const coins = [1, 2, 3];
+    // const amount = 10;
 
     // const coins = [1, 2, 3];
     // const amount = 6;
 
-    // const coins = [1, 2, 3];
-    // const amount = 5;
+    const coins = [1, 2, 3];
+    const amount = 5;
 
     const res = coinChange(coins, amount);
     console.log('res: ' + res.numCoins);

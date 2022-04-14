@@ -1,12 +1,17 @@
 import { getMidpoint } from "../util"
+import { stringType, arrayType } from "../constants/constants";
+import { textConstants } from "../constants/text_constants";
+import { arrayDataConstants } from "../constants/array_data_constants";
+import { ArrayRenderer } from "./arrayRenderer";
 
 class BoxRenderer {
     constructor(gfx, state, model, rendererHelper) {
         this.gfx = gfx;
         this.state = state;
         this.model = model;
-
         this.rendererHelper = rendererHelper;
+
+        this.arrayRenderer = new ArrayRenderer(gfx, state, model);
     }
 
     render() {
@@ -21,7 +26,7 @@ class BoxRenderer {
 
     drawBox(box) {
         this.drawBoxRect(box);
-        this.drawBoxText(box);
+        this.drawBoxData(box);
     }
 
     drawBoxRect(box) {
@@ -34,8 +39,38 @@ class BoxRenderer {
         this.gfx.strokeRect(box.rect, 1);
     }
 
-    drawBoxText(box) {
-        this.rendererHelper.drawMultiLineText(box.data, box.coord, 2);
+    drawBoxData(box) {
+        let data = box.data;
+        let coord = box.coord;
+        let z = 2;
+
+        let curY = coord.y;
+
+        for (let i = 0; i < data.length; i++) {
+            const elt = data[i];
+            if (elt.type === stringType) {
+                const curCoord = {
+                    x: coord.x + textConstants.xPadding,
+                    y: curY
+                };
+                this.gfx.drawText(
+                    elt.data,
+                    textConstants.charHeight,
+                    curCoord,
+                    z
+                );
+                curY += textConstants.charHeight;
+            } else if (elt.type === arrayType) {
+                curY += arrayDataConstants.topMargin;
+                const curCoord = {
+                    x: coord.x + textConstants.xPadding,
+                    y: curY
+                };
+                this.arrayRenderer.drawArray(elt, curCoord);
+                const arrRect = elt.getRect();
+                curY += arrRect.h;
+            }
+        }
     }
 
     drawSelectedBoxes() {
