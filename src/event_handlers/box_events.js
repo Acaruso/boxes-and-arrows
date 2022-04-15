@@ -110,9 +110,11 @@ class BoxEvents {
                     && !e.keyboard.control
             },
             e => {
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.appendChar(e.key_);
+                if (this.model.mode === "normal") {
+                    for (const id of this.model.selectedBoxIds) {
+                        let box = this.model.boxes.getBox(id);
+                        box.appendChar(e.key_);
+                    }
                 }
             }
         );

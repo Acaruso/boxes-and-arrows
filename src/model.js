@@ -17,6 +17,8 @@ class Model {
         this.outBox = {};
 
         this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
+
+        this.mode = "normal";
     }
 
     init() {

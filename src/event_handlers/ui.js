@@ -4,6 +4,7 @@ import { DebugEvents } from "./debug_events";
 import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
 import { FormattingEvents } from "./formatting_events";
+import { ModeEvents } from "./mode_events";
 import { rectsOverlap } from "../util";
 import { SelectedRegionEvents } from "./selected_region_events";
 
@@ -35,6 +36,7 @@ class Ui {
             new DialogEvents(state, model, eventTable),
             new FileEvents(state, model, eventTable, scripter),
             new DebugEvents(state, model, eventTable),
+            new ModeEvents(state, model, eventTable),
         ];
 
         for (const eventAdder of this.eventAdders) {
@@ -72,8 +74,9 @@ class Ui {
         const kb = this.state.cur.keyboard;
         if (
             !kb.control
-            && !this.model.anyBoxesSelected()
+            // && !this.model.anyBoxesSelected()
             && (kb.w || kb.a || kb.s || kb.d)
+            && this.model.mode === "wasd"
         ) {
             const scrollAmount = 10;
             const oldXOffset = window.pageXOffset;

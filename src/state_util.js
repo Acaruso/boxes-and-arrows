@@ -16,6 +16,7 @@ const makeState = () => {
             backspace: false,
             space: false,
             enter: false,
+            escape: false,
             a: false,
             b: false,
             c: false,
