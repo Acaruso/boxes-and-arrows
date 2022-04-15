@@ -1,6 +1,5 @@
 import { ArrayData } from "./array_data";
 import { arrayDataConstants } from "./constants/array_data_constants";
-import { DetailsData } from "./details_data";
 import { getTextRect, getWidthOfText, lastElt } from "./util";
 import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
@@ -29,7 +28,6 @@ class Box {
             let c = str[i];
 
             if (c === "\n") {
-                // this.pushStringData("");
                 this.data.push(new StringData(""));
             } else {
                 let lastStringData = lastElt(this.data);
@@ -49,22 +47,37 @@ class Box {
             };
             newLabels.push(newLabel);
         }
-        // this.pushArrData(arr, newLabels);
         this.data.push(new ArrayData(arr, labels));
         this.updateRect();
     }
 
-    // pushStringData(str) {
-    //     this.data.push(new StringData(str));
-    // }
+    appendStringDetails(str) {
+        for (let i = 0; i < str.length; i++) {
+            let c = str[i];
 
-    // pushArrData(arr, labels) {
-    //     this.data.push(new ArrayData(arr, labels));
-    // }
+            if (c === "\n") {
+                this.detailsData.push(new StringData(""));
+            } else {
+                let lastStringData = lastElt(this.detailsData);
+                lastStringData.data += c;
+            }
+        }
+    }
+
+    appendArrayDetails(arr, labels=[]) {
+        let newLabels = [];
+        for (const label of labels) {
+            const newLabel = {
+                str: label[0],
+                index: label[1]
+            };
+            newLabels.push(newLabel);
+        }
+        this.detailsData.push(new ArrayData(arr, labels));
+    }
 
     appendChar(c) {
         if (c === "\n") {
-            // this.pushStringData("");
             this.data.push(new StringData(""));
         } else {
             let lastStringData = this.getLastStringData();

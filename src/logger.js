@@ -54,6 +54,28 @@ class Logger {
             box.appendArray(arr, labels);
         }
     }
+
+    appendToNodeDetails(s, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendStringDetails(s);
+        }
+    }
+
+    appendArrayToNodeDetails(arr, labels, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendArrayDetails(arr, labels);
+        }
+    }
 }
 
 export { Logger };
