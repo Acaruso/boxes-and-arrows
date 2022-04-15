@@ -37,8 +37,6 @@ class Box {
             }
         }
 
-        let x = 1;
-
         this.updateRect();
     }
 
