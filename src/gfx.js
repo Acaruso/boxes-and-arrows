@@ -5,6 +5,7 @@ class Gfx {
         this.canvas = document.getElementById("myCanvas")
         this.ctx = this.canvas.getContext("2d");
         this.queue = [];
+        this.zOffset = 0;
     }
 
     drawRect(rect, z=0) {
@@ -25,7 +26,7 @@ class Gfx {
 
         this.queue.push({
             command,
-            z: z
+            z: z + this.zOffset
         });
     }
 
@@ -53,7 +54,7 @@ class Gfx {
 
         this.queue.push({
             command,
-            z: z
+            z: z + this.zOffset
         });
     }
 
@@ -99,7 +100,7 @@ class Gfx {
 
         this.queue.push({
             command,
-            z: z
+            z: z + this.zOffset
         });
     }
 
@@ -121,7 +122,7 @@ class Gfx {
 
         this.queue.push({
             command,
-            z: z
+            z: z + this.zOffset
         });
     }
 
@@ -138,7 +139,7 @@ class Gfx {
 
         this.queue.push({
             command,
-            z: z
+            z: z + this.zOffset
         });
     }
 

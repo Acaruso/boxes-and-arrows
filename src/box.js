@@ -128,6 +128,13 @@ class Box {
         this.updateRect();
     }
 
+    setDetailsData(detailsData) {
+        this.detailsData = [];
+        for (const elt of detailsData) {
+            this.detailsData.push(elt.clone());
+        }
+    }
+
     setCoord(newCoord) {
         this.coord = {
             x: Math.floor(newCoord.x),
