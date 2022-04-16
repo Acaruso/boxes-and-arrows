@@ -7,8 +7,8 @@ class ArrayData {
         this.data = [...arr];
         this.labels = [];
 
-        for (const label of labels) {
-            this.addLabel(label.str, label.index);
+        for (const [str, index] of labels) {
+            this.addLabel(str, index);
         }
 
         this.totalHeight = 0;
@@ -23,8 +23,8 @@ class ArrayData {
         const newData = [...this.data];
         const newArrayData = new ArrayData(newData, []);
 
-        for (const label of this.labels) {
-            newArrayData.addLabel(label.str, label.index);
+        for (const [str, index] of this.labels) {
+            newArrayData.addLabel(str, index);
         }
 
         return newArrayData;

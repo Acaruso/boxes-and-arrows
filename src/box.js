@@ -47,6 +47,7 @@ class Box {
             };
             newLabels.push(newLabel);
         }
+        console.log(newLabels);
         this.data.push(new ArrayData(arr, labels));
         this.updateRect();
     }
