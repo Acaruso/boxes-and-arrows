@@ -18,7 +18,7 @@ class DetailsRenderer {
             newBox.setData(curBox.detailsData);
 
             this.gfx.zOffset = 20;
-            this.boxRenderer.drawBox(newBox);
+            this.boxRenderer.drawBox(newBox, "#A3BFFF");
             this.gfx.zOffset = 0;
         }
     }

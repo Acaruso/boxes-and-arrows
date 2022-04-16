@@ -24,15 +24,15 @@ class BoxRenderer {
         this.model.boxes.forEach(box => this.drawBox(box));
     }
 
-    drawBox(box) {
-        this.drawBoxRect(box);
+    drawBox(box, color="#FFFFFF") {
+        this.drawBoxRect(box, color);
         this.drawBoxData(box);
     }
 
-    drawBoxRect(box) {
+    drawBoxRect(box, color) {
         const bgRect = {
             ...box.rect,
-            color: "#FFFFFF"
+            color
         };
 
         this.gfx.drawRect(bgRect, 0);
