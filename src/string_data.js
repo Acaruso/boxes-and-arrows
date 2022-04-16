@@ -7,10 +7,7 @@ class StringData {
     }
 
     clone() {
-        return {
-            type: stringType,
-            data: this.data
-        };
+        return new StringData(this.data);
     }
 }
 

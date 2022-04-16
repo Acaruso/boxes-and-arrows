@@ -23,8 +23,14 @@ class ArrayData {
         const newData = [...this.data];
         const newArrayData = new ArrayData(newData, []);
 
-        for (const [str, index] of this.labels) {
-            newArrayData.addLabel(str, index);
+        for (const label of this.labels) {
+            newArrayData.addLabel(label.str, label.index);
+        }
+
+        if (newArrayData.labels.length > 0) {
+            newArrayData.totalHeight = arrayDataConstants.totalHeightWithIndexLabels;
+        } else {
+            newArrayData.totalHeight = arrayDataConstants.totalHeightWithoutIndexLabels;
         }
 
         return newArrayData;
