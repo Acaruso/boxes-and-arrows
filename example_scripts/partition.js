@@ -9,7 +9,7 @@ function userFunction(logger) {
             if (arr[i] < arr[0]) {
                 colors.push(["blue", i])
             } else {
-                colors.push(["pink", i])
+                colors.push(["red", i])
             }
         }
         return colors;
@@ -28,7 +28,7 @@ function userFunction(logger) {
 
     function pushArrFinal(arr, i, j, id) {
         const labels = [["i", i], ["j", j]];
-        const colors = [["yellow", i - 1], ["blue", 0, i - 2], ["pink", i, arr.length]];
+        const colors = [["yellow", i - 1], ["blue", 0, i - 2], ["red", i, arr.length]];
         logger.appendArrayToNode(arr, labels, id, colors);
     }
 

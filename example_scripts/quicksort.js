@@ -1,13 +1,3 @@
-function getRand() {
-    return Math.floor(Math.random() * 10);
-}
-
-function swap(arr, i, j) {
-    let temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
-
 function userFunction(logger) {
     function pushStr(str, id) {
         logger.appendToNode(`\n${str}`, id);
@@ -30,8 +20,14 @@ function userFunction(logger) {
             arr, 
             [["l", l], ["r", r], ["i", i], ["j", j]], 
             id, 
-            [["yellow", l], ["blue", l, i - 1], ["pink", i, j - 1]]
+            [["yellow", l], ["blue", l, i - 1], ["red", i, j - 1]]
         );
+    }
+
+    function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
     function quickSort(arr, l, r, parentId) {
