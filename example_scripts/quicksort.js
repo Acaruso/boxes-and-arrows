@@ -3,7 +3,9 @@ function userFunction(logger) {
         logger.appendToNode(`\n${str}`, id);
     }
 
-    function pushArr(arr, labels, id, colors) {
+    function pushArr(arr, p, l, r, id) {
+        const labels = [["l", l], ["r", r]];
+        const colors = [["yellow", p], ["blue", l, r]];
         logger.appendArrayToNode(arr, labels, id, colors);
     }
 
@@ -32,13 +34,14 @@ function userFunction(logger) {
 
     function quickSort(arr, l, r, parentId) {
         let id = logger.newNode("", parentId);
-        pushArr(arr, [["l", l], ["r", r]], id, [["yellow", l], ["blue", l, r]]);
+        pushArr(arr, l, l, r, id);
 
         if (l >= r) {
             return;
         } else {
             const pivotIdx = partition(arr, l, r, id);
-            pushStr(`partition(arr, ${l}, ${r}) -> ${pivotIdx}`, id);
+            pushStr(`\npartition(arr, ${l}, ${r}) -> ${pivotIdx}`, id);
+            pushArr(arr, pivotIdx, l, r, id);
             quickSort(arr, l, pivotIdx - 1, id);
             quickSort(arr, pivotIdx + 1, r, id);
         }
