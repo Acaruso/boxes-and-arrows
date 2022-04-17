@@ -30,7 +30,7 @@ class Box {
             if (c === "\n") {
                 this.data.push(new StringData(""));
             } else {
-                let lastStringData = lastElt(this.data);
+                let lastStringData = this.getLastStringData();
                 lastStringData.data += c;
             }
         }
@@ -39,14 +39,6 @@ class Box {
     }
 
     appendArray(arr, labels=[], colors=[]) {
-        // let newLabels = [];
-        // for (const label of labels) {
-        //     const newLabel = [
-        //         label[0],
-        //         label[1]
-        //     ];
-        //     newLabels.push(newLabel);
-        // }
         this.data.push(new ArrayData(arr, labels));
         this.updateRect();
     }
@@ -65,14 +57,6 @@ class Box {
     }
 
     appendArrayDetails(arr, labels=[], colors=[]) {
-        // let newLabels = [];
-        // for (const label of labels) {
-        //     const newLabel = [
-        //         label[0],
-        //         label[1]
-        //     ];
-        //     newLabels.push(newLabel);
-        // }
         this.detailsData.push(new ArrayData(arr, labels));
     }
 

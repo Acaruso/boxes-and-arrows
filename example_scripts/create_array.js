@@ -33,5 +33,6 @@ function userFunction(logger) {
     const arr = makeEmptyArray(5);
     // const labels = [['m', 3]];
     logger.appendArrayToNode(arr, [], id);
-    logger.appendToNode("\ntest", id);
+    logger.appendToNode("test", id);
+    // logger.appendToNode("\ntest", id);
 }
