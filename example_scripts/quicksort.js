@@ -30,7 +30,7 @@ function userFunction(logger) {
             arr, 
             [["l", l], ["r", r], ["i", i], ["j", j]], 
             id, 
-            [["yellow", l], ["blue", l, i - 1], ["green", i, j - 1]]
+            [["yellow", l], ["blue", l, i - 1], ["pink", i, j - 1]]
         );
     }
 
