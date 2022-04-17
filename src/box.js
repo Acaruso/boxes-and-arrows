@@ -1,6 +1,6 @@
 import { ArrayData } from "./array_data";
 import { arrayDataConstants } from "./constants/array_data_constants";
-import { getTextRect, getWidthOfText, lastElt, copyArray } from "./util";
+import { getWidthOfText, lastElt } from "./util";
 import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
 import { textConstants } from "./constants/text_constants";
@@ -39,7 +39,7 @@ class Box {
     }
 
     appendArray(arr, labels=[], colors=[]) {
-        this.data.push(new ArrayData(arr, labels));
+        this.data.push(new ArrayData(arr, labels, colors));
         this.updateRect();
     }
 
@@ -57,7 +57,7 @@ class Box {
     }
 
     appendArrayDetails(arr, labels=[], colors=[]) {
-        this.detailsData.push(new ArrayData(arr, labels));
+        this.detailsData.push(new ArrayData(arr, labels, colors));
     }
 
     appendChar(c) {

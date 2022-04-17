@@ -1,4 +1,5 @@
 import { Box } from "../box";
+import { colorMap } from "../constants/color_constants";
 
 class DetailsRenderer {
     constructor(gfx, state, model, boxRenderer) {
@@ -22,7 +23,11 @@ class DetailsRenderer {
                 newBox.setData(curBox.detailsData);
 
                 this.gfx.zOffset = 20;
-                this.boxRenderer.drawBox(newBox, "#A3BFFF");
+                // const bgColor = "#F5F5F5";
+                // const bgColor = "#A3BFFF";
+                const bgColor = colorMap.gray;
+
+                this.boxRenderer.drawBox(newBox, bgColor);
                 this.gfx.zOffset = 0;
             }
         }
