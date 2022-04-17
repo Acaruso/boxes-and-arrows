@@ -119,6 +119,8 @@ class ArrayRenderer {
     }
 
     drawIndexLabel(label, coord) {
+        const [labelStr, labelIndex] = label;
+
         const rectY = (
             coord.y
             + textConstants.charHeight
@@ -135,7 +137,7 @@ class ArrayRenderer {
             y: rectY
         };
 
-        rect.x += rect.w * label.index;
+        rect.x += rect.w * labelIndex;
 
         // draw arrow /////////////////////////////////
 
@@ -169,12 +171,12 @@ class ArrayRenderer {
 
         // draw label /////////////////////////////////
 
-        const textWidth = getWidthOfText(label.str, textConstants.charWidth, 0);
+        const textWidth = getWidthOfText(labelStr, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
         const textY = coord.y;
 
         this.gfx.drawText(
-            label.str,
+            labelStr,
             textConstants.charHeight,
             { x: textX, y: textY },
             2

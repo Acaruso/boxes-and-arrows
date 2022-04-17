@@ -41,10 +41,10 @@ class Box {
     appendArray(arr, labels=[]) {
         let newLabels = [];
         for (const label of labels) {
-            const newLabel = {
-                str: label[0],
-                index: label[1]
-            };
+            const newLabel = [
+                label[0],
+                label[1]
+            ];
             newLabels.push(newLabel);
         }
         this.data.push(new ArrayData(arr, labels));
@@ -67,10 +67,10 @@ class Box {
     appendArrayDetails(arr, labels=[]) {
         let newLabels = [];
         for (const label of labels) {
-            const newLabel = {
-                str: label[0],
-                index: label[1]
-            };
+            const newLabel = [
+                label[0],
+                label[1]
+            ];
             newLabels.push(newLabel);
         }
         this.detailsData.push(new ArrayData(arr, labels));

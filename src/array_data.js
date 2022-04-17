@@ -23,8 +23,8 @@ class ArrayData {
         const newData = [...this.data];
         const newArrayData = new ArrayData(newData, []);
 
-        for (const label of this.labels) {
-            newArrayData.addLabel(label.str, label.index);
+        for (const [str, index] of this.labels) {
+            newArrayData.addLabel(str, index);
         }
 
         if (newArrayData.labels.length > 0) {
@@ -37,11 +37,11 @@ class ArrayData {
     }
 
     addLabel(str, index) {
-        const i = this.labels.findIndex(x => x.index === index);
+        const i = this.labels.findIndex(([_, eltIndex]) => eltIndex === index);
         if (i !== -1) {
-            this.labels[i].str += `,${str}`;
+            this.labels[i][0] += `,${str}`;
         } else {
-            this.labels.push({str, index});
+            this.labels.push([str, index]);
         }
     }
 
