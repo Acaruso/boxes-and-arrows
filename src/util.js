@@ -132,6 +132,15 @@ const clearArray = (arr) => {
     }
 }
 
+// deep copy source to dest
+// assuming source is 2 layers deep
+// ie [[1, 2], [3, 4]]
+const copyArray = (source, dest) => {
+    for (const elt of source) {
+        dest.push([...elt]);
+    }
+}
+
 export {
     getMidpoint,
     distanceBetweenCoords,
@@ -145,4 +154,5 @@ export {
     firstElt,
     lastElt,
     clearArray,
+    copyArray,
 };

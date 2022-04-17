@@ -1,6 +1,6 @@
 import { ArrayData } from "./array_data";
 import { arrayDataConstants } from "./constants/array_data_constants";
-import { getTextRect, getWidthOfText, lastElt } from "./util";
+import { getTextRect, getWidthOfText, lastElt, copyArray } from "./util";
 import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
 import { textConstants } from "./constants/text_constants";
@@ -38,15 +38,15 @@ class Box {
         this.updateRect();
     }
 
-    appendArray(arr, labels=[]) {
-        let newLabels = [];
-        for (const label of labels) {
-            const newLabel = [
-                label[0],
-                label[1]
-            ];
-            newLabels.push(newLabel);
-        }
+    appendArray(arr, labels=[], colors=[]) {
+        // let newLabels = [];
+        // for (const label of labels) {
+        //     const newLabel = [
+        //         label[0],
+        //         label[1]
+        //     ];
+        //     newLabels.push(newLabel);
+        // }
         this.data.push(new ArrayData(arr, labels));
         this.updateRect();
     }
@@ -64,15 +64,15 @@ class Box {
         }
     }
 
-    appendArrayDetails(arr, labels=[]) {
-        let newLabels = [];
-        for (const label of labels) {
-            const newLabel = [
-                label[0],
-                label[1]
-            ];
-            newLabels.push(newLabel);
-        }
+    appendArrayDetails(arr, labels=[], colors=[]) {
+        // let newLabels = [];
+        // for (const label of labels) {
+        //     const newLabel = [
+        //         label[0],
+        //         label[1]
+        //     ];
+        //     newLabels.push(newLabel);
+        // }
         this.detailsData.push(new ArrayData(arr, labels));
     }
 

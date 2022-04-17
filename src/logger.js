@@ -44,14 +44,14 @@ class Logger {
         }
     }
 
-    appendArrayToNode(arr, labels, id) {
+    appendArrayToNode(arr, labels, id, colors=[]) {
         if (this.enabled === false) {
             return;
         }
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            box.appendArray(arr, labels);
+            box.appendArray(arr, labels, colors);
         }
     }
 
@@ -66,14 +66,14 @@ class Logger {
         }
     }
 
-    appendArrayToNodeDetails(arr, labels, id) {
+    appendArrayToNodeDetails(arr, labels, id, colors=[]) {
         if (this.enabled === false) {
             return;
         }
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            box.appendArrayDetails(arr, labels);
+            box.appendArrayDetails(arr, labels, colors);
         }
     }
 }
