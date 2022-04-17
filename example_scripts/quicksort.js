@@ -13,17 +13,41 @@ function userFunction(logger) {
         logger.appendToNodeDetails(`\n${str}`, id);
     }
 
-    function pushArrDetails(arr, labels, id, colors) {
+    function getColors(arr, l, r) {
+        let colors = [["yellow", l]];
+        for (let i = l + 1; i <= r; i++) {
+            if (arr[i] < arr[l]) {
+                colors.push(["blue", i])
+            } else {
+                colors.push(["red", i])
+            }
+        }
+        return colors;
+    }
+
+    function getColorsFinal(arr, l, r, p) {
+        let colors = [["yellow", p]];
+        let pivot = arr[p];
+        for (let i = l; i <= r; i++) {
+            if (arr[i] < pivot) {
+                colors.push(["blue", i])
+            } else {
+                colors.push(["red", i])
+            }
+        }
+        return colors;
+    }
+
+    function pushArrDetails(arr, l, r, i, j, id) {
+        const labels = [["l", l], ["r", r], ["i", i], ["j", j]];
+        const colors = getColors(arr, l, r);
         logger.appendArrayToNodeDetails(arr, labels, id, colors);
     }
 
-    function arrDetails(arr, l, r, i, j, id) {
-        pushArrDetails(
-            arr, 
-            [["l", l], ["r", r], ["i", i], ["j", j]], 
-            id, 
-            [["yellow", l], ["blue", l, i - 1], ["red", i, j - 1]]
-        );
+    function pushArrDetailsFinal(arr, l, r, i, j, id) {
+        const labels = [["l", l], ["r", r], ["i", i], ["j", j]];
+        const colors = getColorsFinal(arr, l, r, i - 1);
+        logger.appendArrayToNodeDetails(arr, labels, id, colors);
     }
 
     function swap(arr, i, j) {
@@ -58,36 +82,36 @@ function userFunction(logger) {
 
         j = i + 1;
 
-        // pushArrDetails(arr, [["i", i], ["j", j]], id);
+        pushStrDetails("init -----------------------------", id);
+        pushStrDetails("\ni = first elt >= p:", id);
+        pushStrDetails("\nj = i + 1:", id);
+        pushArrDetails(arr, l, r, i, j, id);
 
         for (; j <= r; j++) {
             pushStrDetails("----------------------------------", id);
-            arrDetails(arr, l, r, i, j, id);
+            pushArrDetails(arr, l, r, i, j, id);
             if (arr[j] < p) {
                 pushStrDetails("\nswap i <-> j", id);
                 swap(arr, i, j);
-                arrDetails(arr, l, r, i, j, id);
+                pushArrDetails(arr, l, r, i, j, id);
                 pushStrDetails("\ni++", id);
                 i++;
-                arrDetails(arr, l, r, i, j, id);
+                pushArrDetails(arr, l, r, i, j, id);
             }
             pushStrDetails("\nj++", id);
         }
 
-        swap(arr, l, i - 1);
         pushStrDetails("final ----------------------------------", id);
-        arrDetails(arr, l, r, i, j, id);
+        swap(arr, l, i - 1);
+        pushStrDetails("\nswap l <-> (i - 1)", id);
+        pushArrDetailsFinal(arr, l, r, i, j, id);
         pushStrDetails(`-> ${i - 1}`, id);
     
         return i - 1;
     }
 
-    const arr = [5,3,5,0,6,9,6,3,8,6]
-
-    // const arr = [];
-    // for (let i = 0; i < 10; i++) {
-    //     arr.push(getRand());
-    // }
+    const arr = [1,4,3,2,5,8,4,6,2];
+    // const arr = [5,3,5,0,6,9,6,3,8,6]
 
     quickSort(arr, 0, arr.length - 1, null);
     console.log(arr);
