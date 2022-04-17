@@ -25,9 +25,18 @@ function userFunction(logger) {
         logger.appendArrayToNodeDetails(arr, labels, id, colors);
     }
 
+    function arrDetails(arr, l, r, i, j, id) {
+        pushArrDetails(
+            arr, 
+            [["l", l], ["r", r], ["i", i], ["j", j]], 
+            id, 
+            [["yellow", l], ["blue", l, i - 1], ["green", i, j - 1]]
+        );
+    }
+
     function quickSort(arr, l, r, parentId) {
         let id = logger.newNode("", parentId);
-        pushArr(arr, [["l", l], ["r", r]], id, [["yellow", 0], ["blue", l, r]]);
+        pushArr(arr, [["l", l], ["r", r]], id, [["yellow", l], ["blue", l, r]]);
 
         if (l >= r) {
             return;
@@ -54,26 +63,21 @@ function userFunction(logger) {
 
         for (; j <= r; j++) {
             pushStrDetails("----------------------------------", id);
-            pushArrDetails(
-                arr, 
-                [["l", l], ["r", r], ["i", i], ["j", j]], 
-                id, 
-                [["yellow", l], ["blue", i, j]]
-            );
+            arrDetails(arr, l, r, i, j, id);
             if (arr[j] < p) {
                 pushStrDetails("\nswap i <-> j", id);
                 swap(arr, i, j);
-                pushArrDetails(arr, [["l", l], ["r", r], ["i", i], ["j", j]], id, [["yellow", l]]);
+                arrDetails(arr, l, r, i, j, id);
                 pushStrDetails("\ni++", id);
                 i++;
-                pushArrDetails(arr, [["l", l], ["r", r], ["i", i], ["j", j]], id, [["yellow", l]]);
+                arrDetails(arr, l, r, i, j, id);
             }
             pushStrDetails("\nj++", id);
         }
 
         swap(arr, l, i - 1);
         pushStrDetails("final ----------------------------------", id);
-        pushArrDetails(arr, [["l", l], ["r", r], ["pivot", i - 1]], id, [["yellow", l]]);
+        arrDetails(arr, l, r, i, j, id);
         pushStrDetails(`-> ${i - 1}`, id);
     
         return i - 1;
