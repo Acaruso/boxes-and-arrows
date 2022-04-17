@@ -70,8 +70,8 @@ class ArrayRenderer {
     getColor(i, colors) {
         for (const colorElt of colors) {
             if (colorElt.length === 2) {
-                const [color, begin] = colorElt;
-                if (i === begin) {
+                const [color, idx] = colorElt;
+                if (i === idx) {
                     if (color in colorMap) {
                         return colorMap[color];
                     } else {

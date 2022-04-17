@@ -23,8 +23,6 @@ class DetailsRenderer {
                 newBox.setData(curBox.detailsData);
 
                 this.gfx.zOffset = 20;
-                // const bgColor = "#F5F5F5";
-                // const bgColor = "#A3BFFF";
                 const bgColor = colorMap.gray;
 
                 this.boxRenderer.drawBox(newBox, bgColor);
