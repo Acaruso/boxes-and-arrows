@@ -30,9 +30,6 @@ function makeEmptyArray(n) {
 function userFunction(logger) {
     const id = logger.newNode("", null);
     logger.appendToNode("\ntest", id);
-    const arr = makeEmptyArray(5);
-    // const labels = [['m', 3]];
+    const arr = makeEmptyArray(7);
     logger.appendArrayToNode(arr, [], id);
-    logger.appendToNode("test", id);
-    // logger.appendToNode("\ntest", id);
 }
