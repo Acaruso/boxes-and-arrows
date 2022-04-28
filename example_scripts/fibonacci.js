@@ -28,5 +28,5 @@ function userFunction(logger) {
         return res;
     }
 
-    fib(6, null);
+    fib(5, null);
 }
