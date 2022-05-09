@@ -4,7 +4,7 @@ import { DebugEvents } from "./debug_events";
 import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
 import { FormattingEvents } from "./formatting_events";
-import { DetailsViewEvents } from "./details_view_events";
+import { DetailsEvents } from "./details_events";
 import { ModeEvents } from "./mode_events";
 import { rectsOverlap } from "../util";
 import { SelectedRegionEvents } from "./selected_region_events";
@@ -12,10 +12,6 @@ import { SelectedRegionEvents } from "./selected_region_events";
 const addEventListener = (type, callback, options={}) => {
     document.addEventListener(type, callback, options);
 }
-
-// const addEventListener = (type, callback) => {
-//     document.addEventListener(type, callback, false);
-// }
 
 class Ui {
     constructor(state, model, eventTable, scripter, treeFormatter) {
@@ -44,7 +40,7 @@ class Ui {
             new FileEvents(state, model, eventTable, scripter),
             new DebugEvents(state, model, eventTable),
             new ModeEvents(state, model, eventTable),
-            new DetailsViewEvents(state, model, eventTable),
+            new DetailsEvents(state, model, eventTable),
         ];
 
         for (const eventAdder of this.eventAdders) {

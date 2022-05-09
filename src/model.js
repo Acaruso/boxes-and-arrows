@@ -1,3 +1,4 @@
+import { Box } from "./box";
 import { Boxes } from "./boxes";
 import { HelpDialog } from "./help_dialog"
 import { clearArray } from "./util";
@@ -22,7 +23,7 @@ class Model {
 
         this.detailsPos = 0;
         this.detailsVisible = false;
-        this.details = {};
+        this.detailsBox = {};
     }
 
     init() {
@@ -60,6 +61,25 @@ class Model {
         while (this.selectedBoxIds.length > 0) {
             this.selectedBoxIds.pop();
         }
+    }
+
+    handleDetails() {
+        if (this.selectedBoxIds.length === 1) {
+            const curId = this.selectedBoxIds[0];
+            const curBox = this.boxes.getBox(curId);
+            if (curBox.detailsData.length > 0) {
+                this.detailsVisible = true;
+                const detailsBoxCoord = {
+                    x: window.pageXOffset + 1,
+                    y: window.pageYOffset + 1
+                };
+                this.detailsBox = new Box("", detailsBoxCoord, 0);
+                this.detailsBox.setData(curBox.detailsData);
+                return;
+            }
+        }
+
+        this.detailsVisible = false;
     }
 }
 
