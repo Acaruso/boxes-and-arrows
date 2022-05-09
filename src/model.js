@@ -19,6 +19,10 @@ class Model {
         this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
 
         this.mode = "normal";
+
+        this.detailsPos = 0;
+        this.detailsVisible = false;
+        this.details = {};
     }
 
     init() {
