@@ -76,7 +76,7 @@ function userFunction(logger) {
             right: null
         },
         right: {
-            value: 22,
+            value: 5,
             left: null,
             right: null
         }
