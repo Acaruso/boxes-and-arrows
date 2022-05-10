@@ -25,20 +25,6 @@ class Box {
         this.updateRect();
     }
 
-    scrollDown() {
-        if (this.scrollPos < 9) {
-            this.scrollPos++;
-        }
-        console.log(this.scrollPos);
-    }
-
-    scrollUp() {
-        if (this.scrollPos > 0) {
-            this.scrollPos--;
-        }
-        console.log(this.scrollPos);
-    }
-
     appendString(str) {
         for (let i = 0; i < str.length; i++) {
             let c = str[i];
@@ -194,6 +180,18 @@ class Box {
         };
 
         return rect;
+    }
+
+    scrollDown() {
+        if (this.scrollable && this.scrollPos < 9) {
+            this.scrollPos++;
+        }
+    }
+
+    scrollUp() {
+        if (this.scrollable && this.scrollPos > 0) {
+            this.scrollPos--;
+        }
     }
 }
 

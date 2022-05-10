@@ -21,7 +21,6 @@ class Model {
 
         this.mode = "normal";
 
-        this.detailsPos = 0;
         this.detailsVisible = false;
         this.detailsBox = {};
     }
