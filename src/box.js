@@ -20,8 +20,23 @@ class Box {
         this.rect = {};
         this.parentId = null;
         this.scrollable = false;
+        this.scrollPos = 0;
 
         this.updateRect();
+    }
+
+    scrollDown() {
+        if (this.scrollPos < 9) {
+            this.scrollPos++;
+        }
+        console.log(this.scrollPos);
+    }
+
+    scrollUp() {
+        if (this.scrollPos > 0) {
+            this.scrollPos--;
+        }
+        console.log(this.scrollPos);
     }
 
     appendString(str) {
