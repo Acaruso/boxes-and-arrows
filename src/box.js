@@ -19,6 +19,7 @@ class Box {
         this.appendString(str);
         this.rect = {};
         this.parentId = null;
+        this.scrollable = false;
 
         this.updateRect();
     }

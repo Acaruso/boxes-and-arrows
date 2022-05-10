@@ -75,6 +75,8 @@ class Model {
                 };
                 this.detailsBox = new Box("", detailsBoxCoord, 0);
                 this.detailsBox.setData(curBox.detailsData);
+                this.detailsBox.scrollable = true;
+                this.detailsBox.rect.h = document.documentElement.clientHeight - 20;
                 return;
             }
         }

@@ -25,8 +25,12 @@ class BoxRenderer {
     }
 
     drawBox(box, color="#FFFFFF") {
+        this.gfx.beginGroup();
         this.drawBoxRect(box, color);
+        this.gfx.beginClipRect(box.rect, -1000);
         this.drawBoxData(box);
+        this.gfx.endClip(1000);
+        this.gfx.endGroup();
     }
 
     drawBoxRect(box, color) {
