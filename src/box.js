@@ -185,36 +185,24 @@ class Box {
     }
 
     scrollDown() {
-        if (this.scrollable && this.scrollPos < 999) {
+        if (this.scrollable) {
             const dataRect = this.getRect();
 
             const dataLow = dataRect.y + dataRect.h;
             const newDataLow = dataLow - (this.scrollPos + this.scrollInc);
-            const padding = 4;
-            // const rectLow = this.rect.y + this.rect.h + padding;
             const rectLow = this.rect.y + this.rect.h;
 
             if (newDataLow < rectLow) {
-                while (newDataLow < rectLow) {
-                    newDataLow++;
-                }
-
-                this.scrollPos = newDataLow;
-
-                // console.log('yep');
-                // const a = rectLow - newDataLow;
-                // console.log(a);
-                // // this.scrollPos -= a;
-                // this.scrollPos = newDataLow - a;
+                const a = rectLow - newDataLow;
+                this.scrollPos += this.scrollInc - a;
             } else {
                 this.scrollPos += this.scrollInc;
             }
-            console.log(this.scrollPos);
         }
     }
 
     scrollUp() {
-        if (this.scrollable && this.scrollPos > 0) {
+        if (this.scrollable) {
             this.scrollPos = clamp(this.scrollPos - this.scrollInc, 0, 999);
         }
     }

@@ -11,21 +11,6 @@ class Renderer {
         this.state = state;
         this.model = model;
 
-        // const rendererHelper = new RendererHelper(gfx, state, model);
-
-        // this.renderers = [
-        //     new BoxRenderer(gfx, state, model, rendererHelper),
-        //     new HelpDialogRenderer(
-        //         gfx,
-        //         state,
-        //         model,
-        //         rendererHelper
-        //     ),
-        //     new LineRenderer(gfx, state, model),
-        //     new SelectedRegionRenderer(gfx, state, model),
-        //     new DetailsRenderer(gfx, state, model),
-        // ];
-
         const rendererHelper = new RendererHelper(gfx, state, model);
         const boxRenderer = new BoxRenderer(gfx, state, model, rendererHelper);
 

@@ -1,7 +1,7 @@
 import { Box } from "./box";
 import { Boxes } from "./boxes";
-import { HelpDialog } from "./help_dialog"
 import { clearArray } from "./util";
+import { HelpDialog } from "./help_dialog"
 
 class Model {
     constructor() {
@@ -77,7 +77,6 @@ class Model {
                 this.detailsBox.scrollable = true;
                 const maxHeight = document.documentElement.clientHeight - 20;
                 this.detailsBox.rect.h = Math.min(this.detailsBox.rect.h, maxHeight);
-                // this.detailsBox.rect.h = document.documentElement.clientHeight - 20;
                 return;
             }
         }
