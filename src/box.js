@@ -195,6 +195,12 @@ class Box {
             const rectLow = this.rect.y + this.rect.h;
 
             if (newDataLow < rectLow) {
+                while (newDataLow < rectLow) {
+                    newDataLow++;
+                }
+
+                this.scrollPos = newDataLow;
+
                 // console.log('yep');
                 // const a = rectLow - newDataLow;
                 // console.log(a);
