@@ -19,8 +19,10 @@ class Box {
         this.appendString(str);
         this.rect = {};
         this.parentId = null;
+
         this.scrollable = false;
         this.scrollPos = 0;
+        this.scrollInc = 50;
 
         this.updateRect();
     }
@@ -183,15 +185,42 @@ class Box {
     }
 
     scrollDown() {
-        if (this.scrollable && this.scrollPos < 9) {
-            this.scrollPos++;
+        if (this.scrollable && this.scrollPos < 999) {
+            const dataRect = this.getRect();
+
+            const dataLow = dataRect.y + dataRect.h;
+            const newDataLow = dataLow - (this.scrollPos + this.scrollInc);
+            const padding = 4;
+            // const rectLow = this.rect.y + this.rect.h + padding;
+            const rectLow = this.rect.y + this.rect.h;
+
+            if (newDataLow < rectLow) {
+                // console.log('yep');
+                // const a = rectLow - newDataLow;
+                // console.log(a);
+                // // this.scrollPos -= a;
+                // this.scrollPos = newDataLow - a;
+            } else {
+                this.scrollPos += this.scrollInc;
+            }
+            console.log(this.scrollPos);
         }
     }
 
     scrollUp() {
         if (this.scrollable && this.scrollPos > 0) {
-            this.scrollPos--;
+            this.scrollPos = clamp(this.scrollPos - this.scrollInc, 0, 999);
         }
+    }
+}
+
+function clamp(value, low, high) {
+    if (value < low) {
+        return low;
+    } else if (value > high) {
+        return high;
+    } else {
+        return value;
     }
 }
 

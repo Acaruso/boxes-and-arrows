@@ -75,7 +75,9 @@ class Model {
                 this.detailsBox = new Box("", detailsBoxCoord, 0);
                 this.detailsBox.setData(curBox.detailsData);
                 this.detailsBox.scrollable = true;
-                this.detailsBox.rect.h = document.documentElement.clientHeight - 20;
+                const maxHeight = document.documentElement.clientHeight - 20;
+                this.detailsBox.rect.h = Math.min(this.detailsBox.rect.h, maxHeight);
+                // this.detailsBox.rect.h = document.documentElement.clientHeight - 20;
                 return;
             }
         }

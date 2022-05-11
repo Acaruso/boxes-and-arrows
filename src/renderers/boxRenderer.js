@@ -49,7 +49,7 @@ class BoxRenderer {
         let z = 2;
 
         let curY = box.scrollable
-            ? coord.y - (box.scrollPos * 50)
+            ? coord.y - box.scrollPos
             : coord.y;
 
         for (let i = 0; i < data.length; i++) {
