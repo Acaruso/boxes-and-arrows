@@ -83,30 +83,44 @@ class Ui {
             && this.model.mode === "wasd"
         ) {
             const scrollAmount = 10;
-            const oldXOffset = window.pageXOffset;
-            const oldYOffset = window.pageYOffset;
+            let xOffset = window.pageXOffset;
+            let yOffset = window.pageYOffset;
 
             if (kb.w) {
-                window.scroll(oldXOffset, oldYOffset - scrollAmount);
+                yOffset -= scrollAmount;
             }
 
             if (kb.a) {
-                window.scroll(oldXOffset - scrollAmount, oldYOffset);
+                xOffset -= scrollAmount;
             }
 
             if (kb.s) {
-                window.scroll(oldXOffset, oldYOffset + scrollAmount);
+                yOffset += scrollAmount;
             }
 
             if (kb.d) {
-                window.scroll(oldXOffset + scrollAmount, oldYOffset);
+                xOffset += scrollAmount;
             }
+
+            window.scroll(xOffset, yOffset);
+        }
+    }
+
+    updateDetails() {
+        if (this.model.detailsVisible) {
+            this.model.detailsBox.setCoord({
+                x: window.pageXOffset + 1,
+                y: window.pageYOffset + 1
+            });
+            const maxHeight = document.documentElement.clientHeight - 20;
+            this.model.detailsBox.rect.h = Math.min(this.model.detailsBox.rect.h, maxHeight);
         }
     }
 
     run() {
         this.handleDragging();
         this.handleScrolling();
+        this.updateDetails();
     }
 }
 
