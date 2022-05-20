@@ -41,6 +41,41 @@ function userFunction(logger) {
         return inner(n, null);
     }
 
-    let res = fib(5);
-    console.log(res);
+    function fibBottomUp(n) {
+        if (n === 0 || n === 1) {
+            return n;
+        }
+
+        let arr = [];
+        fillArr(arr, n + 1);
+        arr[0] = 0;
+        arr[1] = 1;
+
+        for (let i = 2; i <= n; i++) {
+            arr[i] = arr[i - 1] + arr[i - 2];
+        }
+
+        return arr[n];
+    }
+
+    function fibBottomUpOptimized(n) {
+        if (n === 0 || n === 1) {
+            return n;
+        }
+
+        let prev = 1;
+        let prevPrev = 0;
+        let cur = 0;
+
+        for (let i = 2; i <= n; i++) {
+            cur = prev + prevPrev;
+            prevPrev = prev;
+            prev = cur;
+        }
+
+        return cur;
+    }
+
+    let res = fibBottomUpOptimized(6);
+    console.log(`res: ${res}`);
 }

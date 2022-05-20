@@ -32,7 +32,7 @@ function userFunction(logger) {
             const [cur1, cur2] = s.pop();
 
             if (cur1 === null && cur2 === null) {
-                return true;
+                continue
             } else if (cur1 === null || cur2 === null) {
                 return false;
             } else if (cur1.value !== cur2.value) {
