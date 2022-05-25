@@ -20,23 +20,21 @@ class FileEvents {
             e.preventDefault();
         });
 
-        document.addEventListener("drop", async ev => {
-            ev.preventDefault();
+        document.addEventListener("drop", async e => {
+            e.preventDefault();
 
-            if (ev.dataTransfer.items) {
-                if (ev.dataTransfer.items.length === 1) {
-                    if (ev.dataTransfer.items[0].kind === 'file') {
-                        const file = ev.dataTransfer.items[0].getAsFile();
-                        const content = await file.text();
-                        this.loadScript(content);
-                    }
-                }
-            } else {
-                if (ev.dataTransfer.files.length === 1) {
-                    const file = ev.dataTransfer.files[0].getAsFile();
-                    const content = await file.text();
-                    this.loadScript(content);
-                }
+            if (
+                e.dataTransfer.items
+                && e.dataTransfer.items.length > 0
+                && e.dataTransfer.items[0].kind === "file"
+            ) {
+                const file = e.dataTransfer.items[0].getAsFile();
+                const content = await file.text();
+                this.loadScript(content);
+            } else if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0].getAsFile();
+                const content = await file.text();
+                this.loadScript(content);
             }
         });
     }
