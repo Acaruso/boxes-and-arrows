@@ -11,6 +11,59 @@ class FileEvents {
         this.eventTable = eventTable;
         this.scripter = scripter;
         this.prevFileHandle = null;
+
+        this.addDragAndDropEvents();
+    }
+
+    addDragAndDropEvents() {
+        document.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        document.addEventListener("drop", async ev => {
+            ev.preventDefault();
+
+            if (ev.dataTransfer.items) {
+                if (ev.dataTransfer.items.length === 1) {
+                    if (ev.dataTransfer.items[0].kind === 'file') {
+                        const file = ev.dataTransfer.items[0].getAsFile();
+                        const content = await file.text();
+                        this.loadScript(content);
+                    }
+                }
+            } else {
+                if (ev.dataTransfer.files.length === 1) {
+                    const file = ev.dataTransfer.files[0].getAsFile();
+                    const content = await file.text();
+                    this.loadScript(content);
+                }
+                // for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                //     console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+                // }
+            }
+        });
+    }
+
+    loadScript(content) {
+        try {
+            let oldScriptElt = document.getElementById("userScriptElt");
+            if (oldScriptElt !== null) {
+                oldScriptElt.remove();
+            }
+            let scriptElt = document.createElement("script");
+            scriptElt.id = "userScriptElt";
+            // const [fileHandle, content] = await loadFile();
+            // this.prevFileHandle = fileHandle;
+            const textNode = document.createTextNode(content);
+            scriptElt.appendChild(textNode);
+            const targetElt = document.getElementById("userScripts");
+            targetElt.append(scriptElt);
+            this.model.init();
+            setTimeout(() => {}, 0);    // wait for one event-cycle
+            this.scripter.runUserFunction(userFunction);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     addEvents() {
@@ -114,5 +167,6 @@ class FileEvents {
         );
     }
 }
+
 
 export { FileEvents };

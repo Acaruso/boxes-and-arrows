@@ -2,7 +2,7 @@ import { textConstants } from "./constants/text_constants";
 
 class Gfx {
     constructor() {
-        this.canvas = document.getElementById("myCanvas")
+        this.canvas = document.getElementById("myCanvas");
         this.ctx = this.canvas.getContext("2d");
         this.queue = [];
         this.group = this.makeGroup();
