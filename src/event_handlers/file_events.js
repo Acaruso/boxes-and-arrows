@@ -37,9 +37,6 @@ class FileEvents {
                     const content = await file.text();
                     this.loadScript(content);
                 }
-                // for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-                //     console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-                // }
             }
         });
     }
