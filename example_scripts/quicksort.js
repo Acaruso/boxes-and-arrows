@@ -64,7 +64,7 @@ function userFunction(logger) {
             return;
         } else {
             const pivotIdx = partition(arr, l, r, id);
-            pushStr(`\npartition(arr, ${l}, ${r}) -> ${pivotIdx}`, id);
+            pushStr(`\npartition(arr, ${l}, ${r}) -> ${pivotIdx}\n`, id);
             pushArr(arr, pivotIdx, l, r, id);
             quickSort(arr, l, pivotIdx - 1, id);
             quickSort(arr, pivotIdx + 1, r, id);
@@ -83,8 +83,8 @@ function userFunction(logger) {
         j = i + 1;
 
         pushStrDetails("init -----------------------------", id);
-        pushStrDetails("\ni = first elt >= p:", id);
-        pushStrDetails("\nj = i + 1:", id);
+        pushStrDetails("\ni = first elt >= p", id);
+        pushStrDetails("\nj = i + 1", id);
         pushArrDetails(arr, l, r, i, j, id);
 
         for (; j <= r; j++) {
@@ -110,8 +110,9 @@ function userFunction(logger) {
         return i - 1;
     }
 
-    const arr = [1,4,3,2,5,8,4,6,2];
-    // const arr = [5,3,5,0,6,9,6,3,8,6]
+    // const arr = [1,4,3,2,5,8,4,6,2];
+    // const arr = [5,3,5,0,6,9,6,3,8,6];
+    const arr = [3,4,2,1,3];
 
     quickSort(arr, 0, arr.length - 1, null);
     console.log(arr);

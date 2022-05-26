@@ -1,14 +1,20 @@
 function userFunction(logger) {
-    function toString(x) {
+    const n = 16;
+
+    function toString(x, n) {
         let str = "";
-        while (x !== 0) {
-            if ((x & 1) === 1) {
+        let bit = 1;
+
+        for (let i = 0; i < n; i++) {
+            if ((x & bit) !== 0) {
                 str = "1" + str;
             } else {
                 str = "0" + str;
             }
-            x = x >> 1;
+
+            bit = bit << 1;
         }
+
         return str;
     }
 
@@ -24,26 +30,37 @@ function userFunction(logger) {
         return x;
     }
 
+    function bitToIdx(bit, n) {
+        let i = 0;
+
+        while (bit !== 0) {
+            bit = bit >> 1;
+            i++;
+        }
+
+        let res = n - (i - 1);
+        console.log("res: " + res);
+    }
+
     function pushStr(str, id) {
         logger.pushString(`\n${str}`, id);
     }
 
-    function pushArr(x, id) {
+    function pushArr(x, i, id) {
         let arr = [];
         let colors = [];
-        const str = toString(x);
+        const str = toString(x, n);
         for (let i = 0; i < str.length; i++) {
-            // arr.push(str[i]);
             arr.push(" ");
             if (str[i] === "1") {
                 colors.push(["blue", i]);
             }
         }
-        logger.pushArray(arr, id, { colors });
+        const labels = [["i", i]];
+        logger.pushArray(arr, id, { colors, labels });
     }
 
     function flipBit(x) {
-        console.log("testdsdfss");
         let id = logger.newNode("", null);
 
         if (~x === 0) {
@@ -53,24 +70,15 @@ function userFunction(logger) {
         let curLen = 0;
         let prevLen = 0;
         let maxLen = 1;
+        let bit = 1;
 
-        // pushArr(x, id);
-        // pushStr(`curLen: ${curLen}`, id);
-        // pushStr(`prevLen: ${prevLen}`, id);
-        // pushStr(`maxLen: ${maxLen}`, id);
-        // pushStr(`\n----------------------------------------------\n`, id);
+        for (let i = 0; i <= 32; i++) {
+            pushArr(x, i, id);
 
-        while (x !== 0) {
-            pushArr(x, id);
-            pushStr(`curLen: ${curLen}`, id);
-            pushStr(`prevLen: ${prevLen}`, id);
-            pushStr(`maxLen: ${maxLen}`, id);
-            pushStr(`\n----------------------------------------------\n`, id);
-
-            if ((x & 1) === 1) {
+            if ((x & bit) !== 0) {
                 curLen++;
-            } else if ((x & 1) === 0) {
-                if ((x & 2) === 2) {
+            } else if ((x & bit) === 0) {
+                if ((x & (bit << 1)) !== 0) {
                     prevLen = curLen;
                 } else {
                     prevLen = 0;
@@ -78,7 +86,7 @@ function userFunction(logger) {
                 curLen = 0;
             }
             maxLen = Math.max(maxLen, prevLen + curLen + 1);
-            x = x >> 1;
+            bit = bit << 1;
         }
 
         pushArr(x, id);
