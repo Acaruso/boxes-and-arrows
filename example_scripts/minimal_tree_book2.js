@@ -29,7 +29,7 @@ function minimalTree(arr, logger) {
     }
 
     function pushArr(arr, labels, id) {
-        logger.pushArray(arr, labels, id);
+        logger.pushArray(arr, id, { labels });
     }
 
     function inner(start, end, parentId) {

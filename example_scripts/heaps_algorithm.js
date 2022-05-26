@@ -4,7 +4,7 @@ function userFunction(logger) {
     }
 
     function _appendArr(arr, id) {
-        logger.pushArray(arr, [], id, []);
+        logger.pushArray(arr, id);
     }
 
     function isEven(x) {

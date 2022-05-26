@@ -17,19 +17,19 @@ function userFunction(logger) {
 
     function pushArrInit(arr, id) {
         const colors = getColors(arr);
-        logger.pushArray(arr, [], id, colors);
+        logger.pushArray(arr, id, { colors });
     }
 
     function pushArr(arr, i, j, id) {
         const labels = [["i", i], ["j", j]];
         const colors = getColors(arr);
-        logger.pushArray(arr, labels, id, colors);
+        logger.pushArray(arr, id, { labels, colors });
     }
 
     function pushArrFinal(arr, i, j, id) {
         const labels = [["i", i], ["j", j]];
         const colors = [["yellow", i - 1], ["blue", 0, i - 2], ["red", i, arr.length]];
-        logger.pushArray(arr, labels, id, colors);
+        logger.pushArray(arr, id, { labels, colors });
     }
 
     function swap(arr, i, j) {

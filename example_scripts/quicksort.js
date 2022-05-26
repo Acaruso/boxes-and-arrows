@@ -6,7 +6,7 @@ function userFunction(logger) {
     function pushArr(arr, p, l, r, id) {
         const labels = [["l", l], ["r", r]];
         const colors = [["yellow", p], ["blue", l, r]];
-        logger.pushArray(arr, labels, id, colors);
+        logger.pushArray(arr, id, { labels, colors});
     }
 
     function pushStrDetails(str, id) {
@@ -41,13 +41,13 @@ function userFunction(logger) {
     function pushArrDetails(arr, l, r, i, j, id) {
         const labels = [["l", l], ["r", r], ["i", i], ["j", j]];
         const colors = getColors(arr, l, r);
-        logger.pushArrayDetails(arr, labels, id, colors);
+        logger.pushArrayDetails(arr, id, { labels, colors});
     }
 
     function pushArrDetailsFinal(arr, l, r, i, j, id) {
         const labels = [["l", l], ["r", r], ["i", i], ["j", j]];
         const colors = getColorsFinal(arr, l, r, i - 1);
-        logger.pushArrayDetails(arr, labels, id, colors);
+        logger.pushArrayDetails(arr, id, { labels, colors});
     }
 
     function swap(arr, i, j) {

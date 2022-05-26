@@ -38,7 +38,7 @@ function userFunction(logger) {
                 colors.push(["blue", i]);
             }
         }
-        logger.pushArray(arr, [], id, colors);
+        logger.pushArray(arr, id, { colors });
     }
 
     function flipBit(x) {

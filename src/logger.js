@@ -44,7 +44,20 @@ class Logger {
         }
     }
 
-    pushArray(arr, labels, id, colors=[]) {
+    // pushArray(arr, labels, id, colors=[]) {
+    //     if (this.enabled === false) {
+    //         return;
+    //     }
+
+    //     const box = this.boxes.getBox(id);
+    //     if (box !== null && box !== undefined) {
+    //         box.appendArray(arr, labels, colors);
+    //     }
+    // }
+
+    pushArray(arr, id, options={}) {
+        const { labels, colors } = options;
+
         if (this.enabled === false) {
             return;
         }
@@ -66,7 +79,20 @@ class Logger {
         }
     }
 
-    pushArrayDetails(arr, labels, id, colors=[]) {
+    // pushArrayDetails(arr, labels, id, colors=[]) {
+    //     if (this.enabled === false) {
+    //         return;
+    //     }
+
+    //     const box = this.boxes.getBox(id);
+    //     if (box !== null && box !== undefined) {
+    //         box.appendArrayDetails(arr, labels, colors);
+    //     }
+    // }
+
+    pushArrayDetails(arr, id, options={}) {
+        const { labels, colors } = options;
+
         if (this.enabled === false) {
             return;
         }
