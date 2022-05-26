@@ -33,7 +33,8 @@ function userFunction(logger) {
         let colors = [];
         const str = toString(x);
         for (let i = 0; i < str.length; i++) {
-            arr.push(str[i]);
+            // arr.push(str[i]);
+            arr.push(" ");
             if (str[i] === "1") {
                 colors.push(["blue", i]);
             }
@@ -52,14 +53,18 @@ function userFunction(logger) {
         let prevLen = 0;
         let maxLen = 1;
 
-        pushArr(x, id);
-        pushStr(`curLen: ${curLen}`, id);
-        pushStr(`prevLen: ${prevLen}`, id);
-        pushStr(`maxLen: ${maxLen}`, id);
-        pushStr(`\n----------------------------------------------\n`, id);
+        // pushArr(x, id);
+        // pushStr(`curLen: ${curLen}`, id);
+        // pushStr(`prevLen: ${prevLen}`, id);
+        // pushStr(`maxLen: ${maxLen}`, id);
+        // pushStr(`\n----------------------------------------------\n`, id);
 
         while (x !== 0) {
             pushArr(x, id);
+            pushStr(`curLen: ${curLen}`, id);
+            pushStr(`prevLen: ${prevLen}`, id);
+            pushStr(`maxLen: ${maxLen}`, id);
+            pushStr(`\n----------------------------------------------\n`, id);
 
             if ((x & 1) === 1) {
                 curLen++;
@@ -73,13 +78,13 @@ function userFunction(logger) {
             }
             maxLen = Math.max(maxLen, prevLen + curLen + 1);
             x = x >> 1;
-
-
-            pushStr(`curLen: ${curLen}`, id);
-            pushStr(`prevLen: ${prevLen}`, id);
-            pushStr(`maxLen: ${maxLen}`, id);
-            pushStr(`\n----------------------------------------------\n`, id);
         }
+
+        pushArr(x, id);
+        pushStr(`curLen: ${curLen}`, id);
+        pushStr(`prevLen: ${prevLen}`, id);
+        pushStr(`maxLen: ${maxLen}`, id);
+        pushStr(`\n----------------------------------------------\n`, id);
 
         return maxLen;
     }
