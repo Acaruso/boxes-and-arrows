@@ -16,7 +16,7 @@ class HelpDialog {
             "Create a connection: Ctrl-click within a box,",
             "    then drag to another box",
             "",
-            "Duplicate a box: Alt-click within a box",
+            "Duplicate a box: Alt-click within a box ",
             "",
             "Delete selected boxes: Delete",
             "",
