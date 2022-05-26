@@ -1,6 +1,7 @@
-import { textConstants } from "../constants/text_constants";
-import { getWidthOfText } from "../util"
 import { arrayDataConstants } from "../constants/array_data_constants";
+import { colorMap } from "../constants/color_constants";
+import { getWidthOfText } from "../util"
+import { textConstants } from "../constants/text_constants";
 
 class ArrayRenderer {
     constructor(gfx, state, model) {
@@ -47,7 +48,8 @@ class ArrayRenderer {
         };
 
         for (let i = 0; i < arr.length; i++) {
-            this.drawBox(String(arr[i]), curRect);
+            const color = this.getColor(i, arrWrapper.colors);
+            this.drawBox(String(arr[i]), curRect, color);
             this.drawTopLabel(String(i), curRect);
             // this.drawTopLabel(String(i + 1), curRect);
             this.drawPoint(String(i), { x: curRect.x, y: curRect.y + curRect.h });
@@ -65,7 +67,37 @@ class ArrayRenderer {
         // this.drawOutline(arrWrapper, coord, totalHeight);
     }
 
-    drawBox(str, rect) {
+    getColor(i, colors) {
+        for (const colorElt of colors) {
+            if (colorElt.length === 2) {
+                const [color, idx] = colorElt;
+                if (i === idx) {
+                    if (color in colorMap) {
+                        return colorMap[color];
+                    } else {
+                        return "#FFFFFF";
+                    }
+                }
+            } else if (colorElt.length === 3) {
+                const [color, begin, end] = colorElt;
+                if (i >= begin && i <= end) {
+                    if (color in colorMap) {
+                        return colorMap[color];
+                    } else {
+                        return "#FFFFFF";
+                    }
+                }
+            }
+        }
+
+        return "#FFFFFF";
+    }
+
+    drawBox(str, rect, color) {
+        let bgRect = { ...rect, color };
+        
+        this.gfx.drawRect(bgRect, 1);
+
         this.gfx.strokeRectHeavy(rect, 2);
 
         const textWidth = getWidthOfText(str, textConstants.charWidth, 0);
@@ -119,6 +151,8 @@ class ArrayRenderer {
     }
 
     drawIndexLabel(label, coord) {
+        const [labelStr, labelIndex] = label;
+
         const rectY = (
             coord.y
             + textConstants.charHeight
@@ -135,7 +169,7 @@ class ArrayRenderer {
             y: rectY
         };
 
-        rect.x += rect.w * label.index;
+        rect.x += rect.w * labelIndex;
 
         // draw arrow /////////////////////////////////
 
@@ -169,12 +203,12 @@ class ArrayRenderer {
 
         // draw label /////////////////////////////////
 
-        const textWidth = getWidthOfText(label.str, textConstants.charWidth, 0);
+        const textWidth = getWidthOfText(labelStr, textConstants.charWidth, 0);
         const textX = Math.floor(rectXMidpoint - (textWidth / 2));
         const textY = coord.y;
 
         this.gfx.drawText(
-            label.str,
+            labelStr,
             textConstants.charHeight,
             { x: textX, y: textY },
             2

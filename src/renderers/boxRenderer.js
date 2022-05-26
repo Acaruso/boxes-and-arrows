@@ -24,15 +24,19 @@ class BoxRenderer {
         this.model.boxes.forEach(box => this.drawBox(box));
     }
 
-    drawBox(box) {
-        this.drawBoxRect(box);
+    drawBox(box, color="#FFFFFF") {
+        this.gfx.beginGroup();
+        this.drawBoxRect(box, color);
+        this.gfx.beginClipRect(box.rect, -1000);
         this.drawBoxData(box);
+        this.gfx.endClip(1000);
+        this.gfx.endGroup();
     }
 
-    drawBoxRect(box) {
+    drawBoxRect(box, color) {
         const bgRect = {
             ...box.rect,
-            color: "#FFFFFF"
+            color
         };
 
         this.gfx.drawRect(bgRect, 0);
@@ -44,7 +48,9 @@ class BoxRenderer {
         let coord = box.coord;
         let z = 2;
 
-        let curY = coord.y;
+        let curY = box.scrollable
+            ? coord.y - box.scrollPos
+            : coord.y;
 
         for (let i = 0; i < data.length; i++) {
             const elt = data[i];

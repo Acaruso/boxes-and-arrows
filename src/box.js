@@ -1,6 +1,6 @@
 import { ArrayData } from "./array_data";
 import { arrayDataConstants } from "./constants/array_data_constants";
-import { getTextRect, getWidthOfText, lastElt } from "./util";
+import { getWidthOfText, lastElt } from "./util";
 import { StringData } from "./string_data";
 import { stringType, arrayType } from "./constants/constants";
 import { textConstants } from "./constants/text_constants";
@@ -14,9 +14,15 @@ class Box {
             new StringData(""),
         ];
 
+        this.detailsData = [];
+
         this.appendString(str);
         this.rect = {};
         this.parentId = null;
+
+        this.scrollable = false;
+        this.scrollPos = 0;
+        this.scrollInc = 50;
 
         this.updateRect();
     }
@@ -26,9 +32,9 @@ class Box {
             let c = str[i];
 
             if (c === "\n") {
-                this.pushStringData("");
+                this.data.push(new StringData(""));
             } else {
-                let lastStringData = lastElt(this.data);
+                let lastStringData = this.getLastStringData();
                 lastStringData.data += c;
             }
         }
@@ -36,30 +42,31 @@ class Box {
         this.updateRect();
     }
 
-    appendArray(arr, labels=[]) {
-        let newLabels = [];
-        for (const label of labels) {
-            const newLabel = {
-                str: label[0],
-                index: label[1]
-            };
-            newLabels.push(newLabel);
-        }
-        this.pushArrData(arr, newLabels);
+    appendArray(arr, labels=[], colors=[]) {
+        this.data.push(new ArrayData(arr, labels, colors));
         this.updateRect();
     }
 
-    pushStringData(str) {
-        this.data.push(new StringData(str));
+    appendStringDetails(str) {
+        for (let i = 0; i < str.length; i++) {
+            let c = str[i];
+
+            if (c === "\n") {
+                this.detailsData.push(new StringData(""));
+            } else {
+                let lastStringData = lastElt(this.detailsData);
+                lastStringData.data += c;
+            }
+        }
     }
 
-    pushArrData(arr, labels) {
-        this.data.push(new ArrayData(arr, labels));
+    appendArrayDetails(arr, labels=[], colors=[]) {
+        this.detailsData.push(new ArrayData(arr, labels, colors));
     }
 
     appendChar(c) {
         if (c === "\n") {
-            this.pushStringData("");
+            this.data.push(new StringData(""));
         } else {
             let lastStringData = this.getLastStringData();
             lastStringData.data += c;
@@ -107,6 +114,13 @@ class Box {
             this.data.push(elt.clone());
         }
         this.updateRect();
+    }
+
+    setDetailsData(detailsData) {
+        this.detailsData = [];
+        for (const elt of detailsData) {
+            this.detailsData.push(elt.clone());
+        }
     }
 
     setCoord(newCoord) {
@@ -168,6 +182,39 @@ class Box {
         };
 
         return rect;
+    }
+
+    scrollDown() {
+        if (this.scrollable) {
+            const dataRect = this.getRect();
+
+            const dataLow = dataRect.y + dataRect.h;
+            const newDataLow = dataLow - (this.scrollPos + this.scrollInc);
+            const rectLow = this.rect.y + this.rect.h;
+
+            if (newDataLow < rectLow) {
+                const a = rectLow - newDataLow;
+                this.scrollPos += this.scrollInc - a;
+            } else {
+                this.scrollPos += this.scrollInc;
+            }
+        }
+    }
+
+    scrollUp() {
+        if (this.scrollable) {
+            this.scrollPos = clamp(this.scrollPos - this.scrollInc, 0, 999);
+        }
+    }
+}
+
+function clamp(value, low, high) {
+    if (value < low) {
+        return low;
+    } else if (value > high) {
+        return high;
+    } else {
+        return value;
     }
 }
 

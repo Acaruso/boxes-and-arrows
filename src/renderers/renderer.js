@@ -1,4 +1,5 @@
 import { BoxRenderer } from "./boxRenderer";
+import { DetailsRenderer } from "./detailsRenderer";
 import { HelpDialogRenderer } from "./helpDialogRenderer";
 import { LineRenderer } from "./lineRenderer";
 import { RendererHelper } from "./rendererHelper";
@@ -10,18 +11,20 @@ class Renderer {
         this.state = state;
         this.model = model;
 
-        this.rendererHelper = new RendererHelper(gfx, state, model);
+        const rendererHelper = new RendererHelper(gfx, state, model);
+        const boxRenderer = new BoxRenderer(gfx, state, model, rendererHelper);
 
         this.renderers = [
-            new BoxRenderer(gfx, state, model, this.rendererHelper),
-            this.helpDialogRenderer = new HelpDialogRenderer(
+            boxRenderer,
+            new HelpDialogRenderer(
                 gfx,
                 state,
                 model,
-                this.rendererHelper
+                rendererHelper
             ),
-            this.lineRenderer = new LineRenderer(gfx, state, model),
-            this.selectedRegionRenderer = new SelectedRegionRenderer(gfx, state, model),
+            new LineRenderer(gfx, state, model),
+            new SelectedRegionRenderer(gfx, state, model),
+            new DetailsRenderer(gfx, state, model, boxRenderer),
         ];
     }
 

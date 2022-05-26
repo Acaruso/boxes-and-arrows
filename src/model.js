@@ -1,6 +1,7 @@
+import { Box } from "./box";
 import { Boxes } from "./boxes";
-import { HelpDialog } from "./help_dialog"
 import { clearArray } from "./util";
+import { HelpDialog } from "./help_dialog"
 
 class Model {
     constructor() {
@@ -17,6 +18,11 @@ class Model {
         this.outBox = {};
 
         this.selectedRegion = { x: 0, y: 0, w: 0, h: 0, alpha: 0.3 };
+
+        this.mode = "normal";
+
+        this.detailsVisible = false;
+        this.detailsBox = {};
     }
 
     init() {
@@ -54,6 +60,28 @@ class Model {
         while (this.selectedBoxIds.length > 0) {
             this.selectedBoxIds.pop();
         }
+    }
+
+    handleDetails() {
+        if (this.selectedBoxIds.length === 1) {
+            const curId = this.selectedBoxIds[0];
+            const curBox = this.boxes.getBox(curId);
+            if (curBox.detailsData.length > 0) {
+                this.detailsVisible = true;
+                const detailsBoxCoord = {
+                    x: window.pageXOffset + 1,
+                    y: window.pageYOffset + 1
+                };
+                this.detailsBox = new Box("", detailsBoxCoord, 0);
+                this.detailsBox.setData(curBox.detailsData);
+                this.detailsBox.scrollable = true;
+                const maxHeight = document.documentElement.clientHeight - 20;
+                this.detailsBox.rect.h = Math.min(this.detailsBox.rect.h, maxHeight);
+                return;
+            }
+        }
+
+        this.detailsVisible = false;
     }
 }
 

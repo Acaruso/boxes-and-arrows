@@ -33,7 +33,7 @@ class Logger {
         return id;
     }
 
-    appendToNode(s, id) {
+    pushString(s, id) {
         if (this.enabled === false) {
             return;
         }
@@ -44,14 +44,40 @@ class Logger {
         }
     }
 
-    appendArrayToNode(arr, labels, id) {
+    pushArray(arr, id, options={}) {
+        const { labels, colors } = options;
+
         if (this.enabled === false) {
             return;
         }
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            box.appendArray(arr, labels);
+            box.appendArray(arr, labels, colors);
+        }
+    }
+
+    pushStringDetails(s, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendStringDetails(s);
+        }
+    }
+
+    pushArrayDetails(arr, id, options={}) {
+        const { labels, colors } = options;
+
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendArrayDetails(arr, labels, colors);
         }
     }
 }

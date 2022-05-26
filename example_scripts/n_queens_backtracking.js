@@ -41,15 +41,15 @@ function userFunction(logger) {
 
     function logBoard(id) {
         let str = `board:\n${boardToString(board)}\n`;
-        logger.appendToNode(str, id);
+        logger.pushString(str, id);
     }
 
     function append(val, id) {
-        logger.appendToNode(`${val}`, id);
+        logger.pushString(`${val}`, id);
     }
 
     function appendLine(val, id) {
-        logger.appendToNode(`${val}\n`, id);
+        logger.pushString(`${val}\n`, id);
     }
 
     const boardSize = 4;

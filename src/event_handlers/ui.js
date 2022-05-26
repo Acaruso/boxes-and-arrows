@@ -4,11 +4,13 @@ import { DebugEvents } from "./debug_events";
 import { DialogEvents } from "./dialog_events";
 import { FileEvents } from "./file_events";
 import { FormattingEvents } from "./formatting_events";
+import { DetailsEvents } from "./details_events";
+import { ModeEvents } from "./mode_events";
 import { rectsOverlap } from "../util";
 import { SelectedRegionEvents } from "./selected_region_events";
 
-const addEventListener = (type, callback) => {
-    document.addEventListener(type, callback, false);
+const addEventListener = (type, callback, options={}) => {
+    document.addEventListener(type, callback, options);
 }
 
 class Ui {
@@ -26,6 +28,8 @@ class Ui {
         addEventListener("mouseup", e => this.eventTable.onEvent(e));
         addEventListener("dblclick", e => this.eventTable.onEvent(e));
         addEventListener("keydown", e => this.eventTable.onEvent(e));
+        addEventListener("wheel", e => this.eventTable.onEvent(e), { passive:false });
+        addEventListener("scroll", e => this.eventTable.onEvent(e));
 
         this.eventAdders = [
             new ConnectionEvents(state, model, eventTable),
@@ -35,6 +39,8 @@ class Ui {
             new DialogEvents(state, model, eventTable),
             new FileEvents(state, model, eventTable, scripter),
             new DebugEvents(state, model, eventTable),
+            new ModeEvents(state, model, eventTable),
+            new DetailsEvents(state, model, eventTable),
         ];
 
         for (const eventAdder of this.eventAdders) {
@@ -72,34 +78,49 @@ class Ui {
         const kb = this.state.cur.keyboard;
         if (
             !kb.control
-            && !this.model.anyBoxesSelected()
+            // && !this.model.anyBoxesSelected()
             && (kb.w || kb.a || kb.s || kb.d)
+            && this.model.mode === "wasd"
         ) {
             const scrollAmount = 10;
-            const oldXOffset = window.pageXOffset;
-            const oldYOffset = window.pageYOffset;
+            let xOffset = window.pageXOffset;
+            let yOffset = window.pageYOffset;
 
             if (kb.w) {
-                window.scroll(oldXOffset, oldYOffset - scrollAmount);
+                yOffset -= scrollAmount;
             }
 
             if (kb.a) {
-                window.scroll(oldXOffset - scrollAmount, oldYOffset);
+                xOffset -= scrollAmount;
             }
 
             if (kb.s) {
-                window.scroll(oldXOffset, oldYOffset + scrollAmount);
+                yOffset += scrollAmount;
             }
 
             if (kb.d) {
-                window.scroll(oldXOffset + scrollAmount, oldYOffset);
+                xOffset += scrollAmount;
             }
+
+            window.scroll(xOffset, yOffset);
+        }
+    }
+
+    updateDetails() {
+        if (this.model.detailsVisible) {
+            this.model.detailsBox.setCoord({
+                x: window.pageXOffset + 1,
+                y: window.pageYOffset + 1
+            });
+            const maxHeight = document.documentElement.clientHeight - 20;
+            this.model.detailsBox.rect.h = Math.min(this.model.detailsBox.rect.h, maxHeight);
         }
     }
 
     run() {
         this.handleDragging();
         this.handleScrolling();
+        this.updateDetails();
     }
 }
 

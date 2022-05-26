@@ -2,9 +2,46 @@ import { textConstants } from "./constants/text_constants";
 
 class Gfx {
     constructor() {
-        this.canvas = document.getElementById("myCanvas")
+        this.canvas = document.getElementById("myCanvas");
         this.ctx = this.canvas.getContext("2d");
         this.queue = [];
+        this.group = this.makeGroup();
+        this.grouping = false;
+        this.zOffset = 0;
+    }
+
+    push(command, z) {
+        if (this.grouping === true) {
+            this.group.queue.push({
+                command,
+                z
+            });
+        } else if (this.grouping === false) {
+            this.queue.push({
+                command,
+                z: z + this.zOffset
+            });
+        }
+    }
+
+    beginGroup(z=0) {
+        this.grouping = true;
+        this.group.z = z;
+    }
+
+    endGroup() {
+        this.grouping = false;
+        this.group.z += this.zOffset;
+        this.queue.push(this.group);
+        this.group = this.makeGroup();
+    }
+
+    makeGroup(z=0) {
+        return {
+            type: "group",
+            queue: [],
+            z,
+        }
     }
 
     drawRect(rect, z=0) {
@@ -23,10 +60,7 @@ class Gfx {
             this.ctx.globalAlpha = 1.0;
         };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.push(command, z);
     }
 
     strokeRect(rect, z=0, color="#000000") {
@@ -51,10 +85,7 @@ class Gfx {
             ctx.stroke();
         };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.push(command, z);
     }
 
     strokeRectHeavy(rect, z=0, color="#000000") {
@@ -97,10 +128,7 @@ class Gfx {
             ctx.stroke();
         };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.push(command, z);
     }
 
     drawFilledCircle(coord, radius, z=0, color="#000000") {
@@ -119,10 +147,7 @@ class Gfx {
             ctx.fill();
         };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.push(command, z);
     }
 
     drawText(text, size, coord, z=0) {
@@ -136,22 +161,57 @@ class Gfx {
             ctx.fillText(text, coord.x, coord.y + textConstants.charHeight);
         };
 
-        this.queue.push({
-            command,
-            z: z
-        });
+        this.push(command, z);
+    }
+
+    beginClipRect(rect, z=0) {
+        const command = (ctx) => {
+            ctx.save();
+            let path = new Path2D();
+            path.rect(rect.x - 1, rect.y - 1, rect.w + 2, rect.h + 2);
+            ctx.clip(path);
+        };
+
+        this.push(command, z);
+    }
+
+    endClip(z=0) {
+        const command = (ctx) => {
+            ctx.restore();
+        };
+
+        this.push(command, z);
     }
 
     draw() {
-        this.queue.sort((first, second) => {
+        this.sortQueue(this.queue);
+
+        let newQueue = [];
+
+        for (const elt of this.queue) {
+            if (elt.type && elt.type === "group") {
+                this.sortQueue(elt.queue);
+                for (const groupElt of elt.queue) {
+                    newQueue.push(groupElt);
+                }
+            } else {
+                newQueue.push(elt);
+            }
+        }
+
+        this.queue = [];
+
+        while (newQueue.length > 0) {
+            const elt = newQueue[newQueue.length - 1];
+            elt.command(this.ctx);
+            newQueue.pop();
+        }
+    }
+
+    sortQueue(queue) {
+        queue.sort((first, second) => {
             return second.z - first.z;
         });
-
-        while (this.queue.length > 0) {
-            const elt = this.queue[this.queue.length - 1];
-            elt.command(this.ctx);
-            this.queue.pop();
-        }
     }
 
     clearScreen() {

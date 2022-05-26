@@ -25,11 +25,11 @@ function minimalTree(arr, logger) {
     }
 
     function pushStr(str, id) {
-        logger.appendToNode(str, id);
+        logger.pushString(str, id);
     }
 
     function pushArr(arr, labels, id) {
-        logger.appendArrayToNode(arr, labels, id);
+        logger.pushArray(arr, id, { labels });
     }
 
     function inner(start, end, parentId) {

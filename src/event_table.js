@@ -20,6 +20,8 @@ class EventTable {
         e.mouseup = e.type === "mouseup";
         e.keydown = e.type === "keydown";
         e.dblclick = e.type === "dblclick";
+        e.wheel = e.type === "wheel";
+        e.scroll = e.type === "scroll";
         e.insideBox = false;
         e.mouseBox = null;
         e.keyboard = this.state.cur.keyboard;

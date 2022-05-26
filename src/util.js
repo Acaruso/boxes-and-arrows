@@ -13,6 +13,18 @@ const distanceBetweenCoords = (coord1, coord2) => {
     return Math.sqrt(a*a + b*b);
 };
 
+const rectsOverlap = (rect1, rect2) => {
+    rect1 = handleNegs(rect1);
+    rect2 = handleNegs(rect2);
+
+    return (
+        rect1.x < rect2.x + rect2.w &&
+        rect1.x + rect1.w > rect2.x &&
+        rect1.y < rect2.y + rect2.h &&
+        rect1.y + rect1.h > rect2.y
+    );
+};
+
 const handleNegs = (rect) => {
     let newRect = { ...rect };
 
@@ -27,18 +39,6 @@ const handleNegs = (rect) => {
     }
 
     return newRect;
-};
-
-const rectsOverlap = (rect1, rect2) => {
-    rect1 = handleNegs(rect1);
-    rect2 = handleNegs(rect2);
-
-    return (
-        rect1.x < rect2.x + rect2.w &&
-        rect1.x + rect1.w > rect2.x &&
-        rect1.y < rect2.y + rect2.h &&
-        rect1.y + rect1.h > rect2.y
-    );
 };
 
 const isPrintableKeycode = (kc) => {
@@ -132,6 +132,15 @@ const clearArray = (arr) => {
     }
 }
 
+// deep copy source to dest
+// assuming source is 2 layers deep
+// ie [[1, 2], [3, 4]]
+const copyArray = (source, dest) => {
+    for (const elt of source) {
+        dest.push([...elt]);
+    }
+}
+
 export {
     getMidpoint,
     distanceBetweenCoords,
@@ -145,4 +154,5 @@ export {
     firstElt,
     lastElt,
     clearArray,
+    copyArray,
 };

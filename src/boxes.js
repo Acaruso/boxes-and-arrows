@@ -27,6 +27,7 @@ class Boxes {
         let newBox = new Box("", coord, this.nextId);
         this.nextId++;
         newBox.setData(box.data);
+        newBox.setDetailsData(box.detailsData);
         this.boxes.push(newBox);
         this.connections.set(newBox.id, []);
         return newBox.id;

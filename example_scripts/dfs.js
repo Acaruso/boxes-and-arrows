@@ -28,7 +28,7 @@ function userFunction(logger) {
             console.log(da);
             let [cur, parentId] = stack.pop();
             let id = logger.newNode(`visiting: ${cur.value}`, parentId);
-            logger.appendArrayToNode(da, [], id);
+            logger.pushArray(da, id);
 
             for (const child of cur.children) {
                 if (child.visited === false) {

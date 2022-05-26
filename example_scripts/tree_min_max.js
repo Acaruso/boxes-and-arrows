@@ -35,16 +35,16 @@ function userFunction(logger) {
         const id = logger.newNode(`minMax(${node.value})\n\n`, parentId);
 
         const leftRes = minMax(node.left, id);
-        logger.appendToNode(`minMax(node.left) -> ${JSON.stringify(leftRes)}\n`, id);
-        
+        logger.pushString(`minMax(node.left) -> ${JSON.stringify(leftRes)}\n`, id);
+
         const rightRes = minMax(node.right, id);
-        logger.appendToNode(`minMax(node.right) -> ${JSON.stringify(rightRes)}\n`, id);
+        logger.pushString(`minMax(node.right) -> ${JSON.stringify(rightRes)}\n`, id);
 
         const curMin = getMin(node, leftRes, rightRes);
         const curMax = getMax(node, leftRes, rightRes);
 
         const res = { min: curMin, max: curMax };
-        logger.appendToNode(`\n-> ${JSON.stringify(res)}`, id);
+        logger.pushString(`\n-> ${JSON.stringify(res)}`, id);
 
         return res;
     }

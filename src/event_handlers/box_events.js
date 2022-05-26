@@ -25,6 +25,7 @@ class BoxEvents {
                 const newBoxId = this.model.boxes.cloneBox(e.mouseBox, e.mouse.coord);
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(newBoxId);
+                this.model.handleDetails();
             }
         );
 
@@ -52,6 +53,7 @@ class BoxEvents {
             e => {
                 this.model.clearSelectedBoxIds();
                 this.model.addSelectedBoxId(e.mouseBox.id);
+                this.model.handleDetails();
             }
         );
 
@@ -59,8 +61,8 @@ class BoxEvents {
             "shiftClickAndAddOrDeleteSelectBox",
             e => (
                 e.mousedown
-                && e.insideBox 
-                && !e.keyboard.control 
+                && e.insideBox
+                && !e.keyboard.control
                 && e.keyboard.shift
             ),
             e => {
@@ -69,13 +71,17 @@ class BoxEvents {
                 } else {
                     this.model.deleteSelectedBoxId(e.mouseBox.id);
                 }
+                this.model.handleDetails();
             }
         );
 
         this.eventTable.addEvent(
             "clickAndUnselectBox",
             e => e.mousedown && !e.insideBox && !e.keyboard.control && !e.keyboard.alt,
-            e => this.model.clearSelectedBoxIds()
+            e => {
+                this.model.clearSelectedBoxIds();
+                this.model.handleDetails();
+            }
         );
 
         this.eventTable.addEvent(
@@ -92,7 +98,10 @@ class BoxEvents {
         this.eventTable.addEvent(
             "beginDraggingBoxes",
             e => e.mousedown && !e.keyboard.control && e.insideBox,
-            e => this.model.draggingBoxes = true
+            e => {
+                this.model.draggingBoxes = true;
+                this.model.handleDetails();
+            }
         );
 
         this.eventTable.addEvent(
@@ -110,9 +119,11 @@ class BoxEvents {
                     && !e.keyboard.control
             },
             e => {
-                for (const id of this.model.selectedBoxIds) {
-                    let box = this.model.boxes.getBox(id);
-                    box.appendChar(e.key_);
+                if (this.model.mode === "normal") {
+                    for (const id of this.model.selectedBoxIds) {
+                        let box = this.model.boxes.getBox(id);
+                        box.appendChar(e.key_);
+                    }
                 }
             }
         );
