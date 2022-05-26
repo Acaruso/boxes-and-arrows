@@ -1,10 +1,10 @@
 function userFunction(logger) {
     function _append(str, id) {
-        logger.appendToNode(str, id);
+        logger.pushString(str, id);
     }
 
     function _appendArr(arr, id) {
-        logger.appendArrayToNode(arr, [], id, []);
+        logger.pushArray(arr, [], id, []);
     }
 
     function isEven(x) {

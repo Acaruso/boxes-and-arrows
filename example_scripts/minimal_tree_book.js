@@ -25,19 +25,19 @@ function minimalTree(arr, logger) {
         const id = logger.newNode(`inner(start: ${start}, end: ${end})`, parentId);
 
         if (start > end) {
-            logger.appendToNode("\n-> null", id);
+            logger.pushString("\n-> null", id);
             return null;
         }
 
         let mid = Math.floor((start + end) / 2);
         let midNode = { value: arr[mid] };
 
-        logger.appendToNode(`\nmid: ${mid}`, id);
+        logger.pushString(`\nmid: ${mid}`, id);
 
         midNode.left = inner(start, mid - 1, id);
         midNode.right = inner(mid + 1, end, id);
 
-        logger.appendToNode(`\n-> ${midNode.value}`, id);
+        logger.pushString(`\n-> ${midNode.value}`, id);
         return midNode;
     }
 

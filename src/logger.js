@@ -33,7 +33,7 @@ class Logger {
         return id;
     }
 
-    appendToNode(s, id) {
+    pushString(s, id) {
         if (this.enabled === false) {
             return;
         }
@@ -44,7 +44,7 @@ class Logger {
         }
     }
 
-    appendArrayToNode(arr, labels, id, colors=[]) {
+    pushArray(arr, labels, id, colors=[]) {
         if (this.enabled === false) {
             return;
         }
@@ -55,7 +55,7 @@ class Logger {
         }
     }
 
-    appendToNodeDetails(s, id) {
+    pushStringDetails(s, id) {
         if (this.enabled === false) {
             return;
         }
@@ -66,7 +66,7 @@ class Logger {
         }
     }
 
-    appendArrayToNodeDetails(arr, labels, id, colors=[]) {
+    pushArrayDetails(arr, labels, id, colors=[]) {
         if (this.enabled === false) {
             return;
         }

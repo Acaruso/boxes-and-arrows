@@ -1,6 +1,6 @@
 function userFunction(logger) {
     function pushStr(str, id) {
-        logger.appendToNode(`\n${str}`, id);
+        logger.pushString(`\n${str}`, id);
     }
 
     function getColors(arr) {
@@ -17,19 +17,19 @@ function userFunction(logger) {
 
     function pushArrInit(arr, id) {
         const colors = getColors(arr);
-        logger.appendArrayToNode(arr, [], id, colors);
+        logger.pushArray(arr, [], id, colors);
     }
 
     function pushArr(arr, i, j, id) {
         const labels = [["i", i], ["j", j]];
         const colors = getColors(arr);
-        logger.appendArrayToNode(arr, labels, id, colors);
+        logger.pushArray(arr, labels, id, colors);
     }
 
     function pushArrFinal(arr, i, j, id) {
         const labels = [["i", i], ["j", j]];
         const colors = [["yellow", i - 1], ["blue", 0, i - 2], ["red", i, arr.length]];
-        logger.appendArrayToNode(arr, labels, id, colors);
+        logger.pushArray(arr, labels, id, colors);
     }
 
     function swap(arr, i, j) {
@@ -37,7 +37,7 @@ function userFunction(logger) {
         arr[i] = arr[j];
         arr[j] = temp;
     }
-    
+
     function partition(arr) {
         let id = logger.newNode("initial state:", null);
         pushArrInit(arr, id);
@@ -75,7 +75,7 @@ function userFunction(logger) {
         swap(arr, 0, i - 1);
         pushArrFinal(arr, i, j, id);
         pushStr(`-> pivot: ${i - 1}`, id);
-    
+
         return i - 1;
     }
 

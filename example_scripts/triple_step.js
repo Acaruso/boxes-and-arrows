@@ -1,6 +1,6 @@
 function userFunction(logger) {
     function __logStr(str, id) {
-        logger.appendToNode(`\n${str}`, id);
+        logger.pushString(`\n${str}`, id);
     }
 
     function tripleStep(n) {

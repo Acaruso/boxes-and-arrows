@@ -1,15 +1,15 @@
 function userFunction(logger) {
     let str = "\nhello world\ntest";
     let id = logger.newNode("", null);
-    logger.appendToNode(str, id);
-    logger.appendToNode("\n", id);
-    logger.appendToNode("\n", id);
-    logger.appendToNode("more test", id);
+    logger.pushString(str, id);
+    logger.pushString("\n", id);
+    logger.pushString("\n", id);
+    logger.pushString("more test", id);
 }
 
 function userFunction(logger) {
     function __pushStr(str, id) {
-        logger.appendToNode(`\n${str}`, id);
+        logger.pushString(`\n${str}`, id);
     }
 
     function nodeToStr(node) {

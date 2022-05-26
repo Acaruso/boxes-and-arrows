@@ -25,7 +25,7 @@ function userFunction(logger) {
     }
 
     function pushStr(str, id) {
-        logger.appendToNode(`\n${str}`, id);
+        logger.pushString(`\n${str}`, id);
     }
 
     function pushArr(x, id) {
@@ -38,7 +38,7 @@ function userFunction(logger) {
                 colors.push(["blue", i]);
             }
         }
-        logger.appendArrayToNode(arr, [], id, colors);
+        logger.pushArray(arr, [], id, colors);
     }
 
     function flipBit(x) {

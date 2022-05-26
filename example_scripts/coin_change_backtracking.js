@@ -14,11 +14,11 @@ function userFunction(logger) {
     }
 
     function logReturn(val, id) {
-        logger.appendToNode("\n \n-> " + val, id);
+        logger.pushString("\n \n-> " + val, id);
     }
 
     function append(val, id) {
-        logger.appendToNode("\n" + val, id);
+        logger.pushString("\n" + val, id);
     }
 
     const MAX_INT = Number.MAX_SAFE_INTEGER;

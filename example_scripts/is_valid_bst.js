@@ -20,10 +20,10 @@ function userFunction(logger) {
             const id = logger.newNode(`isValidBST(${node.value})\n\n`, parentId);
 
             const leftRes = inner(node.left, id);
-            logger.appendToNode(`isValidBST(node.left) -> ${JSON.stringify(leftRes)}\n`, id);
-            
+            logger.pushString(`isValidBST(node.left) -> ${JSON.stringify(leftRes)}\n`, id);
+
             const rightRes = inner(node.right, id);
-            logger.appendToNode(`isValidBST(node.right) -> ${JSON.stringify(rightRes)}\n`, id);
+            logger.pushString(`isValidBST(node.right) -> ${JSON.stringify(rightRes)}\n`, id);
 
             const curMin = getMin(node, leftRes, rightRes);
             const curMax = getMax(node, leftRes, rightRes);
@@ -32,10 +32,10 @@ function userFunction(logger) {
             const isRightValid = rightRes === null || node.value < rightRes.min;
 
             isValid = isLeftValid && isRightValid;
-            logger.appendToNode(`isValid: ${isValid}\n`, id);
+            logger.pushString(`isValid: ${isValid}\n`, id);
 
             const res = { min: curMin, max: curMax };
-            logger.appendToNode(`\n-> ${JSON.stringify(res)}`, id);
+            logger.pushString(`\n-> ${JSON.stringify(res)}`, id);
 
             return res;
         }

@@ -10,26 +10,26 @@ function makeEmptyArray(n) {
 //     const id = logger.newNode("", null);
 //     const arr = makeEmptyArray(10);
 //     const labels = [['l', 0], ['r', 9], ['m', 4]];
-//     logger.appendArrayToNode(arr, labels, id);
+//     logger.pushArray(arr, labels, id);
 // }
 
 // function userFunction(logger) {
 //     const id = logger.newNode("", null);
 //     const arr = makeEmptyArray(10);
 //     const labels = [['l', 0], ['r', 3], ['m', 1]];
-//     logger.appendArrayToNode(arr, labels, id);
+//     logger.pushArray(arr, labels, id);
 // }
 
 // function userFunction(logger) {
 //     const id = logger.newNode("", null);
 //     const arr = makeEmptyArray(10);
 //     const labels = [['l', 5], ['r', 9], ['m', 7]];
-//     logger.appendArrayToNode(arr, labels, id);
+//     logger.pushArray(arr, labels, id);
 // }
 
 function userFunction(logger) {
     const id = logger.newNode("", null);
-    logger.appendToNode("\ntest", id);
+    logger.pushString("\ntest", id);
     const arr = makeEmptyArray(7);
-    logger.appendArrayToNode(arr, [], id);
+    logger.pushArray(arr, [], id);
 }
