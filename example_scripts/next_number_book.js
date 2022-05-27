@@ -127,3 +127,4 @@ function userFunction(logger) {
 // 0011011001111100
 // get next largest:
 // 0011011010001111
+// 0011011010001111
