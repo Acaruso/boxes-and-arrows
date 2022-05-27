@@ -32,12 +32,10 @@ function userFunction(logger) {
 
     function bitToIdx(bit) {
         let i = 0;
-
         while (bit !== 0) {
             bit = bit >> 1;
             i++;
         }
-
         return (n - 1) - (i - 1);
     }
 
@@ -63,43 +61,49 @@ function userFunction(logger) {
         let id = logger.newNode("", null);
 
         if (~x === 0) {
-            return n;
+            return 32;
         }
 
-        let curLen = 0;
+        let insideSegment = false;
         let prevLen = 0;
+        let curLen = 0;
         let maxLen = 1;
         let bit = 1;
 
         for (let i = 0; i < n; i++) {
-            pushStr("--------------------------------------------------------------------", id);
             pushArr(x, bit, id);
 
             if ((x & bit) !== 0) {
                 curLen++;
+                insideSegment = true;
+                pushStr("insideSegment = true", id);
                 pushStr("curLen++", id);
-                pushStr(`curLen: ${curLen}`, id);
             } else if ((x & bit) === 0) {
-                if ((x & (bit << 1)) !== 0) {
-                    prevLen = curLen;
-                    pushStr("prevLen = curLen", id)
-                    pushStr(`prevLen: ${prevLen}`, id);
-                } else {
-                    prevLen = 0;
-                    pushStr("prevLen = 0", id);
+                if (insideSegment === true) {
+                    maxLen = Math.max(maxLen, prevLen + curLen + 1);
+                    pushStr("maxLen = Math.max(maxLen, prevLen + curLen + 1)", id);
                 }
 
+                insideSegment = false;
+                prevLen = curLen;
                 curLen = 0;
+                pushStr("insideSegment = false", id);
+                pushStr("prevLen = curLen", id);
                 pushStr("curLen = 0", id);
             }
 
-            maxLen = Math.max(maxLen, prevLen + curLen + 1);
+            pushStr(`prevLen: ${prevLen}`, id);
+            pushStr(`curLen: ${curLen}`, id);
+
             bit = bit << 1;
         }
 
+        maxLen = Math.max(maxLen, prevLen + curLen + 1);
+        pushStr(`maxLen: ${maxLen}`, id);
         return maxLen;
     }
 
-    const x = fromString("0011011100111100");
-    const res = flipBit(x);
+    // const x = fromString("011011");
+    const x = fromString("11011100111100");
+    console.log(flipBit(x));
 }
