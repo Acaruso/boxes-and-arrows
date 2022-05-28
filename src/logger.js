@@ -45,15 +45,13 @@ class Logger {
     }
 
     pushArray(arr, id, options={}) {
-        const { labels, colors } = options;
-
         if (this.enabled === false) {
             return;
         }
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            box.appendArray(arr, labels, colors);
+            box.appendArray(arr, options);
         }
     }
 
@@ -69,15 +67,13 @@ class Logger {
     }
 
     pushArrayDetails(arr, id, options={}) {
-        const { labels, colors } = options;
-
         if (this.enabled === false) {
             return;
         }
 
         const box = this.boxes.getBox(id);
         if (box !== null && box !== undefined) {
-            box.appendArrayDetails(arr, labels, colors);
+            box.appendArrayDetails(arr, options);
         }
     }
 }
