@@ -46,11 +46,8 @@ class Box {
         const labels = options.labels ? options.labels : [];
         const colors = options.colors ? options.colors : [];
 
-        console.log(labels);
-        console.log(colors);
-        console.log();
-
-        this.data.push(new ArrayData(arr, labels, colors));
+        // this.data.push(new ArrayData(arr, labels, colors));
+        this.data.push(new ArrayData(arr, options));
         this.updateRect();
     }
 
@@ -71,11 +68,8 @@ class Box {
         const labels = options.labels ? options.labels : [];
         const colors = options.colors ? options.colors : [];
 
-        console.log(labels);
-        console.log(colors);
-        console.log();
-
-        this.detailsData.push(new ArrayData(arr, labels, colors));
+        // this.detailsData.push(new ArrayData(arr, labels, colors));
+        this.detailsData.push(new ArrayData(arr, options));
     }
 
     appendChar(c) {
