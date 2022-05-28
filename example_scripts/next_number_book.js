@@ -2,7 +2,7 @@ function userFunction(logger) {
     const n = 16;
 
     function pushStr(str, id) {
-        logger.pushString(`\n${str}`, id);
+        logger.pushString(`\n ${str}`, id);
     }
 
     function pushArr(x, id) {
@@ -12,20 +12,11 @@ function userFunction(logger) {
         for (let i = 0; i < str.length; i++) {
             arr.push(" ");
             if (str[i] === "1") {
-                colors.push(["blue", i]);
+                colors.push(["dark blue", i]);
             }
         }
         logger.pushArray(arr, id, { colors });
         logger.pushString("\n", id);
-    }
-
-    function bitToIdx(bit) {
-        let i = 0;
-        while (bit !== 0) {
-            bit = bit >> 1;
-            i++;
-        }
-        return (n - 1) - (i - 1);
     }
 
     function toString(x) {
@@ -56,9 +47,7 @@ function userFunction(logger) {
         return x;
     }
 
-    function log(s, x) {
-        console.log(`${s}: \n${toString(x)}\n`)
-    }
+    // algo /////////////////////////////////////////////////////////
 
     function getNextSmallest(n) {
         let id = logger.newNode("", null);
