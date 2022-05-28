@@ -15,7 +15,7 @@ function userFunction(logger) {
                 colors.push(["dark blue", i]);
             }
         }
-        logger.pushArray(arr, id, { colors });
+        logger.pushArray(arr, id, { colors, reverseIndex: true });
         logger.pushString("\n", id);
     }
 

@@ -5,11 +5,14 @@ class ArrayData {
     constructor(arr, options={}) {
         this.type = arrayType;
         this.data = [...arr];
-        this.labels = options.labels ? options.labels : [];
+        this.reverseIndex = options.reverseIndex ? options.reverseIndex : false;
         this.colors = options.colors ? options.colors : [];
 
-        for (const [str, index] of this.labels) {
-            this.addLabel(str, index);
+        this.labels = [];
+        if (options.labels) {
+            for (const [str, index] of options.labels) {
+                this.addLabel(str, index);
+            }
         }
 
         this.totalHeight = 0;
