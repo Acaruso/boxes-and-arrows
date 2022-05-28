@@ -5,7 +5,7 @@ function userFunction(logger) {
         logger.pushString(`\n${str}`, id);
     }
 
-    function pushArr(x, bit, id) {
+    function pushArr(x, id) {
         let arr = [];
         let colors = [];
         const str = toString(x);
@@ -15,8 +15,8 @@ function userFunction(logger) {
                 colors.push(["blue", i]);
             }
         }
-        const labels = [["i", bitToIdx(bit)]];
-        logger.pushArray(arr, id, { colors, labels });
+        logger.pushArray(arr, id, { colors });
+        logger.pushString("\n", id);
     }
 
     function bitToIdx(bit) {
@@ -62,6 +62,8 @@ function userFunction(logger) {
 
     function getNextSmallest(n) {
         let id = logger.newNode("", null);
+        pushStr("n:", id);
+        pushArr(n, id);
 
         let temp = n;
         let numZeros = 0;
@@ -81,41 +83,38 @@ function userFunction(logger) {
             temp = temp >> 1;
         }
 
-        let bitToFlip = numZeros + numTrailingOnes;
+        let bitToFlip = numTrailingOnes + numZeros;
 
-        pushStr("bitToFlip: " + bitToFlip, id);
+        pushStr("bitToFlip:", id);
+        pushArr(1 << bitToFlip, id);
 
-        pushArr(n, 0, id);
+        let zeroMask = -1 << (bitToFlip + 1);
 
-        // let mask1 = ((~0) << (bitToFlip + 1));
-        let mask1 = ~((1 << (bitToFlip + 1)) - 1);
+        pushStr("zeroMask:", id);
+        pushArr(zeroMask, id);
 
-        n = n & mask1;
+        n = n & zeroMask;
 
-        pushStr("mask1:", id);
-        pushArr(mask1, 0, id);
-        pushArr(n, 0, id);
+        pushStr("n & zeroMask:", id);
+        pushArr(n, id);
 
-        let mask = (1 << (numTrailingOnes + 1)) - 1;
+        let oneMask = ~(-1 << (numTrailingOnes + 1)) << (numZeros - 1);
 
-        pushArr(mask, 0, id);
+        pushStr("oneMask:", id);
+        pushArr(oneMask, id);
 
-        n = n | mask << (numZeros - 1);
+        n = n | oneMask;
 
-        pushArr(n, 0, id);
+        pushStr("n | oneMask:", id);
+        pushArr(n, id);
 
         return n;
     }
 
-    // let s = "1111100000111000";
     let s = "10011110000011";
     let x = fromString(s);
 
     let nextSmallest = getNextSmallest(x);
-    log("nextSmallest", nextSmallest);
-
-    // let nextLargest = getNextLargest(x);
-    // log("nextLargest", nextLargest);
 }
 
 // testcases from book:
@@ -126,5 +125,4 @@ function userFunction(logger) {
 
 // 0011011001111100
 // get next largest:
-// 0011011010001111
 // 0011011010001111

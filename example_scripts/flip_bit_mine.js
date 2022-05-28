@@ -57,6 +57,8 @@ function userFunction(logger) {
         logger.pushArray(arr, id, { colors, labels });
     }
 
+    // algo //////////////////////////////////////////////////
+
     function flipBit(x) {
         let id = logger.newNode("", null);
 
