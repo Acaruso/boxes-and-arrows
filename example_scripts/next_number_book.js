@@ -74,7 +74,7 @@ function userFunction(logger) {
 
         let bitToFlip = numTrailingOnes + numZeros;
 
-        pushStr("bitToFlip:", id);
+        pushStr("1 << bitToFlip:", id);
         pushArr(1 << bitToFlip, id);
 
         let zeroMask = -1 << (bitToFlip + 1);
@@ -100,10 +100,203 @@ function userFunction(logger) {
         return n;
     }
 
-    let s = "10011110000011";
-    let x = fromString(s);
+    function getNextLargest(n) {
+        let id = logger.newNode("", null);
+        pushStr("n:", id);
+        pushArr(n, id);
 
-    let nextSmallest = getNextSmallest(x);
+        let temp = n;
+        let numTrailingZeros = 0;
+        let numOnes = 0;
+
+        while ((temp & 1) === 0 && (temp !== 0)) {
+            numTrailingZeros++;
+            temp = temp >> 1;
+        }
+
+        while (((temp & 1) !== 0)) {
+            numOnes++;
+            temp = temp >> 1;
+        }
+
+        if (temp === 0) {
+            return -1;
+        }
+
+        let bitToFlip = numTrailingZeros + numOnes;
+
+        pushStr("1 << bitToFlip:", id);
+        pushArr(1 << bitToFlip, id);
+
+        n = n | (1 << bitToFlip);
+
+        pushStr("n | bitToFlip:", id);
+        pushArr(n, id);
+
+        let zeroMask = -1 << bitToFlip;
+
+        pushStr("zeroMask:", id);
+        pushArr(zeroMask, id);
+
+        n = n & zeroMask;
+
+        pushStr("n & zeroMask:", id);
+        pushArr(n, id);
+
+        let oneMask = ~(-1 << (numOnes - 1));
+
+        pushStr("oneMask:", id);
+        pushArr(oneMask, id);
+
+        n = n | oneMask;
+
+        pushStr("n | oneMask:", id);
+        pushArr(n, id);
+
+        return n;
+    }
+
+    function getNextSmallestOptimizedMine(n) {
+        let id = logger.newNode("", null);
+
+        pushStr("n:", id);
+        pushArr(n, id);
+
+        let temp = n;
+        let numZeros = 0;
+        let numTrailingOnes = 0;
+
+        while (temp & 1 === 1) {
+            numTrailingOnes++;
+            temp = temp >> 1;
+        }
+
+        if (temp === 0) {
+            return -1;
+        }
+
+        while (((temp & 1) === 0) && (temp !== 0)) {
+            numZeros++;
+            temp = temp >> 1;
+        }
+
+        let bitToFlip = numTrailingOnes + numZeros;
+
+        let bitToFlipOne = 1 << bitToFlip
+
+        pushStr("bitToFlipOne", id);
+        pushArr(bitToFlipOne, id);
+
+        let sub = (bitToFlipOne >> (numTrailingOnes + 1)) | ~(-1 << numTrailingOnes);
+
+        n = n - sub;
+
+        pushStr("(bitToFlipOne >> (numTrailingOnes + 1)) | ~(-1 << numTrailingOnes)", id);
+        pushArr((bitToFlipOne >> (numTrailingOnes + 1)) | ~(-1 << numTrailingOnes), id);
+
+        pushStr("n - sub:", id);
+        pushArr(n, id);
+
+        return n;
+    }
+
+    function getNextSmallestOptimized(n) {
+        let n_ = n;
+
+        let id = logger.newNode("", null);
+        pushStr(`n: ${n}`, id);
+        pushStr("n:", id);
+        pushArr(n, id);
+
+        let temp = n;
+        let numZeros = 0;
+        let numTrailingOnes = 0;
+
+        while (temp & 1 === 1) {
+            numTrailingOnes++;
+            temp = temp >> 1;
+        }
+
+        if (temp === 0) {
+            return -1;
+        }
+
+        while (((temp & 1) === 0) && (temp !== 0)) {
+            numZeros++;
+            temp = temp >> 1;
+        }
+
+        pushStr("-(1 << numTrailingOnes)", id);
+        pushArr(-(1 << numTrailingOnes), id);
+
+        pushStr("-(1 << (numZeros - 1)) + 1", id);
+        pushArr(-(1 << (numZeros - 1)) + 1, id);
+
+        let sub = -(1 << numTrailingOnes) - (1 << (numZeros - 1)) + 1;
+
+        pushStr(`sub: ${sub}`, id);
+
+        n = n + sub;
+
+        pushStr("(1 << numTrailingOnes) - ((1 << numZeros - 1)) + 1:", id);
+        pushArr(sub, id);
+
+        pushStr("n:", id);
+        pushArr(n_, id);
+
+        pushStr("n + sub:", id);
+        pushArr(n, id);
+        
+        return n;
+    }
+
+    function getNextLargestOptimized(n) {
+        let id = logger.newNode("", null);
+        pushStr("n:", id);
+        pushArr(n, id);
+
+        let temp = n;
+        let numTrailingZeros = 0;
+        let numOnes = 0;
+
+        while ((temp & 1) === 0 && (temp !== 0)) {
+            numTrailingZeros++;
+            temp = temp >> 1;
+        }
+
+        while (((temp & 1) !== 0)) {
+            numOnes++;
+            temp = temp >> 1;
+        }
+
+        if (temp === 0) {
+            return -1;
+        }
+
+        pushStr("(1 << numOnes - 1) + ~(-1 << numTrailingZeros)", id);
+        pushArr((1 << numOnes - 1) + ~(-1 << numTrailingZeros), id);
+
+        pushStr("n", id);
+        pushArr(n, id);
+
+        n = n + (1 << numOnes - 1) + ~(-1 << numTrailingZeros);
+
+        pushStr("n + (1 << numOnes - 1) + ~(-1 << numTrailingZeros)", id);
+        pushArr(n, id);
+
+        return n;
+    }
+
+    let x = null;
+
+    x = fromString("10011110000011");
+    // let nextSmallest = getNextSmallest(x);
+    // let nextSmallest = getNextSmallestOptimized(x);
+    let nextSmallest = getNextSmallestOptimizedMine(x);
+
+    // x = fromString("0011011001111100");
+    // let nextLargest = getNextLargest(x);
+    // let nextLargest = getNextLargestOptimized(x);
 }
 
 // testcases from book:
