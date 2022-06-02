@@ -204,7 +204,6 @@ function userFunction(logger) {
         let n_ = n;
 
         let id = logger.newNode("", null);
-        pushStr(`n: ${n}`, id);
         pushStr("n:", id);
         pushArr(n, id);
 
@@ -246,7 +245,7 @@ function userFunction(logger) {
 
         pushStr("n + sub:", id);
         pushArr(n, id);
-        
+
         return n;
     }
 
@@ -291,8 +290,8 @@ function userFunction(logger) {
 
     x = fromString("10011110000011");
     // let nextSmallest = getNextSmallest(x);
-    // let nextSmallest = getNextSmallestOptimized(x);
-    let nextSmallest = getNextSmallestOptimizedMine(x);
+    let nextSmallest = getNextSmallestOptimized(x);
+    // let nextSmallest = getNextSmallestOptimizedMine(x);
 
     // x = fromString("0011011001111100");
     // let nextLargest = getNextLargest(x);

@@ -44,6 +44,17 @@ class Logger {
         }
     }
 
+    pushLine(s, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendString(`\n${s}`);
+        }
+    }
+
     pushArray(arr, id, options={}) {
         if (this.enabled === false) {
             return;
