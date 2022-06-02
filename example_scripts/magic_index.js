@@ -1,45 +1,79 @@
 function userFunction(logger) {
-    function magicIndex(arr) {
-        function inner(l, r, parentId) {
-            let id = logger.newNode(`inner(${l}, ${r})`, parentId);
+    function pushArray(arr, l, r, m, id) {
+        logger.pushArray(
+            arr,
+            id,
+            { labels: [["l", l], ["r", r], ["m", m]] }
+        );
+    }
 
-            if (l > r) {
-                return -1;
+    function magicIndex(arr) {
+        let result = null;
+
+        function inner(l, r) {
+            if (l > r || l < 0 || r >= arr.length || result !== null) {
+                return;
             }
 
             let midIdx = Math.floor((l + r) / 2);
             let midElt = arr[midIdx];
 
-            logger.pushArray(
-                arr,
-                id,
-                { labels: [["l", l], ["r", r], ["m", midIdx]] }
-            );
+            if (midElt === midIdx) {
+                result = midElt;
+            } else if (midIdx < midElt) {
+                inner(l, midIdx - 1);
+            } else if (midIdx > midElt) {
+                inner(midIdx + 1, r);
+            }
+        }
+
+        inner(0, arr.length - 1);
+
+        return result;
+    }
+
+    function magicIndexNotUnique(arr) {
+        let res = null;
+
+        function inner(l, r, parentId) {
+            let id = logger.newNode(`inner(${l}, ${r})`, parentId);
+
+            if (l > r || res !== null) {
+                return;
+            }
+
+            let midIdx = Math.floor((l + r) / 2);
+            let midElt = arr[midIdx];
+
+            pushArray(arr, l, r, midIdx, id);
 
             if (midElt === midIdx) {
                 logger.pushLine(`found: ${midIdx}`, id);
-                return midIdx;
+                res = midIdx;
             }
 
-            let leftIdx = Math.min(midIdx - 1, midElt);
-            let left = inner(l, leftIdx, id);
-            if (left >= 0) {
-                return left;
-            }
+            let newR = Math.min(midIdx - 1, midElt);
+            inner(l, newR, id);
 
-            let rightIdx = Math.max(midIdx + 1, midElt);
-            let right = inner(rightIdx, r, id);
+            logger.pushLine(`inner(${l}, ${newR})`, id);
 
-            return right;
+            let newL = Math.max(midIdx + 1, midElt);
+            inner(newL, r, id);
+
+            logger.pushLine(`inner(${newL}, ${r})`, id);
         }
 
-        return inner(0, arr.length - 1, null);
+        inner(0, arr.length - 1, null);
+
+        return res;
     }
 
     // let arr = [-1, 1, 1, 1, 1, 1, 9, 9, 9];
     let arr = [-9, -5, 2, 2, 2, 3, 4, 7, 9, 12, 13];
+    // let arr = [-11, -1, -1, 2, 7, 8, 9, 9, 9, 9, 10, 10, 13, 15, 17, 17, 22];
+    // let arr = [-1, 0, 1, 2, 3, 5, 7];
 
-    let res = magicIndex(arr);
+    let res = magicIndexNotUnique(arr);
 
     console.log(res);
 }
