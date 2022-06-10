@@ -1,10 +1,16 @@
 function userFunction(logger) {
     function logStacks(start, end, temp, id) {
+        let arr = [start, end, temp];
+        arr.sort((a, b) => a.id - b.id);
+
+        console.log("arr");
+        console.log(arr);
+
         logger.pushLine("", id);
         logger.pushLine("stacks:", id);
-        logger.pushLine(`start: ${str(start.arr)}`, id);
-        logger.pushLine(`end: ${str(end.arr)}`, id);
-        logger.pushLine(`temp: ${str(temp.arr)}`, id);
+        logger.pushLine(`1: ${str(arr[0].arr)}`, id);
+        logger.pushLine(`2: ${str(arr[1].arr)}`, id);
+        logger.pushLine(`3: ${str(arr[2].arr)}`, id);
         logger.pushLine("", id);
     }
 
@@ -30,12 +36,18 @@ function userFunction(logger) {
             logStacks(start, end, temp, id);
         } else {
             hanoi(numDisks - 1, start, temp, end, id);
-            logger.pushLine(strFnCall(numDisks, start, end, temp), id);
+
+            logger.pushLine(strFnCall(numDisks, start, temp, end), id);
+            logStacks(start, end, temp, id);
+
             moveOne(start, end);
+
             logger.pushLine(`moveOne(${start.id}, ${end.id})`, id);
             logStacks(start, end, temp, id);
+
             hanoi(numDisks - 1, temp, end, start, id);
-            logger.pushLine(strFnCall(numDisks, start, end, temp), id);
+            logger.pushLine(strFnCall(numDisks, temp, end, start), id);
+            logStacks(start, end, temp, id);
         }
     }
 
