@@ -118,7 +118,7 @@ function userFunction(logger) {
     //             logger.pushLine(`-> ${cache[key]}`, id);
     //             return cache[key];
     //         }
-            
+
     //         const curCoin = arr[i];
     //         const maxNumCoins = Math.floor(amount / curCoin);
     //         let numWays = 0;
@@ -144,7 +144,8 @@ function userFunction(logger) {
         let cache = {};
 
         function inner(amount, i, parentId) {
-            const id = logger.newNode(`inner(amount: ${amount}, curCoin: ${getCurCoin(i)})\n`, parentId);
+            const id = logger.newNode(`amount: ${amount}\ncurCoin: ${getCurCoin(i)}`, parentId);
+            // const id = logger.newNode(`inner(amount: ${amount}, curCoin: ${getCurCoin(i)})\n`, parentId);
 
             const key = `${amount}:${i}`;
 
@@ -161,7 +162,7 @@ function userFunction(logger) {
                 logger.pushLineDetails(`-> 1`, id);
                 return 1;
             }
-            
+
             const maxNumCoins = Math.floor(amount / curCoin);
             let numWays = 0;
 
