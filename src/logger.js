@@ -87,6 +87,17 @@ class Logger {
             box.appendArrayDetails(arr, options);
         }
     }
+
+    pushLineDetails(s, id) {
+        if (this.enabled === false) {
+            return;
+        }
+
+        const box = this.boxes.getBox(id);
+        if (box !== null && box !== undefined) {
+            box.appendStringDetails(`\n${s}`);
+        }
+    }
 }
 
 export { Logger };
