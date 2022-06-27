@@ -7,31 +7,62 @@ function userFunction(logger) {
         return strs.join("\n");
     }
 
+    function boxStr(box) {
+        if (box === null) {
+            return "null"
+        } else {
+            return `{ w: ${box.width}, h: ${box.height}, d: ${box.depth} }`;
+        }
+    }
+
+    // function boxes(arr) {
+    //     let maxHeight = -1;
+    //     let stack = [];
+
+    //     function inner(curHeight, parentId) {
+    //         const id = logger.newNode(`curHeight: ${curHeight}\n${str(stack)}`, parentId);
+
+    //         maxHeight = Math.max(maxHeight, curHeight);
+
+    //         for (const box of arr) {
+    //             if (box.flag === true && isValid(box, top(stack))) {
+    //                 box.flag = false;
+    //                 stack.push(box);
+    //                 inner(curHeight + box.height, id);
+    //                 stack.pop();
+    //                 box.flag = true;
+    //             }
+    //         }
+    //     }
+
+    //     inner(0, null);
+
+    //     return maxHeight;
+    // }
+
     function boxes(arr) {
         let maxHeight = -1;
-        let stack = [];
-
-        function inner(curHeight, parentId) {
-            const id = logger.newNode(`curHeight: ${curHeight}\n${str(stack)}`, parentId);
+    
+        function inner(curHeight, prevBox, parentId) {
+            const id = logger.newNode(`curHeight: ${curHeight}\nprevBox: ${boxStr(prevBox)}\n`, parentId);
 
             maxHeight = Math.max(maxHeight, curHeight);
-
+    
             for (const box of arr) {
-                if (box.flag === true && isValid(box, top(stack))) {
+                if (box.flag === true && isValid(box, prevBox)) {
                     box.flag = false;
-                    stack.push(box);
-                    inner(curHeight + box.height, id);
-                    stack.pop();
+                    logger.pushLine(`inner(${boxStr(box)})`, id);
+                    inner(curHeight + box.height, box, id);
                     box.flag = true;
                 }
             }
         }
-
-        inner(0, null);
-
+    
+        inner(0, null, null);
+    
         return maxHeight;
     }
-
+    
     // can box1 stack on top of box2
     function isValid(box1, box2) {
         if (box2 === null) {
