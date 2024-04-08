@@ -50,18 +50,40 @@ class ArrayRenderer {
         for (let i = 0; i < arr.length; i++) {
             const color = this.getColor(i, arrWrapper.colors);
             this.drawBox(String(arr[i]), curRect, color);
-            this.drawTopLabel(String(i), curRect);
-            // this.drawTopLabel(String(i + 1), curRect);
-            this.drawPoint(String(i), { x: curRect.x, y: curRect.y + curRect.h });
+
+            if (arrWrapper.reverseIndex === true) {
+                this.drawTopLabel(String(arr.length - 1 - i), curRect);
+                this.drawPoint(
+                    String(arr.length - i),
+                    { x: curRect.x, y: curRect.y + curRect.h }
+                );
+            } else {
+                this.drawTopLabel(String(i), curRect);
+                this.drawPoint(
+                    String(i),
+                    { x: curRect.x, y: curRect.y + curRect.h }
+                );
+            }
+
             curRect.x += curRect.w;
         }
 
         // draw final point
-        this.drawPoint(String(arr.length), { x: curRect.x, y: curRect.y + curRect.h });
+        if (arrWrapper.reverseIndex === true) {
+            this.drawPoint(
+                String(0),
+                { x: curRect.x, y: curRect.y + curRect.h }
+            );
+        } else {
+            this.drawPoint(
+                String(arr.length),
+                { x: curRect.x, y: curRect.y + curRect.h }
+            );
+        }
 
         // draw index labels
         for (const label of arrWrapper.labels) {
-            this.drawIndexLabel(label, innerCoord);
+            this.drawIndexLabel(label, innerCoord, arrWrapper);
         }
 
         // this.drawOutline(arrWrapper, coord, totalHeight);
@@ -95,7 +117,7 @@ class ArrayRenderer {
 
     drawBox(str, rect, color) {
         let bgRect = { ...rect, color };
-        
+
         this.gfx.drawRect(bgRect, 1);
 
         this.gfx.strokeRectHeavy(rect, 2);
@@ -108,7 +130,7 @@ class ArrayRenderer {
         const rectYMidpoint = rect.y + (rect.h / 2);
 
         // note that to find the y-coord of the text, we need to find the y-coord of where
-        // we want the actual visible part of the text to be drawn, 
+        // we want the actual visible part of the text to be drawn,
         // and then subtract the top char padding to get the final y-coord
 
         const textX = rectXMidpoint - Math.floor(textWidth / 2);
@@ -150,7 +172,7 @@ class ArrayRenderer {
         );
     }
 
-    drawIndexLabel(label, coord) {
+    drawIndexLabel(label, coord, arrWrapper) {
         const [labelStr, labelIndex] = label;
 
         const rectY = (
@@ -169,7 +191,11 @@ class ArrayRenderer {
             y: rectY
         };
 
-        rect.x += rect.w * labelIndex;
+        if (arrWrapper.reverseIndex === true) {
+            rect.x += rect.w * (arrWrapper.data.length - 1 - labelIndex);
+        } else {
+            rect.x += rect.w * labelIndex;
+        }
 
         // draw arrow /////////////////////////////////
 

@@ -42,8 +42,12 @@ class Box {
         this.updateRect();
     }
 
-    appendArray(arr, labels=[], colors=[]) {
-        this.data.push(new ArrayData(arr, labels, colors));
+    appendArray(arr, options={}) {
+        const labels = options.labels ? options.labels : [];
+        const colors = options.colors ? options.colors : [];
+
+        // this.data.push(new ArrayData(arr, labels, colors));
+        this.data.push(new ArrayData(arr, options));
         this.updateRect();
     }
 
@@ -60,8 +64,12 @@ class Box {
         }
     }
 
-    appendArrayDetails(arr, labels=[], colors=[]) {
-        this.detailsData.push(new ArrayData(arr, labels, colors));
+    appendArrayDetails(arr, options={}) {
+        const labels = options.labels ? options.labels : [];
+        const colors = options.colors ? options.colors : [];
+
+        // this.detailsData.push(new ArrayData(arr, labels, colors));
+        this.detailsData.push(new ArrayData(arr, options));
     }
 
     appendChar(c) {

@@ -2,14 +2,17 @@ import { arrayType } from "./constants/constants";
 import { arrayDataConstants } from "./constants/array_data_constants";
 
 class ArrayData {
-    constructor(arr, labels, colors=[]) {
+    constructor(arr, options={}) {
         this.type = arrayType;
         this.data = [...arr];
-        this.labels = [];
-        this.colors = colors;
+        this.reverseIndex = options.reverseIndex ? options.reverseIndex : false;
+        this.colors = options.colors ? options.colors : [];
 
-        for (const [str, index] of labels) {
-            this.addLabel(str, index);
+        this.labels = [];
+        if (options.labels) {
+            for (const [str, index] of options.labels) {
+                this.addLabel(str, index);
+            }
         }
 
         this.totalHeight = 0;
@@ -23,7 +26,8 @@ class ArrayData {
     clone() {
         const newData = [...this.data];
         const newColors = [...this.colors];
-        const newArrayData = new ArrayData(newData, [], newColors);
+
+        const newArrayData = new ArrayData(newData, { labels: [], colors: newColors });
 
         for (const [str, index] of this.labels) {
             newArrayData.addLabel(str, index);
