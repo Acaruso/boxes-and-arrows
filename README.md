@@ -4,9 +4,17 @@
 
 Boxes and Lines is an application for quickly creating diagrams, graphs, tree structures, etc.
 
-https://acaruso.github.io/boxes-and-lines.html
+- Link to application:
+    - https://acaruso.github.io/boxes-and-lines.html
 
-### Building and running locally:
+- YouTube video:
+    - https://www.youtube.com/watch?v=qfzU_JwPrP8
+
+Screenshot:
+
+![Boxes and Lines Image](boxes-and-lines.jpg)
+
+### Building and running locally
 
 - Prerequisites:
     - have Node.js and npm installed locally
@@ -18,5 +26,5 @@ https://acaruso.github.io/boxes-and-lines.html
     - `npm run build`
 
 - To run application:
-    - open `dist/index.html` in a web browser
-
+    - `npm run start`
+    - or open `dist/index.html` in a web browser
