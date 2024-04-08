@@ -56,7 +56,8 @@ function minimalTree(arr, logger) {
 }
 
 function userFunction(logger) {
-    const arr = [1, 4, 13, 16, 18, 19, 33, 56, 999];
+    // const arr = [1, 4, 13, 16, 18, 19, 33, 56, 999];
+    const arr = [1, 4, 13, 16, 18, 19, 33];
     // logger.disable();
     const root = minimalTree(arr, logger);
     // logger.enable();
