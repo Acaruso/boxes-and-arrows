@@ -111,8 +111,8 @@ function userFunction(logger) {
     }
 
     // const arr = [1,4,3,2,5,8,4,6,2];
-    // const arr = [5,3,5,0,6,9,6,3,8,6];
-    const arr = [3,4,2,1,3];
+    const arr = [5,3,5,0,6,9,6,3,8,6];
+    // const arr = [3,4,2,1,3];
 
     quickSort(arr, 0, arr.length - 1, null);
     console.log(arr);

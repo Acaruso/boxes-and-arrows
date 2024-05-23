@@ -1,6 +1,6 @@
 function userFunction(logger) {
-    function logStacks(start, end, temp, id, newLine) {
-        let arr = [start, end, temp];
+    function logStacks(source, dest, temp, id, newLine) {
+        let arr = [source, dest, temp];
         arr.sort((a, b) => a.id - b.id);
 
         console.log("arr");
@@ -20,36 +20,34 @@ function userFunction(logger) {
         return JSON.stringify(arr);
     }
 
-    function strFnCall(numDisks, start, end, temp) {
-        return `hanoi(${numDisks}, start: ${start.id}, end: ${end.id}, temp: ${temp.id})`;
+    function strFnCall(numDisks, source, dest, temp) {
+        return `hanoi(${numDisks}, source: ${source.id}, dest: ${dest.id}, temp: ${temp.id})`;
     }
 
-    function hanoi(numDisks, start, end, temp, parentId) {
-        // const id = logger.newNode(`hanoi(${numDisks}, start, end, temp)`, parentId);
-        const id = logger.newNode(strFnCall(numDisks, start, end, temp), parentId);
+    function hanoi(numDisks, source, dest, temp, parentId) {
+        // const id = logger.newNode(`hanoi(${numDisks}, source, dest, temp)`, parentId);
+        const id = logger.newNode(strFnCall(numDisks, source, dest, temp), parentId);
 
-        logStacks(start, end, temp, id, true);
+        logStacks(source, dest, temp, id, true);
 
         if (numDisks === 0) {
             return;
         } else if (numDisks === 1) {
-            logger.pushLine(`moveOne(${start.id}, ${end.id})`, id);
-            moveOne(start, end);
-            logStacks(start, end, temp, id, false);
+            logger.pushLine(`moveOne(${source.id}, ${dest.id})`, id);
+            moveOne(source, dest);
+            logStacks(source, dest, temp, id, false);
         } else {
-            hanoi(numDisks - 1, start, temp, end, id);
+            hanoi(numDisks - 1, source, temp, dest, id);
+            logger.pushLine(strFnCall(numDisks - 1, source, temp, dest), id);
+            logStacks(source, dest, temp, id, true);
 
-            logger.pushLine(strFnCall(numDisks, start, temp, end), id);
-            logStacks(start, end, temp, id, true);
+            moveOne(source, dest);
+            logger.pushLine(`moveOne(${source.id}, ${dest.id})`, id);
+            logStacks(source, dest, temp, id, true);
 
-            moveOne(start, end);
-
-            logger.pushLine(`moveOne(${start.id}, ${end.id})`, id);
-            logStacks(start, end, temp, id, true);
-
-            hanoi(numDisks - 1, temp, end, start, id);
-            logger.pushLine(strFnCall(numDisks, temp, end, start), id);
-            logStacks(start, end, temp, id, false);
+            hanoi(numDisks - 1, temp, dest, source, id);
+            logger.pushLine(strFnCall(numDisks - 1, temp, dest, source), id);
+            logStacks(source, dest, temp, id, false);
         }
     }
 
@@ -58,13 +56,13 @@ function userFunction(logger) {
         dest.arr.push(elt);
     }
 
-    let start = { id: 1, arr: [3, 2, 1] };
-    let end = { id: 2, arr: [] };
+    let source = { id: 1, arr: [3, 2, 1] };
+    let dest = { id: 2, arr: [] };
     let temp = { id: 3, arr: [] };
 
-    hanoi(start.arr.length, start, end, temp, null);
+    hanoi(source.arr.length, source, dest, temp, null);
 
-    console.log(start);
-    console.log(end);
+    console.log(source);
+    console.log(dest);
     console.log(temp);
 }
