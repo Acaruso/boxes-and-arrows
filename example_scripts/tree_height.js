@@ -28,8 +28,8 @@ function userFunction(logger) {
 
     function getHeight(node, parentId) {
         if (node === null) {
-            const id = logger.newNode(`getHeight(null)\n\n-> 0`, parentId);
-            return 0;
+            const id = logger.newNode(`getHeight(null)\n\n-> -1`, parentId);
+            return -1;
         }
 
         const id = logger.newNode(`getHeight(${node.value})\n\n`, parentId);
